@@ -1,0 +1,78 @@
+{% extends "include/base.html" %}
+{% load static %}
+
+{% block title %}Welcome to keyforest!{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/forms.css' %}">
+{% endblock %}
+
+{% block body %}
+<div class="center">
+    <h1>Welcome to keyforest</h1>
+    <div class="form-container">
+        <form action="/register" method="POST">
+            {% csrf_token %}
+            {% if errors.firstname %}
+            <span class="error-text">{{ errors.firstname }}</span>
+            {% endif %}
+            <label class="{% if errors.firstname %}error{% endif %} {% if firstname %}active{% endif %}">
+                <input type="text" name="firstname" value="{{ firstname }}">
+                <span class="placeholder">Firstname</span>
+            </label>
+            {% if errors.lastname %}
+            <span class="error-text">{{ errors.lastname }}</span>
+            {% endif %}
+            <label class="{% if errors.lastname %}error{% endif %} {% if lastname %}active{% endif %}">
+                <input type="text" name="lastname" value="{{ lastname }}">
+                <span class="placeholder">Lastname</span>
+            </label>
+            {% if errors.email %}
+            <span class="error-text">{{ errors.email }}</span>
+            {% endif %}
+            <label class="{% if errors.email %}error{% endif %} {% if email %}active{% endif %}">
+                <input type="text" name="email" value="{{ email }}">
+                <span class="placeholder">Email</span>
+            </label>
+            {% if errors.password %}
+            <span class="error-text">{{ errors.password }}</span>
+            {% endif %}
+            <label class="{% if errors.password %}error{% endif %} {% if password %}active{% endif %}">
+                <input type="password" name="password" value="{{ password }}">
+                <span class="placeholder">Password</span>
+            </label>
+            <input type="submit" value="Create account" class="btn btn-blue">
+        </form>
+        <div class="socials">
+            <div class="google">
+                <span class="icon">
+                    <img src="{% static '/images/google.png'%}" />
+                </span>
+                <span class="text">Sign up with Google</span>
+            </div>
+            <div class="facebook">
+                <span class="icon">
+                    <img src="{% static '/images/facebook.png'%}" />
+                </span>
+                <span class="text">Sign up with Facebook</span>
+            </div>
+            <div class="github">
+                <span class="icon">
+                    <img src="{% static '/images/github-white.png'%}" />
+                </span>
+                <span class="text">Sign up with Github</span>
+            </div>
+        </div>
+    </div>
+    <span class="form-footer">Already have an account? <a href="/signin">Sign in here</a></span>
+</div>
+<script>
+$("input").on("focus", function() {
+    $(this).parent().addClass("active");
+})
+$("input").on("blur", function() {
+    if($(this).val() != "") return;
+    $(this).parent().removeClass("active");
+})
+</script>
+{% endblock %}

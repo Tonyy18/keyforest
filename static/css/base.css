@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+
+* {
+    font-size: 14px;
+    font-family: "Inter";
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+    color: #4B4B4B;
+}
+:root {
+    --gray-background: #F2F3F3;
+    --blue: #00AAFF;
+    --darker-blue: #007CC3;
+}
+html, body {
+    height: 100%;
+}
+.container {
+    width: 1100px;
+    margin: 0 auto;
+    padding: 0 15px;
+    height: 100%;
+}
+.container.container-full {
+    width: 100%;
+}
+
+@media (max-width: 1100px) {
+    .container {
+        width: 100%;
+    }
+}
+.icon {
+    display: inline-block;
+    height: 13px;
+    width: 13px;
+    background-size: cover;
+}
+.arrow-down {
+    background-image: url(/static/images/arrow-down.png);
+}
+
+input {
+    outline: none;
+}
+.input {
+    line-height: 40px;
+    border-radius: 5px;
+    padding: 0 15px;
+    transition: border 0.3s, color 0.3s;
+    -webkit-transition: border 0.3s, color 0.3s;
+    -o-transition: border 0.3s, color 0.3s;
+    -moz-transition: border 0.3s, color 0.3s;
+}
+.input-default {
+    border: 1px solid #E2E2E2;
+}
+.input-default:hover,
+.input-default:focus {
+    border: 1px solid DarkGray;
+}
+.btn {
+    padding: 10px 15px;
+    border-radius: 3px;
+    border: none;
+    transition: background-color 0.3s, color 0.3s;
+    -webkit-transition: background-color 0.3s, color 0.3s;
+    -o-transition: background-color 0.3s, color 0.3s;
+    -moz-transition: background-color 0.3s, color 0.3s;
+    display: inline-block;
+    text-decoration: none;
+    border: 1px solid transparent;
+}
+.btn-blue {
+    color: white;
+    background-color: var(--blue);
+}
+.btn-blue:hover {
+    background-color: var(--darker-blue)
+}
+.btn-white {
+    background-color: white;
+}
+.btn-white:hover {
+    border: 1px solid white;
+    color: white;
+    background-color: transparent;
+}
+.flex-grow {
+    flex-grow: 1;
+}

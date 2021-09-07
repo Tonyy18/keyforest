@@ -1,0 +1,162 @@
+.center {
+    width: 700px;
+    padding: 0 20px;
+    padding-top: 100px;
+    margin: 0 auto;
+}
+.center h1 {
+    text-align: center;
+    font-size: 28px;
+    padding-bottom: 100px;
+}
+.center .form-container {
+    width: 100%;
+    display: flex;
+}
+form {
+    width: 300px;
+}
+form label {
+    width: 100%;
+    display: block;
+    position: relative;
+    margin-bottom: 15px;
+}
+form label:hover {
+    cursor: text;
+}
+input[type=text],
+input[type=password] {
+    border: 1px solid #E2E2E2;
+    border-radius: 3px;
+    padding: 15px 20px;
+    width: 100%;
+    transition: border 0.3s;
+    -webkit-transition: border 0.3s;
+    -o-transition: border 0.3s;
+    -moz-transition: border 0.3s;
+}
+.placeholder {
+    position: absolute;
+    left: 20px;
+    top: calc(50% - 9px);
+    transition: all 0.3s;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+}
+
+input[type=text]:hover,
+input[type=password]:hover,
+input[type=text]:focus,
+input[type=password]:focus {
+    border: 1px solid DarkGray;
+}
+form label.active .placeholder {
+    font-size: 9px;
+    top: 4px;
+    left: 10px;
+}
+
+form label.error input {
+    border: 1px solid red;
+}
+form label.error .placeholder {
+    color: red;
+}
+form .error-text {
+    color: red;
+    font-size: 12px;
+    display: block;
+    padding-bottom: 5px;
+}
+form .login-text {
+    text-align: center;
+    padding-bottom: 5px;
+    display: block;
+    font-size: 13px;
+}
+.btn {
+    width: 100%;
+    line-height: 40px;
+}
+.form-footer {
+    padding-top:  15px;
+    font-size: 13px;
+    display: block;
+}
+.form-footer a {
+    font-size: 13px;
+}
+.socials {
+    width: calc(100% - 300px);
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.socials > div {
+    width: 250px;
+    height: 40px;
+    display: flex;
+    padding: 2px;
+    border-radius: 3px;
+    align-items: center;
+    margin: 10px 0;
+    cursor: default;
+}
+.socials .icon {
+    height: 100%;
+    width: auto;
+}
+.socials .icon img {
+    height: 100%;
+}
+.socials .text {
+    text-align: center;
+    color: white;
+    flex-grow: 1;
+}
+.socials .google {
+    background-color: #3E82F7;
+}
+.socials .facebook {
+    background-color: #4065B4;
+}
+.socials .github {
+    background-color: #24292D;
+}
+.socials .facebook .icon,
+.socials .github .icon {
+    padding: 5px;
+}
+
+.socials .google:hover {
+    background-color: #3978E2;
+}
+.socials .facebook:hover {
+    background-color: #365596;
+}
+.socials .github:hover {
+    background-color: #1B1F22;
+}
+
+@media (max-width: 700px) {
+    .center {
+        width: 100%;
+    }
+    .center .form-container {
+        display: block;
+    }
+    form {
+        margin: 0 auto;
+    }
+    .socials {
+        width: 100%;
+        padding-top: 50px;
+    }
+    .form-footer {
+        text-align: center;
+        padding-bottom: 50px;
+    }
+}

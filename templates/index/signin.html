@@ -1,0 +1,61 @@
+{% extends "include/base.html" %}
+{% load static %}
+
+{% block title %}Welcome to keyforest!{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/forms.css' %}">
+{% endblock %}
+
+{% block body %}
+<div class="center">
+    <h1>Sign in to keyforest</h1>
+    <div class="form-container">
+        <form action="" method="POST">
+            {% csrf_token %}
+            {% if error %}
+            <span class="login-text">{{error}}</span>
+            {% endif %}
+            <label>
+                <input type="text" name="email">
+                <span class="placeholder">Email</span>
+            </label>
+            <label>
+                <input type="password" name="password">
+                <span class="placeholder">Password</span>
+            </label>
+            <input type="submit" value="Sign in" class="btn btn-blue">
+        </form>
+        <div class="socials">
+            <div class="google">
+                <span class="icon">
+                    <img src="{% static '/images/google.png'%}" />
+                </span>
+                <span class="text">Sign in with Google</span>
+            </div>
+            <div class="facebook">
+                <span class="icon">
+                    <img src="{% static '/images/facebook.png'%}" />
+                </span>
+                <span class="text">Sign in with Facebook</span>
+            </div>
+            <div class="github">
+                <span class="icon">
+                    <img src="{% static '/images/github-white.png'%}" />
+                </span>
+                <span class="text">Sign in with Github</span>
+            </div>
+        </div>
+    </div>
+    <span class="form-footer">Don't have an account? <a href="/register">Sign up here</a></span>
+</div>
+<script>
+$("input").on("focus", function() {
+    $(this).parent().addClass("active");
+})
+$("input").on("blur", function() {
+    if($(this).val() != "") return;
+    $(this).parent().removeClass("active");
+})
+</script>
+{% endblock %}
