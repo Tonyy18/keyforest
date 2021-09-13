@@ -1,3 +1,4 @@
+
 .navbar {
     background-color: rgba(255,255,255,0.95);
     height: 80px;
@@ -42,7 +43,6 @@
 .navbar form input {
     width: 100%;
 }
-
 @media(min-width: 768px) {
     .navbar.transparent {
         height: 150px;
@@ -52,6 +52,7 @@
         color: white;
     }
 }
+
 section {
     min-height: 100%;
     position: relative;
@@ -74,7 +75,7 @@ h1 {
 .intro {
     background-color: #00AAFF;
 }
-.intro .vertical {
+.intro .container.vertical {
     height: calc(100% - 200px);
 }
 .intro img {

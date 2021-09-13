@@ -3,24 +3,24 @@
 
 {% block title %}Welcome{% endblock %}
 
-{% block head %}
+{% block b_head %}
 <link rel="stylesheet" type="text/css" href="{% static '/css/index.css' %}">
 <script>
-$(function() {
-    const nav = $("#navbar")
-    $(document).on("scroll", function() {
-        const top = $(this).scrollTop();
-        if(top >= 100 && nav.hasClass("transparent")) {
-            nav.removeClass("transparent");
-        } else if(top < 100 && !nav.hasClass("transparent")) {
-            nav.addClass("transparent");
-        }
+    $(function() {
+        const nav = $("#navbar")
+        $(document).on("scroll", function() {
+            const top = $(this).scrollTop();
+            if(top >= 100 && nav.hasClass("transparent")) {
+                nav.removeClass("transparent");
+            } else if(top < 100 && !nav.hasClass("transparent")) {
+                nav.addClass("transparent");
+            }
+        })
     })
-})
 </script>
 {% endblock %}
 
-{% block body %}
+{% block b_body %}
 <nav class="navbar transparent" id="navbar">
     <div class="container">
         <header>
@@ -40,11 +40,11 @@ $(function() {
     </div>
 </nav>
 <section class="intro full">
-    <div class="container vertical">
+    <div class="container centered vertical">
         <div>
             <h1>Marketplace for softwares</h1>
             <p>Buy access to applications and its features</p>
-            <p>Keep on track of your software licenses in one place<p>
+            <p>Keep on track of your software licenses in one place</p>
             <a href="/register" class="btn btn-white">Start now</a>
         </div>
     </div>

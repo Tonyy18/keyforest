@@ -88,3 +88,7 @@ def register(request):
             return redirect("/")
 
     return render(request, "index/register.html", data)
+
+def marketplace(request):
+
+    return render(request, "index/marketplace.html");
