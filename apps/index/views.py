@@ -26,7 +26,7 @@ def signin(request):
                 return redirect(request.GET.get("next"))
             return redirect("/")
         else:
-            data["error"] = "User not found"
+            data["error"] = "Wrong user credentials"
 
     return render(request, "index/signin.html", data)
 
@@ -88,7 +88,3 @@ def register(request):
             return redirect("/")
 
     return render(request, "index/register.html", data)
-
-def marketplace(request):
-
-    return render(request, "index/marketplace.html");

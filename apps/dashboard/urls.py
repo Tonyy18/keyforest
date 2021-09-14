@@ -15,12 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from apps.index import views as index
+from . import views as dashboardViews
 
 urlpatterns = [
-    path("", index.landingpage),
-    path("signin", index.signin),
-    path("register", index.register),
-    path("logout", index.logout),
-    path("dashboard/", include("apps.dashboard.urls")),
+    path("", dashboardViews.summary)
 ]
