@@ -5,6 +5,7 @@
 
 {% block b_head %}
 <link rel="stylesheet" type="text/css" href="{% static '/css/forms.css' %}">
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 {% endblock %}
 
 {% block b_body %}
@@ -24,6 +25,7 @@
                 <input type="password" name="password">
                 <span class="placeholder">Password</span>
             </label>
+            <div class="g-recaptcha" data-sitekey="your_site_key"></div>
             <input type="submit" value="Sign in" class="btn btn-blue">
         </form>
         <div class="socials">

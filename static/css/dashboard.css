@@ -1,0 +1,95 @@
+:root {
+    --sb-bg: #163D54;
+    --sb-border: #1E506E;
+}
+body {
+    font-size: 0px;
+}
+.sidebar {
+    width: 300px;
+    height: 100%;
+    background-color: var(--sb-bg);
+    display: inline-block;
+    position: relative;
+    z-index: 1000;
+    vertical-align: top;
+}
+.sidebar * {
+    color: white;
+    cursor: default;
+}
+.view {
+    display: inline-block;
+    width: calc(100% - 300px);
+    height: 100%;
+    vertical-align: top;
+}
+.view .view-bar {
+    height: 60px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+    z-index: 900;
+    position: relative;
+}
+.view .content {
+    width: 100%;
+    height: calc(100% - 60px);
+    overflow: auto;
+    background-color: #fafafa;
+}
+.sidebar h1 {
+    color: white;
+    font-size: 23px;
+    font-weight: normal;
+    line-height: 60px;
+    text-align: center;
+    border-bottom: 1px solid var(--sb-border);
+}
+.sidebar .organization {
+    padding: 20px;
+    text-align: center;
+    font-size: 0px;
+    position: relative;
+    border-bottom: 1px solid var(--sb-border);
+}
+.sidebar .organization > * {
+    display: inline-block;
+    vertical-align: middle;
+}
+.sidebar .organization img {
+    width: 35px;
+    height: 35px;
+    border-radius: 10%;
+    margin-right: 10px;
+}
+.sidebar .organization .org-name {
+    font-size: 16px;
+    max-width: calc(100% - 45px);
+    text-overflow: ellipsis;
+    overflow: hidden; 
+}
+.sidebar .menu a {
+    text-decoration: none;
+    padding: 20px;
+    display: block;
+    font-size: 0px;
+    border-bottom: 1px solid var(--sb-border);
+}
+.sidebar .menu a.active {
+    background-color: var(--blue);
+}
+.sidebar .menu a:hover {
+    background-color: var(--darker-blue);
+}
+.sidebar .menu a * {
+    color: #A5C1D1;
+    font-size: 15px;
+}
+.sidebar .menu a.active * {
+    color: white;
+}
+.sidebar .menu a:hover * {
+    color: white;
+}
+.sidebar .menu .fas {
+    margin-right: 20px;
+}

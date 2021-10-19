@@ -40,7 +40,7 @@ html, body {
     width: 13px;
     background-size: cover;
 }
-.arrow-down {
+.icon.arrow-down-icon {
     background-image: url(/static/images/arrow-down.png);
 }
 
