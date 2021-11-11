@@ -1,0 +1,61 @@
+{% extends "dashboard/sidebar.html" %}
+{% block title %}Dashboard | Organizations{% endblock %}
+{% load static %}
+{% block body %}
+    <div class="modal" id="create-org-modal">
+        <div class="modal-padding">
+            <div class="modal-body">
+                <header><p>New organization</p><i class="fas fa-times modal-close"></i></header>
+                <section>
+                    <form id="create-org-form">
+                        <label>
+                            <span>Name*</span>
+                            <input type="text" class="input input-default" id="org-name" placeholder="Name for the organization">
+                        </label>
+                        <label>
+                            <span>Description</span>
+                            <textarea class="input input-default" id="org-desc" placeholder="Describe your organization"></textarea>
+                        </label>
+                        <input type="submit" value="Create" class="btn btn-blue">
+                    </form>
+                </section>
+            </div>
+        </div>
+        <div class="modal-bg"></div>
+    </div>
+    <section class="dashboard-page" id="organizations">
+        <section class="page-section">
+            <header>
+                <h1>Organizations</h1>
+                <button class="btn btn-green" onclick="showModal()">Create new <i class="fas fa-plus"></i></button>
+            </header>
+        </section>
+        <section class="page-section flex-grow">
+            <header>
+                <h2>Invitations</h2>
+            </header>
+        </section>
+    </section>
+    <script>
+    const modal = new Modal("create-org-modal");
+    function showModal() {
+        modal.show();
+    }
+    const cAlert = new Alert()
+    $("#create-org-form").submit(function(e) {
+        const name = $(this).find("#org-name");
+        const desc = $(this).find("#org-desc");
+        User.create_organization({
+            "name": name.val(),
+            "about": desc.val()
+        }, function(data) {
+            window.location.href = "/dashboard/organization/" + data.data.id
+        }, function(data) {
+            cAlert.show("error", data.responseJSON.error)
+        })
+        modal.close();
+        return false;
+    })
+    
+    </script>
+{% endblock %}

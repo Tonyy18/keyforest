@@ -7,33 +7,35 @@
 {% endblock %}
 {% block b_body %}
 <nav class="sidebar">
-    <h1>Key Forest</h1>
+    <a href="/"><h1>Key Forest</h1></a>
     <div class="organization">
-        <img src="{% static '/images/test.png' %}">
-        <p class="org-name" title="org-name">Microsoft</p>
+        <a href="/dashboard/organizations">
+            <img src="{{ user.profile.organization.image.url }}">
+            <p class="org-name of-dots" title="org-name" id="org-name">{{ user.profile.organization.name }}</p>
+        </a>
     </div>
     <ul class="menu">
-        <li><a href="#" class="active">
+        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/summary" class="active">
             <i class="fas fa-city"></i>
-            <span class="text">Organization</span>
+            <span class="text">Summary</span>
         </a></li>
-        <li><a href="#">
+        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/applications">
             <i class="fas fa-sitemap"></i>
-            <span class="text">Products</span>
+            <span class="text">Applications</span>
         </a></li>
-        <li><a href="#">
+        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/licenses">
             <i class="fas fa-id-badge"></i>
             <span class="text">Licenses</span>
         </a></li>
-        <li><a href="#">
+        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/activitry">
             <i class="fas fa-chart-line"></i>
             <span class="text">Activity</span>
         </a></li>
-        <li><a href="#">
+        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/sales">
             <i class="fas fa-money-check"></i>
             <span class="text">Sales</span>
         </a></li>
-        <li><a href="#">
+        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/api">
             <i class="fas fa-laptop-code"></i>
             <span class="text">API</span>
         </a></li>
@@ -41,7 +43,20 @@
 </nav>
 <div class="view">
     <div class="view-bar">
-
+        <h1>Dashboard</h1>
+        <label class="search" for="search">
+            <i class="fas fa-search"></i>
+            <input type="text" id="search" placeholder="Search ...">
+        </label>
+        <div class="view-bar-right">
+            <span class="of-dots">{{user.first_name}}</span>
+            <img src="{{ user.profile.image.url }}">
+            <a href="#"><i class="fas fa-cog"></i></a>
+            <a href="/logout"><i class="fas fa-sign-out-alt"></i></a>
+        </div>
+    </div>
+    <div class="alert error" id="alert">
+        <p>New organization created</p><i class="fas fa-times hide-alert"></i>
     </div>
     <div class="content">
         {% block body %}
