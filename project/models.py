@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 import datetime
 
@@ -11,8 +11,8 @@ class Organization(models.Model):
     about = models.TextField(null=True)
     website_link = models.TextField(null=True)
     created = models.DateField(auto_now_add=True)
-    applications = models.IntegerField(default=1)
-    users = models.IntegerField(default=1)
+    applications = models.IntegerField(default=0)
+    users = models.IntegerField(default=0)
     class Meta:
         db_table = "organizations"
 
@@ -82,3 +82,38 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+@receiver(post_save, sender=Organization)
+def create_user_connection(sender, instance, created, **kwargs):
+    #When organization is created
+    if created:
+        if(instance.creator.profile.organization==None):
+            instance.creator.profile.organization = instance
+        User_connection.objects.create(user=instance.creator, organization=instance, permissions="*")
+
+@receiver(post_save, sender=User_connection)
+def add_user_count(sender, instance, created, **kwargs):
+    #When user connection is created
+    if created:
+        instance.organization.users += 1
+        instance.organization.save()
+
+@receiver(post_delete, sender=User_connection)
+def delete_user_count(sender, instance, using, **kwargs):
+    #When user connection is deleted
+    instance.organization.users -= 1
+    instance.organization.save()
+
+
+@receiver(post_delete, sender=Application)
+def delete_application_count(sender, instance, using, **kwargs):
+    #When application is deleted
+    instance.organization.applications -= 1
+    instance.organization.save()
+
+@receiver(post_save, sender=Application)
+def add_user_count(sender, instance, created, **kwargs):
+    #When application is created
+    if created:
+        instance.organization.applications += 1
+    instance.organization.save()

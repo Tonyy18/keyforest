@@ -1,9 +1,12 @@
+import abc
 from django.shortcuts import render
 from django.http import HttpResponse
 from project.models import Organization, User_connection
 from django.contrib.auth.decorators import login_required
 import json
 from . import parameters
+from datetime import date
+from lib import permission
 
 class Codes:
     unauthorized = {
@@ -29,7 +32,7 @@ def response(j):
         res.status_code = j["code"]
     return res
 
-class User:
+class _User:
     def organizations(request):
         if(not request.user.is_authenticated):
             return response(Codes.unauthorized)
@@ -47,7 +50,7 @@ class User:
                         "image": conn.organization.creator.profile.image.url
                     },
                     "image": conn.organization.image.url,
-                    "joined": str(conn.added),
+                    "added": str(conn.added),
                     "users": conn.organization.users,
                     "applications": conn.organization.applications
                 })
@@ -59,6 +62,11 @@ class User:
             #Create new organization
             name = request.POST.get("name")
             about = request.GET.get("about")
+            if(name): name = name.strip()
+            if(about): 
+                about = about.strip()
+            else:
+                about = ""
             if(len(name) < parameters.Organization.min_name_length):
                 code = Codes.forbidden
                 code["error"] = "Organizations name was too short. " + str(parameters.Organization.min_name_length) + " letters minimum"
@@ -66,6 +74,10 @@ class User:
             if(len(name) > parameters.Organization.max_name_length):
                 code = Codes.forbidden
                 code["error"] = "Organizations name was too long. " + str(parameters.Organization.max_name_length) + " letters at max"
+                return response(code)
+            if(about and len(about) > parameters.Organization.max_bio_length):
+                code = Codes.forbidden
+                code["error"] = "Organizations description was too long. " + str(parameters.Organization.max_bio_length) + " letters at max"
                 return response(code)
             else:
                 org_count = len(Organization.objects.filter(creator=request.user))
@@ -78,10 +90,8 @@ class User:
                     code["error"] = "Organizations called '%s' already exists"%name
                     return response(code)
                 else:
-                    org = Organization(name=name, creator=request.user)
+                    org = Organization(name=name, about=about, creator=request.user)
                     org.save()
-                    connection = User_connection(user=request.user, organization=org)
-                    connection.save()
                     code = Codes.ok
                     code["data"] = {
                         "id": org.id,
@@ -92,13 +102,42 @@ class User:
                             "image": org.creator.profile.image.url
                         },
                         "image": org.image.url,
-                        "joined": str(connection.added),
+                        "joined": str(date.today().strftime("%y-%m-%d")),
                         "users": org.users,
                         "applications": org.applications
                     }
                     request.user.profile.organization = org
                     request.user.save()
                     return response(code)
+
+class _Organization:
+
+    def applications(request):
+        if(not request.user.is_authenticated):
+            return response(Codes.unauthorized)
+
+        if(request.method == "POST"):
+            if(not permission(request, "create_apps")):
+                return response(Codes.unauthorized)
+
+            name = request.POST.get("name")
+            bio = request.POST.get("bio")
+            if(name): name = name.strip()
+            if(bio):
+                bio = bio.strip()
+            else:
+                bio = ""
+            
+            if(len(name) < parameters.Application.min_name_length):
+                code = Codes.forbidden
+                code["error"] = "Application name was too short. " + str(parameters.Application.min_name_length) + " letters minimum"
+                return response(code)
+            if(len(name) > parameters.Application.max_name_length):
+                code = Codes.forbidden
+                code["error"] = "Application name was too long. " + str(parameters.Application.max_name_length) + " letters at max"
+                return response(code)
+
+
 
 def organizations(request):
     if(not request.user.is_authenticated):
@@ -107,7 +146,6 @@ def organizations(request):
     if(request.method == "GET"):
         #Search organizations by name
         name = request.GET.get("name")
-        max_results = parameters.Server.max_org_search
         if(name == None):
             code = Codes.bad_request
             code["error"] = "Organization name is missing"
@@ -115,11 +153,10 @@ def organizations(request):
             limit = request.GET.get("limit")
             try:
                 limit = int(limit)
-                if(limit > max_results):
-                    limit = max_results
             except:
-                limit = max_results
-            orgs = Organization.objects.filter(name__icontains=name)[0:limit]
+                limit = 0
+                
+            orgs = Organization.objects.filter(name__icontains=name)[limit:parameters.API.max_org_search]
             results = []
             for org in orgs:
                 results.append({

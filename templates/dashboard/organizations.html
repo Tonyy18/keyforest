@@ -29,6 +29,17 @@
                 <h1>Organizations</h1>
                 <button class="btn btn-green" onclick="showModal()">Create new <i class="fas fa-plus"></i></button>
             </header>
+            <ul class="list" id="org-list">
+                <li class="list-header list-item">
+                    <div class="item-image"></div>
+                    <div class="item-cells">
+                        <p>Name</p>
+                        <p>Users</p>
+                        <p>Applications</p>
+                        <p>Joined</p>
+                    </div>
+                </li>
+            </ul>
         </section>
         <section class="page-section flex-grow">
             <header>
@@ -56,6 +67,54 @@
         modal.close();
         return false;
     })
-    
+    const create_org_el = (data) => {
+        const el = $("<li></li>");
+        const link = $('<a href="/dashboard/organization/' + data.id + '" class="list-item"></a>')
+        link.append('<img class="item-image" src="' + data.image + '">')
+        const cells = $('<div class="item-cells"></div>')
+        cells.append('<p>' + data.name + '</p>')
+        if(data.users == 1) {
+            cells.append('<p>' + data.users + ' user</p>')
+        } else {
+            cells.append('<p>' + data.users + ' users</p>')
+        }
+        if(data.applications == 1) {
+            cells.append('<p>' + data.applications + ' app</p>')
+        } else {
+            cells.append('<p>' + data.applications + ' apps</p>')
+        }
+        const added = date_format(data.added, "d.m.y");
+        const c = $('<p>' + added + '</p>')
+        if(data.id == {{user.profile.organization.id}}) {
+            c.append('<i class="fas fa-check"></i>')
+        } else if (data.creator.id == {{user.id}}) {
+            c.append('<i class="fas fa-star"></i>')
+        }
+        cells.append(c)
+        link.append(cells);
+        el.append(link);
+        return el;
+    }
+
+    User.get_organizations(function(data) {
+        data = data.data
+        let active = null;
+        for(a in data) {
+            if(data[a].id == {{user.profile.organization.id}}){
+                active = data[a];
+                continue
+            };
+            const el = create_org_el(data[a])
+            $("#org-list .list-header").after(el);
+        }
+        const el = create_org_el(active)
+            $("#org-list .list-header").after(el);
+    }, function(data) {
+        let message = "Error ocurred";
+        if("error" in data) {
+            message = data["error"]
+        }
+        $("#org-list .list-header").after($("<li class='list-error'>" + message + "</li>"))
+    })
     </script>
 {% endblock %}

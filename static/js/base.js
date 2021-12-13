@@ -85,3 +85,11 @@ class User {
         })
     }
 }
+
+const date_format = (date, format) => {
+    const split = date.split("-");
+    const year = split[0];
+    const month = split[1];
+    const day = split[2]
+    return format.replace("y", year).replace("m", month).replace("d", day)
+}

@@ -8,5 +8,6 @@ from . import views
 
 urlpatterns = [
     path("organizations/", views.organizations),
-    path("user/organizations", views.User.organizations)
+    path("user/organizations", views._User.organizations),
+    path("organization/app", views._Organization.applications)
 ]

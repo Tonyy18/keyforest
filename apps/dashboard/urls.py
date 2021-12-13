@@ -20,5 +20,6 @@ from . import views as dashboardViews
 urlpatterns = [
     path("", dashboardViews.organizations),
     path("organizations/", dashboardViews.organizations),
-    path("organization/<int:id>", dashboardViews.org)
+    path("organization/<int:id>", dashboardViews.org),
+    path("organization/<int:id>/applications", dashboardViews.applications)
 ]
