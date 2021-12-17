@@ -3,3 +3,5 @@
 <p>Can also be used to selling tickets for events and features</p>
 
 ![Landingpage](notes/landingpage.png?raw=true "Title")
+
+![Dashboard](notes/dashboard.png?raw=true "Title")
