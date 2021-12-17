@@ -8,7 +8,7 @@ class Authentication(BaseBackend):
     def authenticate(self, request, email=None, password=None):
         try:
             user = User.objects.get(email=email)
-            if(check_password(password, user.password)):
+            if(user.check_password(password)):
                 return user
         except User.DoesNotExist:
             return None

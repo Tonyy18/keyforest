@@ -29,7 +29,8 @@
         <div class="collapse flex-grow">
             <ul class="menu menu-right">
                 {% if user.is_authenticated %}
-                    <li class="login"><a href="/logout">Logout</a></li>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/logout">Logout</a></li>
                 {% endif %}
                 {% if user.is_authenticated == False %}
                     <li class="login"><a href="/signin">Sign In</a></li>

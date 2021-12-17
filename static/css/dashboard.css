@@ -1,0 +1,256 @@
+:root {
+    --sb-bg: #163D54;
+    --sb-border: #1E506E;
+}
+body {
+    font-size: 0px;
+}
+.sidebar {
+    width: 300px;
+    height: 100%;
+    background-color: var(--sb-bg);
+    display: inline-block;
+    position: relative;
+    z-index: 1000;
+    vertical-align: top;
+}
+.sidebar * {
+    color: white;
+    cursor: default;
+}
+
+.view {
+    display: inline-block;
+    width: calc(100% - 300px);
+    height: 100%;
+    vertical-align: top;
+    position: relative;
+}
+.view .view-bar {
+    height: 60px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+    z-index: 900;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.view .view-bar h1 {
+    font-size: 20px;
+    padding: 0 25px;
+}
+.view .view-bar .search {
+    flex-grow: 1;
+    border-left: 1px solid #E2E2E2;
+    padding: 5px 20px;
+    display: flex;
+    align-items: center;
+    cursor: text;
+}
+.view .view-bar .search i {
+    color: rgb(161,119,117);
+}
+.view .view-bar .search input {
+    flex-grow: 1;
+    margin-left: 20px;
+    border: none;
+}
+.view .view-bar .view-bar-right {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    padding: 0 25px;
+    cursor: default;
+}
+.view .view-bar .view-bar-right img {
+    width: 27px;
+    border-radius: 100%;
+    border: 1px solid #E2E2E2;
+    margin-right: 15px;
+}
+.view .view-bar .view-bar-right > span {
+    max-width: 130px;
+    white-space: nowrap;
+    font-weight: 400;
+    margin-right: 15px;
+}
+.view .view-bar .view-bar-right a {
+    padding: 0 5px;
+    margin: 0 10px;
+}
+.view .content {
+    width: 100%;
+    height: calc(100% - 60px);
+    overflow: auto;
+    background-color: #fafafa;
+    padding: 50px;
+}
+.sidebar a {
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+}
+.sidebar h1 {
+    color: white;
+    font-size: 23px;
+    font-weight: normal;
+    line-height: 60px;
+    text-align: center;
+    border-bottom: 1px solid var(--sb-border);
+}
+.sidebar .organization {
+    text-align: center;
+    font-size: 0px;
+    position: relative;
+    border-bottom: 1px solid var(--sb-border);
+}
+.sidebar .organization > a {
+    display: block;
+    cursor: pointer;
+    padding: 20px;
+}
+.sidebar .organization img,
+.sidebar .organization .org-name {
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: middle;
+}
+.sidebar .organization img {
+    width: 35px;
+    height: 35px;
+    border-radius: 10%;
+    margin-right: 10px;
+}
+.sidebar .organization .org-name {
+    font-size: 16px;
+    max-width: calc(100% - 45px);
+}
+.sidebar .menu a {
+    text-decoration: none;
+    padding: 20px;
+    display: block;
+    font-size: 0px;
+    border-bottom: 1px solid var(--sb-border);
+}
+.sidebar .menu a.active {
+    background-color: var(--blue);
+}
+.sidebar .menu a:hover,
+.sidebar .organization > a:hover {
+    background-color: var(--darker-blue);
+}
+.sidebar .menu a * {
+    color: #A5C1D1;
+    font-size: 15px;
+}
+.sidebar .menu a.active * {
+    color: white;
+}
+.sidebar .menu a:hover * {
+    color: white;
+}
+.sidebar .menu .fas {
+    margin-right: 20px;
+}
+.error-page {
+    text-align: center;
+    font-size: 25px;
+    color: DarkGray;
+    padding-top: 100px;
+}
+.dashboard-page {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+.dashboard-page .page-section {
+    padding: 0 15px;
+}
+.dashboard-page .page-section header {
+    display: flex;
+    align-items: center;
+    padding-bottom: 50px;
+    height: 100px;
+}
+.dashboard-page .page-section h1 {
+    font-size: 25px;
+    font-weight: normal;
+}
+.dashboard-page .page-section h2 {
+    font-size: 20px;
+    font-weight: normal;
+}
+.dashboard-page .page-section header .btn {
+    margin-left: 20px;
+}
+
+/*ITEM LIST*/
+.list {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+    padding: 15px;
+}
+.list li {
+    list-style: none;
+}
+.list .list-header {
+    font-size: 14px;
+}
+.list .list-item {
+    display: flex;
+    padding: 15px;
+    align-items: center;
+}
+.list .list-item:not(.list-header):hover {
+    background-color: #FAFAFA;
+}
+.list > :not(:first-child) {
+    border-top: 1px solid #E2E2E2;
+}
+.list .list-item .item-image {
+    height: 30px;
+    width: 30px;
+    border-radius: 5px;
+}
+.list .list-item .item-cells {
+    flex-grow: 1;
+    display: flex;
+}
+.list .list-item .item-cells > * {
+    padding: 0 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+}
+.list .list-item .item-cells > :first-child{
+    width: 200px;
+}
+.list .list-item .item-cells > :not(:first-child) {
+    flex-basis: 100px;
+    flex-grow: 1;
+}
+.list .list-item .item-cells > :last-child .fas {
+    position: absolute;
+    right: 0px;
+    top: calc(50% - 6.8px);
+}
+.list .list-item .item-cells > :last-child .fa-check {
+    color: var(--green);
+}
+.list .list-item .item-cells > :last-child .fa-star {
+    color: gold;
+}
+.list .list-error,
+.list .list-message {
+    text-align: center;
+    font-weight: bolder;
+    padding: 15px 0;
+}
+.list .list-error {
+    color: red;
+}
+.dashboard-page#organizations #org-list {
+    width: 800px;
+}
+/*ITEM LIST END*/
