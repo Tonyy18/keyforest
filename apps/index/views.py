@@ -4,7 +4,7 @@ from django.core.validators import validate_email
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout as _logout
 from django.contrib.auth.decorators import login_required
-
+from common import parameters
 
 # Create your views here.
 def logout(request):
@@ -12,7 +12,12 @@ def logout(request):
     return redirect("/")
 
 def landingpage(request):
-    return render(request, "index/index.html")
+    testbench = False;
+    if(request.user.is_authenticated and request.user.profile.role in parameters.Role.testbench_access):
+        testbench = True
+    return render(request, "index/index.html", {
+        "testbench": testbench
+    })
 
 def signin(request):
     data = {"error": ""}

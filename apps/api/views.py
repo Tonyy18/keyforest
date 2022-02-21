@@ -4,9 +4,8 @@ from django.http import HttpResponse
 from project.models import Organization, User_connection
 from django.contrib.auth.decorators import login_required
 import json
-from . import parameters
+from common import parameters
 from datetime import date
-from lib import permission
 
 class Codes:
     unauthorized = {

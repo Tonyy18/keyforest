@@ -30,13 +30,14 @@ ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
-AUTHENTICATION_BACKENDS = ['lib.backends.Authentication']
+AUTHENTICATION_BACKENDS = ['common.backends.Authentication']
 LOGIN_URL = "/signin"
 
 INSTALLED_APPS = [
     'project',
     'apps.index',
     'apps.api',
+    'apps.testbench',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

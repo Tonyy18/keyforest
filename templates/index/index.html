@@ -30,6 +30,9 @@
             <ul class="menu menu-right">
                 {% if user.is_authenticated %}
                     <li><a href="/dashboard">Dashboard</a></li>
+                    {% if testbench %}
+                    <li><a href="/testbench">Test bench</a></li>
+                    {% endif %}
                     <li><a href="/logout">Logout</a></li>
                 {% endif %}
                 {% if user.is_authenticated == False %}

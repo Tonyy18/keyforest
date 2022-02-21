@@ -70,6 +70,7 @@ class Profile(models.Model):
     image = models.ImageField(upload_to="users/", default="users/default.jpg")
     organization = models.ForeignKey(Organization, null=True, on_delete=models.SET_NULL)
     email_confirmed = models.BooleanField(default=False)
+    role = models.IntegerField(null=True)
 
     class Meta:
         db_table = "user_profiles"

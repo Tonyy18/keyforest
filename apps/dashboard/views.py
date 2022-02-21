@@ -1,21 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from apps.api.parameters import User
+from common.parameters import User
 from project.models import Organization, User_connection
-from lib import permission
+from common.utils import has_connection, has_permission
 # Create your views here.
-
-def has_connection(request, id):
-    o = User_connection.objects.filter(organization__id=id, user=request.user)
-    if(not o.exists()):
-        return False
-    return o[0]
-
-def has_permission(con, permission):
-    if(permission in con.permissions or "*" in con.permissions):
-        return True
-    return False
 
 def error(request, text):
     return render(request, "dashboard/error.html", {"text": text})
