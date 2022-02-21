@@ -1,0 +1,15 @@
+{% extends "include/base.html" %}
+{% load static %}
+{% block b_head %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/testbench.css'%}">
+{% endblock %}
+{% block b_body %}
+<div class="container">
+    <header>
+        <h1>Keyforest</h1>
+        <p>Test bench</p>
+        <a href="/">Home</a>
+        <a href="/dashboard">Dashboard</a>
+    </header>
+</div>
+{% endblock %}

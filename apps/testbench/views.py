@@ -7,4 +7,4 @@ from common import parameters
 @login_required
 def landingpage(request):
     if(request.user.profile.role in parameters.Role.testbench_access):
-        return HttpResponse("testbench")
+        return render(request, "testbench/index.html")

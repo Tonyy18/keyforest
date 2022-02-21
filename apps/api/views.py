@@ -37,6 +37,7 @@ class _User:
             return response(Codes.unauthorized)
 
         if(request.method == "GET"):
+            #List all user related organizations
             results = []
             connection = User_connection.objects.filter(user=request.user)
             for conn in connection:
@@ -116,6 +117,7 @@ class _Organization:
             return response(Codes.unauthorized)
 
         if(request.method == "POST"):
+            #Create new application
             if(not permission(request, "create_apps")):
                 return response(Codes.unauthorized)
 
