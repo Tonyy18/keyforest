@@ -118,12 +118,39 @@ class _Organization:
 
         if(request.method == "POST"):
             #Create new application
-            if(not permission(request, "create_apps")):
-                return response(Codes.unauthorized)
+
+            org_id = request.POST.get("org_id")
+            org = None
+            if(org_id):
+                _org = Organization.objects.filter(id=org_id)
+                if(len(_org) > 0):
+                    org = _org[0]
+            elif(request.user.profile.organization != None):
+                org = request.user.profile.organization
+
+            if(org == None):
+                code = Codes.bad_request
+                code["error"] = "Couldn't solve the target organization"
+                return response(code)
+
+            con = User_connection.objects.filter(user=request.user, organization=org)
+            if(len(con) == 0):
+                code = Codes.unauthorized
+                code["error"] = "User is not part of the organization"
+                return response(code)
+            con = con[0]
 
             name = request.POST.get("name")
             bio = request.POST.get("bio")
-            if(name): name = name.strip()
+            if(not permission(con, "create_apps")):
+                return response(Codes.unauthorized)
+
+            if(name): 
+                name = name.strip()
+            else:
+                code = Codes.forbidden
+                code["error"] = "Application name is missing"
+                return response(code)
             if(bio):
                 bio = bio.strip()
             else:

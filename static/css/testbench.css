@@ -2,6 +2,7 @@ header {
     display: flex;
     align-items: center;
     padding: 20px 0;
+    padding: 50px 0;
 }
 header h1 {
     font-size: 30px;
@@ -17,4 +18,14 @@ header a {
 header a:hover {
     text-decoration: underline;
     font-weight: bold;
+}
+.inline form > input {
+    display: inline-block;
+}
+.inline form input[type=text] {
+    width: 300px;
+}
+.inline p {
+    flex-grow: 1;
+    font-size: 18px;
 }

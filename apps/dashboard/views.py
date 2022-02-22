@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from common.parameters import User
 from project.models import Organization, User_connection
-from common.utils import has_connection, has_permission
+from common.utils import is_connected, has_permission
 # Create your views here.
 
 def error(request, text):
@@ -19,7 +19,7 @@ def organizations(request):
 def org(request, id):
     if(request.user.profile.organization == None):
         return HttpResponse("You're not part of any organization yet")
-    con = has_connection(request, id)
+    con = is_connected(request, id)
     if(not con):
         return error(request, "This site doesn't exist")
     request.user.profile.organization = con.organization
@@ -30,7 +30,7 @@ def org(request, id):
 def applications(request, id):
     if(request.user.profile.organization == None):
         return HttpResponse("You're not part of any organization yet")
-    con = has_connection(request, id)
+    con = is_connected(request, id)
     if(not con):
         return error(request, "This site doesn't exist")
     showbtn = False #Create application button

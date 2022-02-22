@@ -55,6 +55,38 @@ class Alert {
     }
 }
 
+class Notice {
+    constructor(id) {
+        this.dom = $("#" + id);
+    }
+    show(text) {
+        this.dom.css({
+            "bottom": "25px",
+            "opacity": "1"
+        }).find("p").html(text);
+        setTimeout(() => {
+            this.hide();
+        }, 4000)
+    }
+    error(text) {
+        this.dom.addClass("notice-red");
+        this.show(text);
+    }
+    hide(remove = false) {
+        let css = {
+            "opacity": "0"
+        }
+        if(remove) {
+            css["bottom"] = "-250px";
+        } else {
+            setTimeout(() => {
+                this.hide(true);
+            }, 300)
+        }
+        this.dom.css(css).removeClass("notice-red");
+    }
+}
+
 class User {
     static token = getCookie("csrftoken");
     static create_organization(data, success=function(){}, error=function(){}) {
@@ -93,3 +125,8 @@ const date_format = (date, format) => {
     const day = split[2]
     return format.replace("y", year).replace("m", month).replace("d", day)
 }
+
+let notice = null;
+$(document).ready(() => {
+    notice = new Notice("base-notice");
+})

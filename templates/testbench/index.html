@@ -10,6 +10,38 @@
         <p>Test bench</p>
         <a href="/">Home</a>
         <a href="/dashboard">Dashboard</a>
+        <a href="/logout">Logout</a>
     </header>
+    <section class="f-a flex inline">
+        <p>Create organization</p>
+        <form id="create-org">
+            <input type="text" class="input input-default" placeholder="Organization name">
+            <input type="submit" value="create" class="btn btn-blue">
+        </form>
+    </section>
 </div>
+<script>
+    $("#create-org").on("submit", function() {
+        const input = $(this).children(".input");
+        const name = $.trim(input.val());
+        if(name == "") {
+            notice.error("Organization name cannot be empty");
+            input.addClass("error");
+        } else {
+            input.val("");
+            User.create_organization({
+                name: name
+            }, (success) => {
+                notice.show("Organization created");
+            }, (error) => {
+                notice.error(error.responseJSON.error);
+                input.addClass("error");
+            })
+        }
+        return false;
+    })
+    $(".input").on("keydown", function() {
+        $(this).removeClass("error");
+    })
+</script>
 {% endblock %}
