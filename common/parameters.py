@@ -8,6 +8,7 @@ class Organization:
     max_name_length = 50
     min_name_length = 4
     max_bio_length = 200
+    app_count = 50 #Applications in organization
 
 class API:
     max_org_search = 10 #maxmium results in one search
@@ -16,7 +17,6 @@ class Application:
     max_name_length = 50
     min_name_length = 4
     max_bio_length = 200 #Description length
-    count_per_org = 50 #Applications in organization
 
 class Role:
     class Admin:

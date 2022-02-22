@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 import json
 from common import parameters
 from datetime import date
+from datetime import datetime
+
 
 class Codes:
     unauthorized = {
@@ -50,7 +52,7 @@ class _User:
                         "image": conn.organization.creator.profile.image.url
                     },
                     "image": conn.organization.image.url,
-                    "added": str(conn.added),
+                    "added": conn.added.strftime("%d-%m-%Y"),
                     "users": conn.organization.users,
                     "applications": conn.organization.applications
                 })
@@ -87,7 +89,7 @@ class _User:
                     return response(code)
                 if(Organization.objects.filter(name=name).exists()):
                     code = Codes.forbidden
-                    code["error"] = "Organizations called '%s' already exists"%name
+                    code["error"] = "Organization called '%s' already exists"%name
                     return response(code)
                 else:
                     org = Organization(name=name, about=about, creator=request.user)

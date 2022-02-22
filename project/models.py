@@ -88,8 +88,7 @@ def save_user_profile(sender, instance, **kwargs):
 def create_user_connection(sender, instance, created, **kwargs):
     #When organization is created
     if created:
-        if(instance.creator.profile.organization==None):
-            instance.creator.profile.organization = instance
+        instance.creator.profile.organization = instance
         User_connection.objects.create(user=instance.creator, organization=instance, permissions="*")
 
 @receiver(post_save, sender=User_connection)
