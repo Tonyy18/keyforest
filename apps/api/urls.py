@@ -9,5 +9,5 @@ from . import views
 urlpatterns = [
     path("organizations/", views.organizations),
     path("user/organizations", views._User.organizations),
-    path("organization/app", views._Organization.applications)
+    path("organization/apps", views._Organization.applications)
 ]

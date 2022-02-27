@@ -9,11 +9,11 @@
                     <form id="create-app-form">
                         <label>
                             <span>Name*</span>
-                            <input type="text" class="input input-default" id="org-name" placeholder="Name for the application">
+                            <input type="text" class="input input-default" id="app-name" placeholder="Name for the application">
                         </label>
                         <label>
                             <span>Description</span>
-                            <textarea class="input input-default" id="org-desc" placeholder="Describe your application"></textarea>
+                            <textarea class="input input-default" id="app-desc" placeholder="Describe your application"></textarea>
                         </label>
                         <input type="submit" value="Create app" class="btn btn-blue">
                     </form>
@@ -38,5 +38,20 @@
     function showModal() {
         modal.show();
     }
+    const cAlert = new Alert()
+    $("#create-app-form").on("submit", function() {
+        Organization.create_app({
+            name: $(this).find("#app-name").val(),
+            bio: $(this).find("#app-desc").val()
+        }, function(data) {
+            //success
+            console.log(data)
+        }, function(data) {
+            //error
+            cAlert.show("error", data.responseJSON.error)
+        })
+        modal.close()
+        return false;
+    })
     </script>
 {% endblock %}

@@ -1,7 +1,8 @@
 import abc
 from django.shortcuts import render
 from django.http import HttpResponse
-from project.models import Organization, User_connection
+from project.models import Organization, User_connection, Application
+from common.utils import has_permission, is_connected, random_id
 from django.contrib.auth.decorators import login_required
 import json
 from common import parameters
@@ -27,7 +28,12 @@ class Codes:
         "error": "Forbidden"
     }
 
-def response(j):
+def response(j, message = None):
+    if(message != None):
+        if(j["code"] == 200):
+            j["data"] = message
+        else:
+            j["error"] = message
     res = HttpResponse(json.dumps(j), content_type="application/json")
     if("code" in j):
         res.status_code = j["code"]
@@ -56,9 +62,7 @@ class _User:
                     "users": conn.organization.users,
                     "applications": conn.organization.applications
                 })
-            code = Codes.ok
-            code["data"] = results
-            return response(code)
+            return response(Codes.ok, results)
         
         if(request.method == "POST"):
             #Create new organization
@@ -70,32 +74,23 @@ class _User:
             else:
                 about = ""
             if(len(name) < parameters.Organization.min_name_length):
-                code = Codes.forbidden
-                code["error"] = "Organizations name was too short. " + str(parameters.Organization.min_name_length) + " letters minimum"
-                return response(code)
+                return response(Codes.forbidden, "Organizations name was too short. " + str(parameters.Organization.min_name_length) + " letters minimum")
             if(len(name) > parameters.Organization.max_name_length):
-                code = Codes.forbidden
-                code["error"] = "Organizations name was too long. " + str(parameters.Organization.max_name_length) + " letters at max"
-                return response(code)
+                return response(Codes.forbidden, "Organizations name was too long. " + str(parameters.Organization.max_name_length) + " letters at max")
             if(about and len(about) > parameters.Organization.max_bio_length):
-                code = Codes.forbidden
-                code["error"] = "Organizations description was too long. " + str(parameters.Organization.max_bio_length) + " letters at max"
-                return response(code)
+                return response(Codes.forbidden, "Organizations description was too long. " + str(parameters.Organization.max_bio_length) + " letters at max")
             else:
                 org_count = len(Organization.objects.filter(creator=request.user))
                 if(org_count >= parameters.User.org_count):
-                    code = Codes.forbidden
-                    code["error"] = "Current user has created maximum amount of organizations (%d)"%org_count
-                    return response(code)
+                    return response(Codes.forbidden, "Current user has created maximum amount of organizations (%d)"%org_count)
                 if(Organization.objects.filter(name=name).exists()):
-                    code = Codes.forbidden
-                    code["error"] = "Organization called '%s' already exists"%name
-                    return response(code)
+                    return response(Codes.forbidden, "Organization called '%s' already exists"%name)
                 else:
                     org = Organization(name=name, about=about, creator=request.user)
                     org.save()
-                    code = Codes.ok
-                    code["data"] = {
+                    request.user.profile.organization = org
+                    request.user.save()
+                    return response(Codes.ok, {
                         "id": org.id,
                         "name": org.name,
                         "creator": {
@@ -107,10 +102,7 @@ class _User:
                         "joined": str(date.today().strftime("%y-%m-%d")),
                         "users": org.users,
                         "applications": org.applications
-                    }
-                    request.user.profile.organization = org
-                    request.user.save()
-                    return response(code)
+                    })
 
 class _Organization:
 
@@ -123,6 +115,7 @@ class _Organization:
 
             org_id = request.POST.get("org_id")
             org = None
+            #If organization exists
             if(org_id):
                 _org = Organization.objects.filter(id=org_id)
                 if(len(_org) > 0):
@@ -131,43 +124,50 @@ class _Organization:
                 org = request.user.profile.organization
 
             if(org == None):
-                code = Codes.bad_request
-                code["error"] = "Couldn't solve the target organization"
-                return response(code)
+                return response(Codes.bad_request, "Couldn't solve the target organization")
 
+            #checking the user connection
             con = User_connection.objects.filter(user=request.user, organization=org)
             if(len(con) == 0):
-                code = Codes.unauthorized
-                code["error"] = "User is not part of the organization"
-                return response(code)
+                return response(Codes.unauthorized, "User is not part of the organization")
             con = con[0]
 
             name = request.POST.get("name")
             bio = request.POST.get("bio")
-            if(not permission(con, "create_apps")):
+            #Permission handling
+            if(not has_permission(con, "create_apps")):
                 return response(Codes.unauthorized)
 
             if(name): 
                 name = name.strip()
             else:
-                code = Codes.forbidden
-                code["error"] = "Application name is missing"
-                return response(code)
+                return response(Codes.forbidden, "Application name is missing")
             if(bio):
                 bio = bio.strip()
             else:
                 bio = ""
-            
+            #validation
             if(len(name) < parameters.Application.min_name_length):
-                code = Codes.forbidden
-                code["error"] = "Application name was too short. " + str(parameters.Application.min_name_length) + " letters minimum"
-                return response(code)
+                return response(Codes.forbidden, "Application name was too short. " + str(parameters.Application.min_name_length) + " letters minimum")
             if(len(name) > parameters.Application.max_name_length):
-                code = Codes.forbidden
-                code["error"] = "Application name was too long. " + str(parameters.Application.max_name_length) + " letters at max"
-                return response(code)
+                return response(Codes.forbidden, "Application name was too long. " + str(parameters.Application.max_name_length) + " letters at max")
+            app_count = Application.objects.filter(organization=org).count()
+            if(app_count > parameters.Organization.app_count):
+                return response(Codes.forbidden, "Organization has its maximum application amount (" + str(parameters.Organization.app_count) + ")")
+            if(Application.objects.filter(organization=org, name=name).exists()):
+                return response(Codes.forbidden, "Application called " + name + " already exists in the organization")
 
-
+            app = Application(name=name, organization=org, api_id=random_id(), bio=bio)
+            app.save()
+            return response(Codes.ok, {
+                "name": name,
+                "bio":bio,
+                "organization": {
+                    "id": org.id,
+                    "name": org.name
+                }
+            })
+            
 
 def organizations(request):
     if(not request.user.is_authenticated):

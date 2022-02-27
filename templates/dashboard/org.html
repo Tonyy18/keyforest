@@ -1,11 +1,50 @@
 {% extends "dashboard/sidebar.html" %}
 {% block title %}Dashboard | Organizations{% endblock %}
 {% block body %}
-<section class="dashboard-page">
-    <section class="page-section">
+<section class="dashboard-page" id="summary">
+    <section class="page-section flex-grow">
         <header>
-            <h1>{{data.organization.name}}</h1>
+            <img src="{{user.profile.organization.image.url}}" class="org-image"/>
+            <h1 class="of-dots">{{user.profile.organization.name}}</h1>
+            <button class="btn btn-green">Edit<i class="fas fa-pen"></i></button>
         </header>
+        <!--
+        <div class="chart-box">
+            <h2>Licenses sold</h2>
+            <div class="chart">
+                <canvas id="myChart" width="400" height="400"></canvas>
+            </div>
+        </div>
+        -->
     </section>
 </div>
+<script>
+const ctx = document.getElementById('myChart').getContext('2d');
+const data = {
+    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    datasets: [
+        {
+            label: "Dataset 1",
+            data: [5,10,12,6,9],
+            fill: false,
+            borderColor: "#e2e2e2",
+            backgroundColor: "black"
+        }
+    ]
+}
+const config = {
+  type: 'line',
+  data: data,
+  options: {
+    plugins: {
+      legend: {
+          display: false
+      }
+    },
+    responsive: true,
+    maintainAspectRatio: false
+  }
+};
+const myChart = new Chart(ctx, config);
+</script>
 {% endblock %}

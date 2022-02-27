@@ -174,7 +174,6 @@ body {
     display: flex;
     align-items: center;
     padding-bottom: 50px;
-    height: 100px;
 }
 .dashboard-page .page-section h1 {
     font-size: 25px;
@@ -259,3 +258,35 @@ body {
     width: 800px;
 }
 /*ITEM LIST END*/
+
+/*CHARTS*/
+.chart-box {
+    width: 500px;
+    background-color: white;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+    border-radius: 10px;
+    padding: 30px;
+    height: 380px;
+    position: relative;
+    margin: 10px;
+}
+.chart-box .chart {
+    position: relative;
+    height: calc(100% - 50px);
+}
+.chart-box h2 {
+    padding-bottom: 20px;
+}
+/*CHARTS END*/
+
+/*SUMMARY PAGE*/
+
+#summary .org-image {
+    border-radius: 10%;
+    margin-right: 20px;
+    height: 80px;
+    width: 80px;
+}
+#summary header h1 {
+    flex-grow: 1;
+}

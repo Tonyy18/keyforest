@@ -29,3 +29,6 @@ class Role:
         role = 3
     
     testbench_access = [Admin.role, Developer.role]
+
+#permissions
+#create applications => create_apps

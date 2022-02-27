@@ -86,43 +86,44 @@ class Notice {
         this.dom.css(css).removeClass("notice-red");
     }
 }
-
+function session_request(url, type, data={}, success=function(){}, error=function(){}) {
+    const token = getCookie("csrftoken");
+    $.ajax({
+        url: url,
+        type: type,
+        headers: {
+            "X-CSRFToken": token
+        },
+        data: data,
+        success: function(data) {
+            success(data)
+        },
+        error: function(data) {
+            error(data)
+        }
+    })
+}
 class User {
-    static token = getCookie("csrftoken");
     static create_organization(data, success=function(){}, error=function(){}) {
-        $.ajax({
-            url: "/api/user/organizations",
-            type: "POST",
-            headers: {
-                "X-CSRFToken": this.token
-            },
-            data: data,
-            success: function(data) {
-                success(data)
-            },
-            error: function(data) {
-                error(data)
-            }
-        })
+        session_request("/api/user/organizations", "POST", data, success, error);
     }
     static get_organizations(success, error) {
-        $.ajax({
-            url: "/api/user/organizations",
-            type: "GET",
-            headers: {
-                "X-CSRFToken": this.token
-            },
-            success: success,
-            error: error
-        })
+        session_request("/api/user/organizations", "GET", {}, success, error)
+    }
+}
+
+class Organization {
+    static token = getCookie("csrftoken");
+    static create_app(data, success=function(){}, error=function(){}) {
+        session_request("/api/organization/apps", "POST", data, success, error)
     }
 }
 
 const date_format = (date, format) => {
     const split = date.split("-");
-    const year = split[0];
+    const year = split[2];
     const month = split[1];
-    const day = split[2]
+    const day = split[0];
     return format.replace("y", year).replace("m", month).replace("d", day)
 }
 

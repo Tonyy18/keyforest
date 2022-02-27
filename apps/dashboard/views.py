@@ -24,7 +24,7 @@ def org(request, id):
         return error(request, "This site doesn't exist")
     request.user.profile.organization = con.organization
     request.user.save()
-    return render(request, "dashboard/org.html", {"data": con})
+    return render(request, "dashboard/org.html")
 
 @login_required
 def applications(request, id):
