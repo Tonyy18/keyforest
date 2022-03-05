@@ -169,8 +169,9 @@ body {
 }
 .dashboard-page .page-section {
     padding: 0 15px;
+    font-size: 0px;
 }
-.dashboard-page .page-section header {
+.dashboard-page .page-section > header {
     display: flex;
     align-items: center;
     padding-bottom: 50px;
@@ -186,7 +187,6 @@ body {
 .dashboard-page .page-section header .btn {
     margin-left: 20px;
 }
-
 /*ITEM LIST*/
 .list {
     background-color: white;
@@ -215,6 +215,7 @@ body {
     height: 30px;
     width: 30px;
     border-radius: 5px;
+    margin-right: 5px;
 }
 .list .list-item .item-cells {
     flex-grow: 1;
@@ -228,7 +229,7 @@ body {
     position: relative;
 }
 .list .list-item .item-cells > :first-child{
-    width: 200px;
+    width: 250px;
 }
 .list .list-item .item-cells > :not(:first-child) {
     flex-basis: 100px;
@@ -259,34 +260,73 @@ body {
 }
 /*ITEM LIST END*/
 
-/*CHARTS*/
-.chart-box {
-    width: 500px;
-    background-color: white;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
-    border-radius: 10px;
-    padding: 30px;
-    height: 380px;
-    position: relative;
-    margin: 10px;
+.sidebar-section {
+    display: flex;
 }
-.chart-box .chart {
-    position: relative;
-    height: calc(100% - 50px);
-}
-.chart-box h2 {
-    padding-bottom: 20px;
-}
-/*CHARTS END*/
-
-/*SUMMARY PAGE*/
-
-#summary .org-image {
-    border-radius: 10%;
-    margin-right: 20px;
-    height: 80px;
-    width: 80px;
-}
-#summary header h1 {
+.sidebar-section .sidebar-section-content {
     flex-grow: 1;
+}
+.section-sidebar {
+    width: 350px;
+    display:inline-block;
+}
+.section-sidebar label {
+    padding: 7px;
+    display: flex;
+    align-items: center;
+}
+.section-sidebar label span {
+    flex-grow: 1;
+}
+.section-sidebar .checkboxes {
+    padding: 15px;
+}
+.sidebar-section .sidebar-section-content {
+    padding: 0 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#users-page .user-list {
+    width: 80%;
+}
+.user-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin: 10px;
+    width: 100%;
+    border-radius: 5px;
+}
+.user-item:hover {
+    border: 2px solid #e2e2e2;
+    padding: 8px;
+}
+
+.user-item img {
+    height: 35px;
+    width: 35px;
+    border-radius: 5px;
+}
+.user-item p {
+    font-size: 16px;
+    padding: 0 20px;
+    flex-grow: 1;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+}
+.user-item .btn {
+    line-height: 14px;
+}
+.user-item .btn i,
+.users-nav .btn i {
+    margin: 0px;
+}
+.users-nav {
+    padding-top: 10px;
+}
+.users-nav .btn {
+    margin: 0 5px;
 }

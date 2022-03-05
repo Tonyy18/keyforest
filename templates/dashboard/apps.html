@@ -23,14 +23,24 @@
         <div class="modal-bg"></div>
     </div>
     <div class="dashboard-page">
-        <section class="page-section">
+        <section class="page-section flex-grow">
             <header>
                 <h1>Applications</h1>
                 {% if showBtn %}
                 <button class="btn btn-green" onclick="showModal()">Create new <i class="fas fa-plus"></i></button>
                 {% endif %}
-                {{conn.permissions}}
             </header>
+            <ul class="list" id="app-list">
+                <li class="list-header list-item">
+                    <div class="item-image"></div>
+                    <div class="item-cells">
+                        <p>Name</p>
+                        <p>Licenses</p>
+                        <p>Author</p>
+                        <p>Created</p>
+                    </div>
+                </li>
+            </ul>
         </section>
     </div>
     <script>
@@ -52,6 +62,34 @@
         })
         modal.close()
         return false;
+    })
+
+    function create_app_el(data) {
+        const el = $("<li></li>");
+        const link = $('<a href="/dashboard/organization/' + data.organization.id + '/app/' + data.id + '" class="list-item"></a>')
+        link.append('<img class="item-image" src="' + data.image + '">')
+        const cells = $('<div class="item-cells"></div>')
+        cells.append('<p>' + data.name + '</p>')
+        cells.append('<p>' + data.licenses + ' licenses</p>')
+        cells.append('<p>' + data.creator.name + '</p>')
+        cells.append('<p>' + date_format(data.created, "d.m.y") + '</p>')
+        link.append(cells)
+        el.append(link)
+        return el;
+    }
+
+    Organization.get_apps((data) => {
+        data = data.data
+        for(a in data) {
+            const el = create_app_el(data[a])
+            $("#app-list .list-header").after(el);
+        }
+    }, (error) => {
+        let message = "Error ocurred";
+        if("error" in error) {
+            message = error["error"]
+        }
+        $("#app-list .list-header").after($("<li class='list-error'>" + message + "</li>"))
     })
     </script>
 {% endblock %}

@@ -41,7 +41,8 @@ a {
 }
 .of-dots {
     text-overflow: ellipsis;
-    overflow: hidden; 
+    overflow: hidden;
+    white-space: nowrap;
 }
 .flex {
     display: flex;
@@ -104,6 +105,9 @@ input {
     text-decoration: none;
     border: 1px solid transparent;
 }
+.btn[disabled] {
+    background-color: lightgray;
+}
 .btn > i {
     margin-left: 10px;
     color: inherit;
@@ -112,13 +116,13 @@ input {
     color: white;
     background-color: var(--blue);
 }
-.btn-blue:hover {
+.btn-blue:hover:not([disabled]) {
     background-color: var(--darker-blue)
 }
 .btn-white {
     background-color: white;
 }
-.btn-white:hover {
+.btn-white:hover:not([disabled]) {
     border: 1px solid white;
     color: white;
     background-color: transparent;
@@ -128,7 +132,7 @@ input {
     background-color: #00DA88;
     color: white;
 }
-.btn-green:hover {
+.btn-green:hover:not([disabled]) {
     background-color: #00A064;
 }
 

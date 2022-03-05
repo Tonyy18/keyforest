@@ -1,0 +1,54 @@
+{% extends "dashboard/sidebar.html" %}
+{% block title %}{{ request.user.profile.organization.name }} | Applications{% endblock %}
+{% block body %}
+    <section class="dashboard-page" id="users-page">
+        <section class="page-section flex-grow">
+            <header>
+                <h1 class="flex-grow">Users</h1>
+                <button class="btn btn-green">Add user <i class="fas fa-plus"></i></button>
+            </header>
+            <div class="sidebar-section">
+                <div class="section-sidebar">
+                    <input type="text" class="input input-default" placeholder="Name">
+                    <div class="checkboxes">
+                        <label>
+                            <span>Admin</span>
+                            <input type="checkbox">
+                        </label>
+                        <label>
+                            <span>Moderator</span>
+                            <input type="checkbox">
+                        </label>
+                        <label>
+                            <span>Developer</span>
+                            <input type="checkbox">
+                        </label>
+                    </div>
+                </div>
+                <div class="sidebar-section-content">
+                    <div class="user-list">
+                        <a href="#" class="user-item">
+                            <img src="{{ user.profile.organization.image.url }}">
+                            <p>Toni Isotalo</p>
+                            <button class="btn btn-blue"><i class="fas fa-ban"></i></button>
+                        </a>
+                        <a href="#" class="user-item">
+                            <img src="{{ user.profile.organization.image.url }}">
+                            <p>Toni Isotalo</p>
+                            <button class="btn btn-blue"><i class="fas fa-ban"></i></button>
+                        </a>
+                    </div>
+                    <div class="users-nav">
+                        <button disabled class="btn btn-blue"><i class="fas fa-angle-left"></i></button>
+                        <button class="btn btn-blue"><i class="fas fa-angle-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+    <script>
+        function create_user_el(data) {
+            
+        }
+    </script>
+{% endblock %}

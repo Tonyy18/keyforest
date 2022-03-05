@@ -28,24 +28,28 @@ class Invitation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, null=True)
     date = models.DateField(auto_now_add=True)
+    sent_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="sender_user")
     class Meta:
         db_table = "invitations"
 
 class Application(models.Model):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
     name = models.TextField(null=False)
-    api_id = models.TextField(null=False)
+    image = models.ImageField(upload_to="applications/", default="applications/default.png")
+    api_key = models.TextField(null=False)
     bio = models.TextField(null=True)
     download_link = models.TextField(null=True)
     website_link = models.TextField(null=True)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     created = models.DateField(auto_now_add=True)
+    licenses = models.IntegerField(default=0)
     class Meta:
         db_table = "applications"
 
 class License(models.Model):
     application = models.ForeignKey(Application, on_delete=models.CASCADE)
     name = models.TextField(null=False)
-    api_id = models.TextField(null=False)
+    api_key = models.TextField(null=False)
     bio = models.TextField(null=True)
     parameters = models.TextField(null=True)
     amount = models.IntegerField(null=True)
@@ -117,3 +121,17 @@ def add_user_count(sender, instance, created, **kwargs):
     if created:
         instance.organization.applications += 1
     instance.organization.save()
+
+@receiver(post_save, sender=License)
+def add_license_count(sender, instance, created, **kwargs):
+    #When application is created
+    if created:
+        instance.application.licenses += 1
+    instance.application.save()
+
+@receiver(post_delete, sender=License)
+def delete_license_count(sender, instance, created, **kwargs):
+    #When application is created
+    if created:
+        instance.application.licenses -= 1
+    instance.application.save()

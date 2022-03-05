@@ -113,17 +113,27 @@ class User {
 }
 
 class Organization {
-    static token = getCookie("csrftoken");
     static create_app(data, success=function(){}, error=function(){}) {
         session_request("/api/organization/apps", "POST", data, success, error)
+    }
+    static get_apps(success=function(){}, error=function(){}) {
+        session_request("/api/organization/apps", "GET", "", success, error)
     }
 }
 
 const date_format = (date, format) => {
     const split = date.split("-");
-    const year = split[2];
-    const month = split[1];
-    const day = split[0];
+    const year = split[0];
+    let month = split[1];
+    let day = split[2];
+
+    if(day.length > 1 && day[0] == "0") {
+        day = day.substring(1);
+    }
+    if(month.length > 1 && month[0] == "0") {
+        month = month.substring(1);
+    }
+
     return format.replace("y", year).replace("m", month).replace("d", day)
 }
 

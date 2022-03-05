@@ -30,5 +30,19 @@ class Role:
     
     testbench_access = [Admin.role, Developer.role]
 
+class Permissions:
+    class Create_apps:
+        name = "create_apps"
+
+    class Edit_org:
+        name = "edit_org"
+
+    class Access_all_apps:
+        name = "access_all_apps"
+
 #permissions
-#create applications => create_apps
+#create applications => create_apps => apps page
+#edit_org => edit ogranization info => summary page
+
+#all_apps => view all apps in organization
+#app_app name => view specific app

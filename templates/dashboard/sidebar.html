@@ -16,27 +16,31 @@
         </a>
     </div>
     <ul class="menu">
-        <li><a href="/dashboard/organization/{{user.profile.organization.id}}" class="active">
+        <li><a href="/dashboard/organization/{{user.profile.organization.id}}" {% if page == "summary" %}class="active"{% endif %}>
             <span class="sidebar-icon"><i class="fas fa-city"></i></span>
             <span class="text">Summary</span>
         </a></li>
-        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/applications">
+        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/users" {% if page == "users" %}class="active"{% endif %}>
+            <span class="sidebar-icon"><i class="fas fa-users"></i></span>
+            <span class="text">Users</span>
+        </a></li>
+        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/apps" {% if page == "apps" %}class="active"{% endif %}>
             <span class="sidebar-icon"><i class="fas fa-sitemap"></i></span>
             <span class="text">Applications</span>
         </a></li>
-        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/licenses">
+        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/licenses" {% if page == "licenses" %}class="active"{% endif %}>
             <span class="sidebar-icon"><i class="fas fa-id-badge"></i></span>
             <span class="text">Licenses</span>
         </a></li>
-        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/activitry">
+        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/activitry" {% if page == "activity" %}class="active"{% endif %}>
             <span class="sidebar-icon"><i class="fas fa-chart-line"></i></span>
             <span class="text">Activity</span>
         </a></li>
-        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/sales">
+        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/sales" {% if page == "sales" %}class="active"{% endif %}>
             <span class="sidebar-icon"><i class="fas fa-money-check"></i></span>
             <span class="text">Sales</span>
         </a></li>
-        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/api">
+        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/api" {% if page == "api" %}class="active"{% endif %}>
             <span class="sidebar-icon"><i class="fas fa-laptop-code"></i></span>
             <span class="text">API</span>
         </a></li>

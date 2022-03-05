@@ -2,7 +2,7 @@ import abc
 from django.shortcuts import render
 from django.http import HttpResponse
 from project.models import Organization, User_connection, Application
-from common.utils import has_permission, is_connected, random_id
+from common.utils import has_permission, is_connected, random_id, has_app_permissions
 from django.contrib.auth.decorators import login_required
 import json
 from common import parameters
@@ -58,7 +58,7 @@ class _User:
                         "image": conn.organization.creator.profile.image.url
                     },
                     "image": conn.organization.image.url,
-                    "added": conn.added.strftime("%d-%m-%Y"),
+                    "added": str(conn.added),
                     "users": conn.organization.users,
                     "applications": conn.organization.applications
                 })
@@ -99,7 +99,7 @@ class _User:
                             "image": org.creator.profile.image.url
                         },
                         "image": org.image.url,
-                        "joined": str(date.today().strftime("%y-%m-%d")),
+                        "joined": str(date.today()),
                         "users": org.users,
                         "applications": org.applications
                     })
@@ -111,31 +111,35 @@ class _Organization:
             return response(Codes.unauthorized)
 
         if(request.method == "POST"):
+            org_id = request.POST.get("org_id")
+        elif(request.method == "GET"):
+            org_id = request.GET.get("org_id")
+        org = None
+        #If organization exists
+        if(org_id):
+            _org = Organization.objects.filter(id=org_id)
+            if(len(_org) > 0):
+                org = _org[0]
+        elif(request.user.profile.organization != None):
+            org = request.user.profile.organization
+
+        if(org == None):
+            return response(Codes.bad_request, "Couldn't solve the target organization")
+
+        con = User_connection.objects.filter(user=request.user, organization=org)
+        if(len(con) == 0):
+            return response(Codes.unauthorized, "User is not part of the organization")
+        con = con[0]
+
+        if(request.method == "POST"):
             #Create new application
 
-            org_id = request.POST.get("org_id")
-            org = None
-            #If organization exists
-            if(org_id):
-                _org = Organization.objects.filter(id=org_id)
-                if(len(_org) > 0):
-                    org = _org[0]
-            elif(request.user.profile.organization != None):
-                org = request.user.profile.organization
-
-            if(org == None):
-                return response(Codes.bad_request, "Couldn't solve the target organization")
-
             #checking the user connection
-            con = User_connection.objects.filter(user=request.user, organization=org)
-            if(len(con) == 0):
-                return response(Codes.unauthorized, "User is not part of the organization")
-            con = con[0]
 
             name = request.POST.get("name")
             bio = request.POST.get("bio")
             #Permission handling
-            if(not has_permission(con, "create_apps")):
+            if(not has_permission(con, parameters.Permissions.Create_apps)):
                 return response(Codes.unauthorized)
 
             if(name): 
@@ -157,7 +161,7 @@ class _Organization:
             if(Application.objects.filter(organization=org, name=name).exists()):
                 return response(Codes.forbidden, "Application called " + name + " already exists in the organization")
 
-            app = Application(name=name, organization=org, api_id=random_id(), bio=bio)
+            app = Application(name=name, organization=org, api_key=random_id(), bio=bio, creator=request.user)
             app.save()
             return response(Codes.ok, {
                 "name": name,
@@ -167,6 +171,33 @@ class _Organization:
                     "name": org.name
                 }
             })
+
+        if(request.method == "GET"):
+            #Get all apps in organizations (with permissions)
+            apps = Application.objects.filter(organization=org).order_by("created")
+            results = [];
+            for app in apps:
+                if(not has_app_permissions(con, app.name)):
+                    continue
+
+                results.append({
+                    "id": app.id,
+                    "name": app.name,
+                    "image": app.image.url,
+                    "bio": app.bio,
+                    "licenses": app.licenses,
+                    "organization": {
+                        "id": app.organization.id
+                    },
+                    "creator": {
+                        "id": app.creator.id,
+                        "name": app.creator.first_name + " " + app.creator.last_name,
+                        "image": app.organization.creator.profile.image.url
+                    },
+                    "created": str(app.created)
+                })
+            return response(Codes.ok, results)
+                    
             
 
 def organizations(request):

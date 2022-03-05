@@ -4,18 +4,11 @@
 <section class="dashboard-page" id="summary">
     <section class="page-section flex-grow">
         <header>
-            <img src="{{user.profile.organization.image.url}}" class="org-image"/>
-            <h1 class="of-dots">{{user.profile.organization.name}}</h1>
+            <h1 class="of-dots">Summary</h1>
+            {% if edit %}
             <button class="btn btn-green">Edit<i class="fas fa-pen"></i></button>
+            {% endif %}
         </header>
-        <!--
-        <div class="chart-box">
-            <h2>Licenses sold</h2>
-            <div class="chart">
-                <canvas id="myChart" width="400" height="400"></canvas>
-            </div>
-        </div>
-        -->
     </section>
 </div>
 <script>
