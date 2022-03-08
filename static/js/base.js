@@ -42,7 +42,7 @@ class Alert {
     }
     show(type, text, time = 5000) {
         clearInterval(this.interval);
-        this.dom.addClass(type);
+        this.dom.addClass("alert-" + type);
         this.text.html(text)
         this.dom.addClass("open")
         const ob = this;
@@ -51,7 +51,7 @@ class Alert {
         }, time)
     }
     close() {
-        this.dom.removeClass("open")
+        this.dom.removeClass("open").removeClass("alert-notice").removeClass("alert-error")
     }
 }
 
@@ -110,6 +110,12 @@ class User {
     static get_organizations(success, error) {
         session_request("/api/user/organizations", "GET", {}, success, error)
     }
+    static get_invitations(success, error) {
+        session_request("/api/user/invitations", "GET", {}, success, error)
+    }
+    static accept_invitation(org_id, success, error) {
+        session_request("/api/user/invitations", "POST", {org_id:org_id}, success, error)
+    }
 }
 
 class Organization {
@@ -118,6 +124,12 @@ class Organization {
     }
     static get_apps(success=function(){}, error=function(){}) {
         session_request("/api/organization/apps", "GET", "", success, error)
+    }
+    static get_users(order="", success=function(){}, error=function(){}) {
+        session_request("/api/organization/users?order=" + order, "GET", "", success, error)
+    }
+    static invite(email, success=function(){}, error=function(){}) {
+        session_request("/api/organization/invite", "POST", {"email": email}, success, error)
     }
 }
 
@@ -141,3 +153,13 @@ let notice = null;
 $(document).ready(() => {
     notice = new Notice("base-notice");
 })
+
+class Validators {
+    static email(email) {
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
+        {
+            return (true)
+        }
+        return (false)
+    }
+}

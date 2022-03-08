@@ -6,5 +6,5 @@ from common import parameters
 # Create your views here.
 @login_required
 def landingpage(request):
-    if(request.user.profile.role in parameters.Role.testbench_access):
+    if(request.user.role in parameters.Role.testbench_access):
         return render(request, "testbench/index.html")

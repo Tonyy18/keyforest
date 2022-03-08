@@ -1,10 +1,12 @@
 {% extends "dashboard/sidebar.html" %}
-{% block title %}{{ request.user.profile.organization.name }} | Applications{% endblock %}
+{% block title %}{{ request.user.organization.name }} | Applications{% endblock %}
 {% block body %}
     <div class="modal" id="create-app-modal">
         <div class="modal-padding">
             <div class="modal-body">
-                <header><p>New application</p><i class="fas fa-times modal-close"></i></header>
+                <header>
+                    <p>New application</p><i class="fas fa-times modal-close"></i>
+                </header>
                 <section>
                     <form id="create-app-form">
                         <label>
@@ -25,10 +27,12 @@
     <div class="dashboard-page">
         <section class="page-section flex-grow">
             <header>
-                <h1>Applications</h1>
-                {% if showBtn %}
-                <button class="btn btn-green" onclick="showModal()">Create new <i class="fas fa-plus"></i></button>
-                {% endif %}
+                <div class="flex">
+                    <h1>Applications</h1>
+                    {% if showBtn %}
+                    <button class="btn btn-green" onclick="showModal()">Create new <i class="fas fa-plus"></i></button>
+                    {% endif %}
+                </div>
             </header>
             <ul class="list" id="app-list">
                 <li class="list-header list-item">
@@ -55,7 +59,7 @@
             bio: $(this).find("#app-desc").val()
         }, function(data) {
             //success
-            console.log(data)
+            get_apps();
         }, function(data) {
             //error
             cAlert.show("error", data.responseJSON.error)
@@ -65,7 +69,7 @@
     })
 
     function create_app_el(data) {
-        const el = $("<li></li>");
+        const el = $("<li class='app'></li>");
         const link = $('<a href="/dashboard/organization/' + data.organization.id + '/app/' + data.id + '" class="list-item"></a>')
         link.append('<img class="item-image" src="' + data.image + '">')
         const cells = $('<div class="item-cells"></div>')
@@ -77,19 +81,26 @@
         el.append(link)
         return el;
     }
-
-    Organization.get_apps((data) => {
-        data = data.data
-        for(a in data) {
-            const el = create_app_el(data[a])
-            $("#app-list .list-header").after(el);
-        }
-    }, (error) => {
-        let message = "Error ocurred";
-        if("error" in error) {
-            message = error["error"]
-        }
-        $("#app-list .list-header").after($("<li class='list-error'>" + message + "</li>"))
-    })
+    function get_apps() {
+        $("#app-list .app").remove();
+        Organization.get_apps((data) => {
+            data = data.data
+            if(data.length == 0) {
+                const item = $("<li class='list-message'>You dont have any apps yet</li>")
+                $("#app-list .list-header").after(item);
+            }
+            for(a in data) {
+                const el = create_app_el(data[a])
+                $("#app-list .list-header").after(el);
+            }
+        }, (error) => {
+            let message = "Error ocurred";
+            if("error" in error.responseJSON) {
+                message = error.responseJSON["error"]
+            }
+            $("#app-list .list-header").after($("<li class='list-error'>" + message + "</li>"))
+        })
+    }
+    get_apps();
     </script>
 {% endblock %}

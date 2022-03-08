@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.core.validators import validate_email
-from django.contrib.auth.models import User
+from project.models import User
 from django.contrib.auth import authenticate, login, logout as _logout
 from django.contrib.auth.decorators import login_required
 from common import parameters
@@ -13,7 +13,7 @@ def logout(request):
 
 def landingpage(request):
     testbench = False;
-    if(request.user.is_authenticated and request.user.profile.role in parameters.Role.testbench_access):
+    if(request.user.is_authenticated and request.user.role in parameters.Role.testbench_access):
         testbench = True
     return render(request, "index/index.html", {
         "testbench": testbench

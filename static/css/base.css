@@ -39,6 +39,10 @@ a {
         width: 100%;
     }
 }
+.loader {
+    height: 20px;
+    width: 20px;
+}
 .of-dots {
     text-overflow: ellipsis;
     overflow: hidden;
@@ -53,7 +57,12 @@ a {
 .flex-grow {
     flex-grow: 1;
 }
-
+.accept-icon:hover {
+    color: var(--green);
+}
+.reject-icon:hover {
+    color: red;
+}
 .icon {
     display: inline-block;
     height: 13px;
@@ -161,8 +170,8 @@ input {
 }
 .modal .modal-padding {
     position: absolute;
-    width: 550px;
-    left: calc(50% - 275px);
+    width: 600px;
+    left: calc(50% - 300px);
     padding: 10px;
     top: 20px;
     transition: all 0.6s;
@@ -170,10 +179,14 @@ input {
     -o-transition: all 0.6s;
     -moz-transition: all 0.6s;
 }
+.modal#users-modal .modal-padding {
+    width: 700px;
+    left: calc(50% - 350px);
+}
 .modal.open .modal-padding {
     top: 80px;
 }
-@media(max-width: 550px) {
+@media(max-width: 600px) {
     .modal .modal-padding {
         width: 100%;
         left: 0px;
@@ -216,6 +229,18 @@ input {
     padding: 5px;
     display: block;
 }
+.modal .modal-notice {
+    padding: 5px;
+    display: none;
+    color:  green;
+    text-align: center;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+.modal .modal-notice.error {
+    background-color: transparent;
+    color: red;
+}
 .alert {
     position: absolute;
     top: 0px;
@@ -236,10 +261,10 @@ input {
     visibility: visible;
     opacity: 1;
 }
-.alert.error {
+.alert.alert-error {
     background-color: #CF0300;
 }
-.alert.notice {
+.alert.alert-notice {
     background-color: #00DA88;
 }
 .alert p,

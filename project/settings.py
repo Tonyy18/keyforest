@@ -32,7 +32,7 @@ ALLOWED_HOSTS = ["*"]
 
 AUTHENTICATION_BACKENDS = ['common.backends.Authentication']
 LOGIN_URL = "/signin"
-
+AUTH_USER_MODEL = 'project.User'
 INSTALLED_APPS = [
     'project',
     'apps.index',

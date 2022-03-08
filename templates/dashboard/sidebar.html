@@ -11,36 +11,36 @@
     <a href="/"><h1>Key Forest</h1></a>
     <div class="organization">
         <a href="/dashboard/organizations">
-            <img src="{{ user.profile.organization.image.url }}">
-            <p class="org-name of-dots" title="org-name" id="org-name">{{ user.profile.organization.name }}</p>
+            <img src="{{ user.organization.image.url }}">
+            <p class="org-name of-dots" title="org-name" id="org-name">{{ user.organization.name }}</p>
         </a>
     </div>
     <ul class="menu">
-        <li><a href="/dashboard/organization/{{user.profile.organization.id}}" {% if page == "summary" %}class="active"{% endif %}>
+        <li><a href="/dashboard/organization/{{user.organization.id}}" {% if page == "summary" %}class="active"{% endif %}>
             <span class="sidebar-icon"><i class="fas fa-city"></i></span>
             <span class="text">Summary</span>
         </a></li>
-        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/users" {% if page == "users" %}class="active"{% endif %}>
+        <li><a href="/dashboard/organization/{{user.organization.id}}/users" {% if page == "users" %}class="active"{% endif %}>
             <span class="sidebar-icon"><i class="fas fa-users"></i></span>
             <span class="text">Users</span>
         </a></li>
-        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/apps" {% if page == "apps" %}class="active"{% endif %}>
+        <li><a href="/dashboard/organization/{{user.organization.id}}/apps" {% if page == "apps" %}class="active"{% endif %}>
             <span class="sidebar-icon"><i class="fas fa-sitemap"></i></span>
             <span class="text">Applications</span>
         </a></li>
-        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/licenses" {% if page == "licenses" %}class="active"{% endif %}>
+        <li><a href="/dashboard/organization/{{user.organization.id}}/licenses" {% if page == "licenses" %}class="active"{% endif %}>
             <span class="sidebar-icon"><i class="fas fa-id-badge"></i></span>
             <span class="text">Licenses</span>
         </a></li>
-        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/activitry" {% if page == "activity" %}class="active"{% endif %}>
+        <li><a href="/dashboard/organization/{{user.organization.id}}/activitry" {% if page == "activity" %}class="active"{% endif %}>
             <span class="sidebar-icon"><i class="fas fa-chart-line"></i></span>
             <span class="text">Activity</span>
         </a></li>
-        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/sales" {% if page == "sales" %}class="active"{% endif %}>
+        <li><a href="/dashboard/organization/{{user.organization.id}}/sales" {% if page == "sales" %}class="active"{% endif %}>
             <span class="sidebar-icon"><i class="fas fa-money-check"></i></span>
             <span class="text">Sales</span>
         </a></li>
-        <li><a href="/dashboard/organization/{{user.profile.organization.id}}/api" {% if page == "api" %}class="active"{% endif %}>
+        <li><a href="/dashboard/organization/{{user.organization.id}}/api" {% if page == "api" %}class="active"{% endif %}>
             <span class="sidebar-icon"><i class="fas fa-laptop-code"></i></span>
             <span class="text">API</span>
         </a></li>
@@ -55,12 +55,12 @@
         </label>
         <div class="view-bar-right">
             <span class="of-dots">{{user.first_name}}</span>
-            <img src="{{ user.profile.image.url }}">
+            <img src="{{ user.image.url }}">
             <a href="#"><i class="fas fa-cog"></i></a>
             <a href="/logout"><i class="fas fa-sign-out-alt"></i></a>
         </div>
     </div>
-    <div class="alert error" id="alert">
+    <div class="alert" id="alert">
         <p>New organization created</p><i class="fas fa-times hide-alert"></i>
     </div>
     <div class="content">

@@ -12,6 +12,7 @@ class Organization:
 
 class API:
     max_org_search = 10 #maxmium results in one search
+    max_user_search = 10 #maxmium results in one search
 
 class Application:
     max_name_length = 50
@@ -40,9 +41,20 @@ class Permissions:
     class Access_all_apps:
         name = "access_all_apps"
 
+    class Add_users:
+        name = "add_users"
+
+    class Remove_users:
+        name = "remove_users"
+
+    class Invite:
+        name = "invite"
+
 #permissions
 #create applications => create_apps => apps page
 #edit_org => edit ogranization info => summary page
 
 #all_apps => view all apps in organization
 #app_app name => view specific app
+
+#invite => send user invitations to the organization

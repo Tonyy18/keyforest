@@ -12,7 +12,7 @@ def error(request, text):
 
 @login_required
 def organizations(request):
-    if(request.user.profile.organization == None):
+    if(request.user.organization == None):
         return HttpResponse("You're not part of any organization yet")
     return render(request, "dashboard/organizations.html", {
         "page": "organizations"
@@ -20,16 +20,14 @@ def organizations(request):
 
 @login_required
 def org(request, id):
-    if(request.user.profile.organization == None):
+    if(request.user.organization == None):
         return HttpResponse("You're not part of any organization yet")
     con = is_connected(request, id)
     if(not con):
         return error(request, "This site doesn't exist")
-    request.user.profile.organization = con.organization
+    request.user.organization = con.organization
     request.user.save()
-    edit = False
-    if(has_permission(con, Permissions.Edit_org)):
-        edit = True
+    edit = has_permission(con, Permissions.Edit_org)
     return render(request, "dashboard/org.html", {
         "page": "summary",
         "edit": edit
@@ -37,16 +35,14 @@ def org(request, id):
 
 @login_required
 def applications(request, id):
-    if(request.user.profile.organization == None):
+    if(request.user.organization == None):
         return HttpResponse("You're not part of any organization yet")
     con = is_connected(request, id)
     if(not con):
         return error(request, "This site doesn't exist")
-    request.user.profile.organization = con.organization
+    request.user.organization = con.organization
     request.user.save()
-    showbtn = False #Create application button
-    if(has_permission(con, Permissions.Create_apps)):
-        showbtn = True
+    showbtn = has_permission(con, Permissions.Create_apps)
     return render(request, "dashboard/apps.html", {
         "page": "apps",
         "showBtn": showbtn
@@ -54,13 +50,18 @@ def applications(request, id):
 
 @login_required
 def users(request, id):
-    if(request.user.profile.organization == None):
+    if(request.user.organization == None):
         return HttpResponse("You're not part of any organization yet")
     con = is_connected(request, id)
     if(not con):
         return error(request, "This site doesn't exist")
-    request.user.profile.organization = con.organization
+    request.user.organization = con.organization
     request.user.save()
+    add_users = has_permission(con, Permissions.Add_users)
+    remove_users = has_permission(con, Permissions.Remove_users)
+
     return render(request, "dashboard/users.html", {
-        "page": "users"
+        "page": "users",
+        "add_users": add_users,
+        "remove_users": remove_users
     })

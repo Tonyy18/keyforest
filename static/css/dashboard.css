@@ -172,9 +172,10 @@ body {
     font-size: 0px;
 }
 .dashboard-page .page-section > header {
-    display: flex;
+    height: 100px;
+}
+.dashboard-page .page-section > header > .flex {
     align-items: center;
-    padding-bottom: 50px;
 }
 .dashboard-page .page-section h1 {
     font-size: 25px;
@@ -188,11 +189,13 @@ body {
     margin-left: 20px;
 }
 /*ITEM LIST*/
-.list {
+.list-white {
     background-color: white;
     border-radius: 5px;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
-    padding: 15px;
+}
+.list-null {
+    background-color: transparent;
 }
 .list li {
     list-style: none;
@@ -205,6 +208,10 @@ body {
     padding: 15px;
     align-items: center;
 }
+.list-null .list-item {
+    background-color: white;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+}
 .list .list-item:not(.list-header):hover {
     background-color: #FAFAFA;
 }
@@ -215,11 +222,11 @@ body {
     height: 30px;
     width: 30px;
     border-radius: 5px;
-    margin-right: 5px;
 }
 .list .list-item .item-cells {
     flex-grow: 1;
     display: flex;
+    justify-content: center;
 }
 .list .list-item .item-cells > * {
     padding: 0 10px;
@@ -229,7 +236,7 @@ body {
     position: relative;
 }
 .list .list-item .item-cells > :first-child{
-    width: 250px;
+    width: 35%;
 }
 .list .list-item .item-cells > :not(:first-child) {
     flex-basis: 100px;
@@ -246,14 +253,29 @@ body {
 .list .list-item .item-cells > :last-child .fa-star {
     color: gold;
 }
-.list .list-error,
-.list .list-message {
+.list .list-error {
     text-align: center;
     font-weight: bolder;
     padding: 15px 0;
 }
+.list .list-message {
+    text-align: center;
+    padding: 50px 0;
+    font-size: 18px;
+    color: darkgray;
+}
 .list .list-error {
     color: red;
+}
+.invitation-list .item-cells > :first-child {
+    flex-grow: 1;
+}
+.invitation-list .item-cells > :not(:first-child) {
+    flex-grow: 0 !important;
+    flex-basis: 40px !important;
+    text-align: center;
+    display: flex;
+    align-items: center;
 }
 .dashboard-page#organizations #org-list {
     width: 800px;
@@ -287,20 +309,24 @@ body {
     flex-direction: column;
     align-items: center;
 }
+.user-list .user-list-state {
+    text-align: center;
+    font-size: 18px;
+    padding: 20px 0;
+    color: gray;
+}
 #users-page .user-list {
-    width: 80%;
+    width: 600px;
 }
 .user-item {
     display: flex;
     align-items: center;
     padding: 10px;
     margin: 10px;
-    width: 100%;
-    border-radius: 5px;
+    border-bottom: 1px solid #E2E2E2;
 }
-.user-item:hover {
-    border: 2px solid #e2e2e2;
-    padding: 8px;
+.user-item:hover p {
+    color: var(--blue);
 }
 
 .user-item img {
@@ -309,7 +335,7 @@ body {
     border-radius: 5px;
 }
 .user-item p {
-    font-size: 16px;
+    font-size: 15px;
     padding: 0 20px;
     flex-grow: 1;
     text-overflow: ellipsis;
@@ -319,6 +345,7 @@ body {
 }
 .user-item .btn {
     line-height: 14px;
+    margin-left: 15px;
 }
 .user-item .btn i,
 .users-nav .btn i {
