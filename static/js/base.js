@@ -110,12 +110,7 @@ class User {
     static get_organizations(success, error) {
         session_request("/api/user/organizations", "GET", {}, success, error)
     }
-    static get_invitations(success, error) {
-        session_request("/api/user/invitations", "GET", {}, success, error)
-    }
-    static accept_invitation(org_id, success, error) {
-        session_request("/api/user/invitations", "POST", {org_id:org_id}, success, error)
-    }
+
 }
 
 class Organization {
@@ -128,8 +123,11 @@ class Organization {
     static get_users(order="", success=function(){}, error=function(){}) {
         session_request("/api/organization/users?order=" + order, "GET", "", success, error)
     }
-    static invite(email, success=function(){}, error=function(){}) {
-        session_request("/api/organization/invite", "POST", {"email": email}, success, error)
+    static add_user(email, success=function(){}, error=function(){}) {
+        session_request("/api/organization/users", "POST", {"email": email}, success, error)
+    }
+    static remove_user(id, success=function(){}, error=function(){}) {
+        session_request("/api/organization/users", "DELETE", {"user_id": id}, success, error)
     }
 }
 

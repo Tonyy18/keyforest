@@ -209,7 +209,7 @@ body {
     align-items: center;
 }
 .list-null .list-item {
-    background-color: white;
+    background-color: transparent;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
 }
 .list .list-item:not(.list-header):hover {
@@ -222,6 +222,7 @@ body {
     height: 30px;
     width: 30px;
     border-radius: 5px;
+    margin-right: 5px;
 }
 .list .list-item .item-cells {
     flex-grow: 1;
@@ -277,9 +278,6 @@ body {
     display: flex;
     align-items: center;
 }
-.dashboard-page#organizations #org-list {
-    width: 800px;
-}
 /*ITEM LIST END*/
 
 .sidebar-section {
@@ -325,7 +323,8 @@ body {
     margin: 10px;
     border-bottom: 1px solid #E2E2E2;
 }
-.user-item:hover p {
+
+.user-item a.user-name:hover{
     color: var(--blue);
 }
 
@@ -334,7 +333,7 @@ body {
     width: 35px;
     border-radius: 5px;
 }
-.user-item p {
+.user-item .user-name {
     font-size: 15px;
     padding: 0 20px;
     flex-grow: 1;

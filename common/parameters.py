@@ -47,9 +47,6 @@ class Permissions:
     class Remove_users:
         name = "remove_users"
 
-    class Invite:
-        name = "invite"
-
 #permissions
 #create applications => create_apps => apps page
 #edit_org => edit ogranization info => summary page

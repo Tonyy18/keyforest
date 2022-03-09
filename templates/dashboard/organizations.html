@@ -24,7 +24,7 @@
         <div class="modal-bg"></div>
     </div>
     <section class="dashboard-page" id="organizations">
-        <section class="page-section">
+        <section class="page-section flex-grow">
             <header>
                 <div class="flex">
                 <h1>Organizations</h1>
@@ -43,40 +43,9 @@
                 </li>
             </ul>
         </section>
-        <section class="page-section flex-grow">
-            <header>
-                <h2>Invitations</h2>
-            </header>
-            <ul class="list list-null invitation-list" id="inv-list">
-            </ul>
-        </section>
     </section>
     <script>
     const cAlert = new Alert()
-    $("#inv-list").on("click", ".accept-icon", function() {
-        const org_id = $(this).parents(".list-item").attr("data-orgid")
-        if(!org_id) return false;
-        User.accept_invitation(org_id, (data) => {
-            $("#inv-list").find(".list-item[data_orgid='" + org_id + "']").remove();
-            cAlert.show("notice", "Joined to new organization")
-        }, (data) => {
-            cAlert.show("error", data.responseJSON.error)
-        })
-    })
-    function create_inv_el(data) {
-        const item = $("<li class='list-item' data-orgid='" + data.id + "'></li>")
-        item.append('<img src="' + data.image + '" class="item-image">')
-        const cells = $("<div class='item-cells'></div>")
-        cells.append('<p>' + data.name + '</p>')
-        cells.append('<i class="fas fa-check accept-icon"></i><i class="fas fa-ban reject-icon"></i>')
-        item.append(cells);
-        return item
-    }
-    User.get_invitations((data) => {
-        for(var index in data.data) {
-            $("#inv-list").append(create_inv_el(data.data[index]))
-        }
-    })
     const modal = new Modal("create-org-modal");
     function showModal() {
         modal.show();
@@ -96,6 +65,7 @@
         return false;
     })
     const create_org_el = (data) => {
+        console.log(data)
         const el = $("<li></li>");
         const link = $('<a href="/dashboard/organization/' + data.id + '" class="list-item"></a>')
         link.append('<img class="item-image" src="' + data.image + '">')
@@ -113,7 +83,7 @@
         }
         const added = date_format(data.added, "d.m.y");
         const c = $('<p>' + added + '</p>')
-        if(data.id == {{user.organization.id}}) {
+        if(data.id == "{{user.organization.id}}") {
             c.append('<i class="fas fa-check"></i>')
         } else if (data.creator.id == {{user.id}}) {
             c.append('<i class="fas fa-star"></i>')
@@ -128,15 +98,17 @@
         data = data.data
         let active = null;
         for(a in data) {
-            if(data[a].id == {{user.organization.id}}){
+            if(data[a].id == "{{user.organization.id}}"){
                 active = data[a];
                 continue
             };
             const el = create_org_el(data[a])
             $("#org-list .list-header").after(el);
         }
-        const el = create_org_el(active)
+        if(active) {
+            const el = create_org_el(active)
             $("#org-list .list-header").after(el);
+        }
     }, function(data) {
         let message = "Error ocurred";
         if("error" in data.responseJSON) {

@@ -1,6 +1,6 @@
 import abc
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, QueryDict
 from project.models import Organization, User_connection, Application, Invitation, User
 from common.utils import has_permission, is_connected, random_id, has_app_permissions, get_api_org, add_permission
 from django.contrib.auth.decorators import login_required
@@ -108,41 +108,6 @@ class _User:
                         "applications": org.applications
                     })
 
-    def invitations(request):
-        if(not request.user.is_authenticated):
-            return response(Codes.unauthorized)
-
-        if(request.method == "GET"):
-            invs = Invitation.objects.filter(user=request.user)
-            results = []
-            for inv in invs:
-                results.append({
-                    "id": inv.organization.id,
-                    "name": inv.organization.name,
-                    "image": inv.organization.image.url
-                })
-            return response(Codes.ok, results)
-
-        if(request.method == "POST"):
-
-            org = get_api_org(request)
-            if(not org):
-                return response(Codes.bad_request, "Couldn't solve the target organization")
-
-            inv_exists = True
-            inv = None
-            try:
-                inv = Invitation.objects.get(user=request.user, organization=org)
-            except:
-                inv_exists = False
-            if(inv_exists == False or inv == None):
-                return response(Codes.bad_request, "User doesn't have an invitation")
-            
-            inv.delete()
-            con = User_connection(user=request.user, organization=org)
-            con.save()
-            return response(Codes.ok)
-
 class _Organization:
 
     def users(request):
@@ -185,6 +150,71 @@ class _Organization:
             if(order == "name"):
                 results = sorted(results, key=lambda d: d['firstname']) 
             return response(Codes.ok, results)
+
+        if(request.method == "POST"):
+            mail = request.POST.get("email");
+            if(mail):
+                mail = mail.strip()
+            else:
+                return response(Codes.bad_request, "Email is missing")
+
+            if(not has_permission(con, parameters.Permissions.Add_users)):
+                return response(Codes.unauthorized)
+
+            user = None
+            try:
+                user = User.objects.get(email=mail)
+            except:
+                user = None
+            if(not user):
+                return response(Codes.not_found, "User was not found")
+
+            if(User_connection.objects.filter(user=user, organization=org).exists()):
+                return response(Codes.bad_request, "User is already in the organization")
+
+            new_con = User_connection(user=user, organization=org)
+            new_con.save()
+            return response(Codes.ok, {
+                "id": user.id,
+                "firstname": user.first_name,
+                "lastname": user.last_name,
+                "image": user.image.url
+            })
+
+        if(request.method == "DELETE"):
+            del_data = QueryDict(request.body)
+            userid = del_data.get("user_id")
+            if(not userid):
+                return response(Codes.bad_request)
+            if(not has_permission(con, parameters.Permissions.Remove_users)):
+                return response(Codes.unauthorized)
+
+            try:
+                userid = int(userid)
+            except:
+                return response(Codes.bad_request, "Invalid user id")
+
+            if(userid == request.user.id):
+                return response(Codes.bad_request, "You can't remove yourself")
+
+            user = None
+            try:
+                user = User.objects.get(id=userid)
+            except:
+                user = None
+
+            if(user == None):
+                return response(Codes.bad_request, "User doesn't exist")
+
+            try:
+                user_con = User_connection.objects.filter(user=user, organization=org)
+                user_con.delete()
+                if(org.id == user.organization.id):
+                    user.organization = None
+                user.save()
+                return response(Codes.ok)
+            except:
+                return response(Codes.bad_request, "User is not in the organization")
 
     def applications(request):
         if(not request.user.is_authenticated):
@@ -267,45 +297,6 @@ class _Organization:
                 })
             return response(Codes.ok, results)
                     
-    def invite(request):
-        if(not request.user.is_authenticated):
-            return response(Codes.unauthorized)
-        if(request.method == "POST"):
-            mail = request.POST.get("email");
-            if(mail):
-                mail = mail.strip()
-            else:
-                return response(Codes.bad_request, "Email is missing")
-
-            org = get_api_org(request)
-
-            if(org == None):
-                return response(Codes.bad_request, "Couldn't solve the target organization")
-
-            con = is_connected(request, org)
-            if(not con):
-                return response(Codes.unauthorized, "User is not part of the organization")
-
-            if(not has_permission(con, parameters.Permissions.Invite)):
-                return response(Codes.unauthorized)
-
-            user = None
-            try:
-                user = User.objects.get(email=mail)
-            except:
-                user = None
-            if(not user):
-                return response(Codes.not_found, "User was not found")
-
-            if(User_connection.objects.filter(user=user, organization=org).exists()):
-                return response(Codes.bad_request, "User is already in the organization")
-
-            if(Invitation.objects.filter(user=user, organization=org).exists()):
-                return response(Codes.ok)
-
-            inv = Invitation(user=user, organization=org, sent_by=request.user)
-            inv.save()
-            return response(Codes.ok)
 
 def organizations(request):
     if(not request.user.is_authenticated):

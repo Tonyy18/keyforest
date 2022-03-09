@@ -233,13 +233,13 @@ input {
     padding: 5px;
     display: none;
     color:  green;
-    text-align: center;
     border-radius: 5px;
     margin-bottom: 5px;
 }
 .modal .modal-notice.error {
     background-color: transparent;
     color: red;
+    text-align: center;
 }
 .alert {
     position: absolute;
@@ -284,7 +284,8 @@ input {
     background-color: #1B567C;
     border-radius: 10px;
     padding: 25px;
-    width: 320px;
+    min-width: 320px;
+    max-width: 500px;
     opacity: 0;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
     cursor: default;
@@ -292,6 +293,7 @@ input {
     -webkit-transition: opacity 0.3s;
     -moz-transition: opacity 0.3s;
     -o-transition: opacity 0.3s;
+    z-index: 1000;
 }
 .notice p {
     color: white;

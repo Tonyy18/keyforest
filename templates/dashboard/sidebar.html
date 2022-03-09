@@ -11,36 +11,41 @@
     <a href="/"><h1>Key Forest</h1></a>
     <div class="organization">
         <a href="/dashboard/organizations">
+            {% if user.organization == None %}
+            <p class="org-name of-dots" title="org-name" id="org-name">Select organization</p>
+            {% endif %}
+            {% if user.organization != None %}
             <img src="{{ user.organization.image.url }}">
             <p class="org-name of-dots" title="org-name" id="org-name">{{ user.organization.name }}</p>
+            {% endif %}
         </a>
     </div>
     <ul class="menu">
-        <li><a href="/dashboard/organization/{{user.organization.id}}" {% if page == "summary" %}class="active"{% endif %}>
+        <li><a href="/dashboard/organization/{%if user.organization == None%}0{%endif%}{%if user.organization != None%}{{user.organization.id}}{%endif%}" {% if page == "summary" %}class="active"{% endif %}>
             <span class="sidebar-icon"><i class="fas fa-city"></i></span>
             <span class="text">Summary</span>
         </a></li>
-        <li><a href="/dashboard/organization/{{user.organization.id}}/users" {% if page == "users" %}class="active"{% endif %}>
+        <li><a href="/dashboard/organization/{%if user.organization == None%}0{%endif%}{%if user.organization != None%}{{user.organization.id}}{%endif%}/users" {% if page == "users" %}class="active"{% endif %}>
             <span class="sidebar-icon"><i class="fas fa-users"></i></span>
             <span class="text">Users</span>
         </a></li>
-        <li><a href="/dashboard/organization/{{user.organization.id}}/apps" {% if page == "apps" %}class="active"{% endif %}>
+        <li><a href="/dashboard/organization/{%if user.organization == None%}0{%endif%}{%if user.organization != None%}{{user.organization.id}}{%endif%}/apps" {% if page == "apps" %}class="active"{% endif %}>
             <span class="sidebar-icon"><i class="fas fa-sitemap"></i></span>
             <span class="text">Applications</span>
         </a></li>
-        <li><a href="/dashboard/organization/{{user.organization.id}}/licenses" {% if page == "licenses" %}class="active"{% endif %}>
+        <li><a href="/dashboard/organization/{%if user.organization == None%}0{%endif%}{%if user.organization != None%}{{user.organization.id}}{%endif%}/licenses" {% if page == "licenses" %}class="active"{% endif %}>
             <span class="sidebar-icon"><i class="fas fa-id-badge"></i></span>
             <span class="text">Licenses</span>
         </a></li>
-        <li><a href="/dashboard/organization/{{user.organization.id}}/activitry" {% if page == "activity" %}class="active"{% endif %}>
+        <li><a href="/dashboard/organization/{%if user.organization == None%}0{%endif%}{%if user.organization != None%}{{user.organization.id}}{%endif%}/activitry" {% if page == "activity" %}class="active"{% endif %}>
             <span class="sidebar-icon"><i class="fas fa-chart-line"></i></span>
             <span class="text">Activity</span>
         </a></li>
-        <li><a href="/dashboard/organization/{{user.organization.id}}/sales" {% if page == "sales" %}class="active"{% endif %}>
+        <li><a href="/dashboard/organization/{%if user.organization == None%}0{%endif%}{%if user.organization != None%}{{user.organization.id}}{%endif%}/sales" {% if page == "sales" %}class="active"{% endif %}>
             <span class="sidebar-icon"><i class="fas fa-money-check"></i></span>
             <span class="text">Sales</span>
         </a></li>
-        <li><a href="/dashboard/organization/{{user.organization.id}}/api" {% if page == "api" %}class="active"{% endif %}>
+        <li><a href="/dashboard/organization/{%if user.organization == None%}0{%endif%}{%if user.organization != None%}{{user.organization.id}}{%endif%}/api" {% if page == "api" %}class="active"{% endif %}>
             <span class="sidebar-icon"><i class="fas fa-laptop-code"></i></span>
             <span class="text">API</span>
         </a></li>
