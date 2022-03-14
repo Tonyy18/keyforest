@@ -35,8 +35,9 @@ class Alert {
     constructor(id = "alert") {
         this.dom = $("#" + id);
         this.text = this.dom.find("p");
+        const el = this;
         this.dom.find(".hide-alert").on("click", function() {
-            this.dom.removeClass("open")
+            el.close();
         })
         this.interval;
     }
@@ -113,6 +114,12 @@ class User {
 
 }
 
+class Permissions {
+    static get_all(success=function(){}, error=function(){}) {
+        session_request("/api/permissions/", "GET", "", success, error)
+    }
+}
+
 class Organization {
     static create_app(data, success=function(){}, error=function(){}) {
         session_request("/api/organization/apps", "POST", data, success, error)
@@ -128,6 +135,15 @@ class Organization {
     }
     static remove_user(id, success=function(){}, error=function(){}) {
         session_request("/api/organization/users", "DELETE", {"user_id": id}, success, error)
+    }
+    static replace_permissions(userid, permissions, success=function(){}, error=function(){}) {
+        session_request("/api/organization/permissions", "POST", {"user_id": userid, "permissions": permissions}, success, error)
+    }
+    static add_permission(userid, permissions, success=function(){}, error=function(){}) {
+        session_request("/api/organization/permissions", "UPDATE", {"user_id": userid, "permission": permissions}, success, error)
+    }
+    static get_permissions(userid, success=function(){}, error=function(){}) {
+        session_request("/api/organization/permissions?user_id="+userid, "GET", "", success, error)
     }
 }
 

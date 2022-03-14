@@ -16,7 +16,7 @@ class API:
 
 class Application:
     max_name_length = 50
-    min_name_length = 4
+    min_name_length = 3
     max_bio_length = 200 #Description length
 
 class Role:
@@ -32,6 +32,8 @@ class Role:
     testbench_access = [Admin.role, Developer.role]
 
 class Permissions:
+    class All:
+        name = "*"
     class Create_apps:
         name = "create_apps"
 
@@ -47,6 +49,24 @@ class Permissions:
     class Remove_users:
         name = "remove_users"
 
+class Permission_groups:
+    class Manage_users:
+        name = "manage_users"
+        permissions = [Permissions.Add_users, Permissions.Remove_users]
+
+    class All_permissions:
+        name = "*"
+        by_name = {}
+        permissions = [
+            Permissions.Create_apps,
+            Permissions.Edit_org,
+            Permissions.Access_all_apps,
+            Permissions.Add_users,
+            Permissions.Remove_users,
+            Permissions.All
+        ]
+        for perm in permissions:
+            by_name[perm.name] = perm
 #permissions
 #create applications => create_apps => apps page
 #edit_org => edit ogranization info => summary page

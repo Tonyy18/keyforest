@@ -11,7 +11,15 @@ def error(request, text):
     return render(request, "dashboard/error.html", {"text": text})
 
 @login_required
+def entry(request):
+    #Root of dashboard
+    if(request.user.organization == None):
+        return organizations(request)
+    return summary(request, request.user.organization.id)
+
+@login_required
 def organizations(request):
+    #List all organizations
     if(User_connection.objects.filter(user=request.user).exists()):
         return render(request, "dashboard/organizations.html", {
             "page": "organizations"
@@ -19,7 +27,8 @@ def organizations(request):
     return HttpResponse("You are not part of any organization")
 
 @login_required
-def org(request, id):
+def summary(request, id):
+    #specific organization
     con = is_connected(request, id)
     if(request.user.organization == None):
         if(con):
@@ -33,13 +42,14 @@ def org(request, id):
     if(not con):
         return error(request, "You are not part of this organization")
     edit = has_permission(con, Permissions.Edit_org)
-    return render(request, "dashboard/org.html", {
+    return render(request, "dashboard/summary.html", {
         "page": "summary",
         "edit": edit
     })
 
 @login_required
 def applications(request, id):
+    #List applications
     if(request.user.organization == None):
         return redirect("/dashboard/organizations")
     con = is_connected(request, id)
@@ -55,6 +65,7 @@ def applications(request, id):
 
 @login_required
 def users(request, id):
+    #User management
     if(request.user.organization == None):
         return redirect("/dashboard/organizations")
     con = is_connected(request, id)
@@ -64,9 +75,11 @@ def users(request, id):
     request.user.save()
     add_users = has_permission(con, Permissions.Add_users)
     remove_users = has_permission(con, Permissions.Remove_users)
-
+    edit_perms = has_permission(con, Permissions.All)
+    print(remove_users)
     return render(request, "dashboard/users.html", {
         "page": "users",
         "add_users": add_users,
-        "remove_users": remove_users
+        "remove_users": remove_users,
+        "edit_perms": edit_perms
     })

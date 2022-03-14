@@ -11,6 +11,9 @@
                             <span>Email*</span>
                             <input type="text" class="input input-default" placeholder="Users email">
                         </label>
+                        <div class="modal-search-list">
+
+                        </div>
                         <input type="submit" value="Send" class="btn btn-blue">
                     </form>
                 </section>
@@ -18,7 +21,23 @@
         </div>
         <div class="modal-bg"></div>
     </div>
-    <section class="dashboard-page" id="users-page">
+    <div class="modal" id="add-perms-modal">
+        <div class="modal-padding">
+            <div class="modal-body">
+                <header><p>Add app permissions</p><i class="fas fa-times modal-close"></i></header>
+                <section>
+                        <label>
+                            <input type="text" class="input input-default" placeholder="Search apps">
+                        </label>
+                        <div class="modal-search-results">
+                        </div>
+                        <input type="submit" value="Add permissions" class="btn btn-blue">
+                </section>
+            </div>
+        </div>
+        <div class="modal-bg"></div>
+    </div>
+    <section class="dashboard-page">
         <section class="page-section flex-grow">
             <header>
                 <div class="flex">
@@ -30,42 +49,329 @@
             </header>
             <div class="sidebar-section">
                 <div class="section-sidebar">
-                    <form id="filter-form">
-                        <input type="text" class="input input-default" placeholder="Name" name="username">
-                        <div class="checkboxes">
-                            <label>
-                                <span>By name</span>
-                                <input type="checkbox" name="name" checked>
-                            </label>
-                            <label>
-                                <span>By date</span>
-                                <input type="checkbox" name="date">
-                            </label>
-                        </div>
+                    <form id="user-filter">
+                        <input type="text" class="input input-default" placeholder="Filter user name" id="user-input">
                     </form>
+                    <ul class="user-list" id="user-list" style="margin-top: 20px">
+                    </ul>
                 </div>
-                <div class="sidebar-section-content">
-                    <div class="user-list" id="user-list">
-                    </div>
-                    <div class="users-nav">
-                        <button disabled class="btn btn-blue"><i class="fas fa-angle-left"></i></button>
-                        <button disabled class="btn btn-blue"><i class="fas fa-angle-right"></i></button>
+                <div class="sidebar-section-content" id="content" style="display: none">
+                    <header>
+                        <div class="flex">
+                            <h1 class="flex-grow" id="c-name">Toni Isotalo</h1>
+                            <button class="btn btn-blue" id="save-btn" style="display: none">Save</button>
+                            <button class="btn btn-white btn-sel-blue" id="chat-btn">Chat</button>
+                            {% if edit_perms %}
+                            <button class="btn btn-white" id="perms-btn">Permissions</button>
+                            {% endif %}
+                            {% if remove_users %}
+                            <button class="btn btn-red remove-user">Remove user</button>
+                            {% endif %}
+                        </div>
+                    </header>
+                    <div class="perms-management users-section" style="display: none">
+                        <div class="app-perms">
+                            <div class="sel-button disabled" id="add-perms-btn">
+                                 <p>Add app permissions</p>
+                            </div>
+                            <div class="sel-apps" id="app-perms">
+                                <h3>App permissions</h3>
+                                <p class="app-listing-all" id="all-apps" style="display: none">All apps</p>
+                            </div>
+                        </div>
+                        <div class="all-perms" id="perms">
+                            <div class="permission">
+                                <label>
+                                    <p>All Permissions</p>
+                                    <input type="checkbox" name='*'>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
     </section>
     <script>
+        function create_app_perm_el(name) {
+            const el = $("<div class='app-listing' data-appname='" + name + "'><p>" + name + "</p><i class='fas fa-ban remove-listing'></i></div>")
+            return el
+        }
+        function create_perm_el(name) {
+            const el = $("<div class='permission'></div>")
+            const d_name = convert_perm_name(name)
+            const label = $("<label><p>" + d_name + "</p><input type='checkbox' name='" + name + "'></label>")
+            el.append(label)
+            return el;
+        }
+        let users = [];
+        let apps = [];
+        let selected_user = null;
+        let all_perms = [];
+        let apps_selected = []
+        let perms_submitting = []
+        let user_perms = null;
+        function convert_perm_name(name) {
+            name = all_perms[a].replaceAll("_", " ")
+            const s = name.split(" ")
+            let new_name = ""
+            for(a in s) {
+                l = s[a]
+                new_name += l.charAt(0).toUpperCase() + l.slice(1) + " ";
+            }
+            return $.trim(new_name)
+        }
+        Permissions.get_all((data) => {
+            all_perms = data.data
+            for(a in all_perms) {
+                if(all_perms[a] == "*") continue;
+                $("#perms").append(create_perm_el(all_perms[a]))
+            }
+        })
+        $("#save-btn").click(function() {
+            let to_save = perms_submitting.filter((el, i) => {
+                return true;
+            });
+            if(to_save.indexOf("*") == -1 && to_save.indexOf("access_all_apps") == -1) {
+                for(let a in apps_selected) {
+                    to_save.push("app_" + apps_selected[a])
+                }
+            }
+            let to_save_str = "";
+            for(let a in to_save) {
+                to_save_str += to_save[a];
+                if(a != to_save.length - 1) to_save_str += ",";
+            }
+            Organization.replace_permissions(selected_user["id"], to_save_str, function() {
+                cAlert.show("notice", "Permissions added to " + selected_user["name"])
+            }, (data) => {
+                let message = "Error ocurred";
+                if("error" in data.responseJSON) {
+                    message = data.responseJSON["error"]
+                }
+                cAlert.show("error", message)
+            })
+        })
+        $(".all-perms").on("change", "input[type='checkbox']", function() {
+            const name = $(this).attr("name")
+            const checked = $(this).prop("checked")
+            if(name == "access_all_apps"){
+                if(checked) {
+                    $("#app-perms #all-apps").show();
+                    $("#add-perms-btn").addClass("disabled");
+                    $("#app-perms .app-listing").remove();
+                } else {
+                    $("#app-perms #all-apps").hide();
+                    $("#add-perms-btn").removeClass("disabled");
+                    display_app_perms(apps_selected);
+                }
+            }
+            if(name == "*") {
+                if(checked == false) {
+                    $(".all-perms input[type='checkbox']:not([name='*'])").removeAttr("disabled").prop("checked", false)
+                    $(".all-perms input[type='checkbox']:not([name='*'])").parent().parent().removeAttr("disabled");
+                    $("#app-perms #all-apps").hide();
+                    $("#add-perms-btn").removeClass("disabled");
+                    perms_submitting = [];
+                    display_app_perms(apps_selected)
+                } else {
+                    $("#app-perms .app-listing").remove();
+                    display_general_perms(["*"])
+                }
+                return
+            }
+            if(checked == false && perms_submitting.indexOf(name) > -1) {
+                perms_submitting.splice(perms_submitting.indexOf(name), 1)
+            } else {
+                perms_submitting.push(name)
+            }
+        })
+        $("#app-perms").on("click", ".remove-listing", function() {
+            const name = $(this).parent().attr("data-appname")
+            apps_selected.splice(apps_selected.indexOf(name), 1)
+            console.log(apps_selected)
+            $(this).parent().remove();
+        })
+        function display_app_perms(perms) {
+            $("#app-perms .app-listing").remove();
+            for(let a in perms) {
+                const app = perms[a]
+                if(apps_selected.indexOf(app) == -1) {
+                    apps_selected.push(app)
+                }
+                $("#app-perms").append(create_app_perm_el(app))
+            }
+        }
+        function display_general_perms(perms) {
+            $(".all-perms input[type='checkbox']").prop("checked", false)
+            $(".all-perms input[type='checkbox']").attr("disabled", false)
+            $(".all-perms input[type='checkbox']").parent().parent().removeAttr("disabled");
+            $("#app-perms #all-apps").hide();
+            $("#add-perms-btn").removeClass("disabled");
+            if(perms.indexOf("*") > -1) {
+                perms_submitting = ["*"]
+                $(".all-perms input[type='checkbox']").prop("checked", true)
+                $(".all-perms input[type='checkbox']:not([name='*'])").attr("disabled", true)
+                $(".all-perms input[type='checkbox']:not([name='*'])").parent().parent().attr("disabled", true);
+            }
+            if(perms.indexOf("*") > -1 || perms.indexOf("access_all_apps") > -1) {
+                $("#app-perms .app-listing").remove();
+                $("#app-perms #all-apps").show();
+                $("#add-perms-btn").addClass("disabled");
+            }
+            for(let a in perms) {
+                const perm = perms[a];
+                $(".all-perms input[name='" + perm + "']").prop("checked", true)
+            }
+        }
+        function display_perms() {
+            Organization.get_permissions(selected_user["id"], (data) => {
+                user_perms = data.data
+                perms_submitting = data.data.general
+                if(perms_submitting.indexOf("access_all_apps") > -1) {
+                    $("#app-perms .app-listing").remove();
+                    $("#app-perms #all-apps").show();
+                    $("#add-perms-btn").addClass("disabled");
+                }
+                display_app_perms(data.data.applications)
+                display_general_perms(data.data.general)
+            })
+        }
+        function show_section() {
+            if(selected_user == null) return;
+            $("#content").show();
+            $("#c-name").text(selected_user["name"])
+            display_perms()
+        }
+        function hide_content() {
+            $("#content").hide();
+            $(".users-section").hide();
+            show_chat()
+        }
+        function show_perms() {
+            $(".btn").removeClass("btn-sel-blue");
+            $("#perms-btn").addClass("btn-sel-blue");
+            $(".users-section").hide();
+            $("#save-btn").show();
+            $(".perms-management").show();
+        }
+        $("#perms-btn").click(function() {
+            show_perms();
+        })
+        function show_chat() {
+            $(".btn").removeClass("btn-sel-blue");
+            $("#chat-btn").addClass("btn-sel-blue");
+            $(".users-section, #save-btn").hide();
+            $("#user-chat").show();
+        }
+        $("#chat-btn").click(function() {
+            show_chat()
+        })
+        function create_app_listing(data) {
+            const el = $("<div class='app-listing' data-appname='" + data.name + "'></div>")
+            if(apps_selected.indexOf(data.name) > -1) {
+                el.addClass("selected")
+            }
+            el.append('<img src="' + data.image + '">')
+            el.append('<p>' + data.name + '</p>');
+            return el;
+        }
+        function create_selected_app(name) {
+            const el = $("<div class='selected-listing' data-appname='" + name + "'></div>")
+            el.append("<p>" + name + "</p>")
+            el.append("<span class='del-listing'>x</span>")
+            return el;
+        }
+        $("#add-perms-modal .modal-search-results").on("click", ".del-listing", function() {
+            const name = $(this).parent().attr("data-appname");
+            if(apps_selected.indexOf(name) > -1) {
+                apps_selected.splice(apps_selected.indexOf(name), 1)
+            }
+        })
+        $("#add-perms-modal input[type=text]").on("keyup", function(e) {
+            const app_name = $.trim($(this).parent().find("input[type='text']").val());
+            $("#add-perms-modal .modal-search-results").empty();
+            if(app_name == "") {
+                return;
+            } else {
+                for(let a = 0; a < apps.length; a++) {
+                    const app = apps[a];
+                    if(app.name.toLowerCase().includes(app_name.toLowerCase())) {
+                        const el = create_app_listing(app);
+                        $("#add-perms-modal .modal-search-results").prepend(el);
+                    }
+                }
+            }
+        })
+        $("#add-perms-modal input[type='submit']").on("click", function() {
+            //ADD PERMISSIONS
+            perm_modal.close()
+            if(perms_submitting.indexOf("*") == -1 && perms_submitting.indexOf("access_all_apps") == -1) {
+                display_app_perms(apps_selected)
+            }
+        })
+        $("#add-perms-modal  .modal-search-results").on("click", ".app-listing", function() {
+            const appname = $(this).attr("data-appname");
+            if($(this).hasClass("selected")) {
+                $(this).removeClass("selected");
+                apps_selected.splice(apps_selected.indexOf(appname), 1)
+                display_app_perms(apps_selected);
+            } else {
+                $(this).addClass("selected");
+                apps_selected.push(appname)
+                if(perms_submitting.indexOf("*") == -1 && perms_submitting.indexOf("access_all_apps") == -1) {
+                    display_app_perms(apps_selected);
+                }
+            }
+        })
+        const perm_modal = new Modal("add-perms-modal");
+        $("#add-perms-btn").on("click", function() {
+            if($(this).hasClass("disabled")) return;
+            $("#add-perms-modal .modal-search-results").empty();
+            perm_modal.show();
+            Organization.get_apps((data) => {
+                apps = data.data;
+            }, (data) => {
+                console.error(data.responseJson["error"])
+            })
+        })
+        function create_el(data) {
+            const el = $('<li class="user-item" data-userid="' + data.id + '"></li>');
+            el.append("<img src='" + data.image + "'>");
+            el.append("<p class='user-name'>" + data.firstname + " " + data.lastname + "</p>");
+            return el;
+        }
         const modal = new Modal("add-user-modal")
         const cAlert = new Alert()
-        $("#user-list").on("click", ".remove-user", function() {
+        $("#user-list").on("click", ".user-item", function() {
+            const userid = $(this).attr("data-userid");
+            const username = $(this).find(".user-name").text();
+            hide_content()
+            if($(this).hasClass("user-selected")) {
+                $("#user-list .user-item").removeClass("user-selected");
+                selected_user = null;
+                return false;
+            }
+            $("#user-list .user-item").removeClass("user-selected");
+            if($(this).attr("data-userid") == {{user.id}}) {
+                return;
+            };
+            $(this).addClass("user-selected");
+            selected_user = {
+                id: userid,
+                name: username 
+            }
+            show_section()
+        })
+        $(".dashboard-page").on("click", ".remove-user", function() {
             const userid = $(this).parent().attr("data-userid")
             const username = $(this).parent().find(".user-name").text()
             const conf = confirm("Are you sure you want to remove " + username + "?")
             if(conf == false) return false;
-            Organization.remove_user(userid, () => {
-                $(this).parent().remove()
+            Organization.remove_user(selected_user["id"], () => {
                 cAlert.show("notice", "User removed")
+                $("#user-list .user-item[data-userid='" + selected_user["id"] + "']").remove();
+                hide_content()
             }, (data) => {
                 let message = "Error ocurred";
                 if("error" in data.responseJSON) {
@@ -83,8 +389,17 @@
             $(this).find("input[type=text]").val("");
             Organization.add_user(email, (data) => {
                 data = data.data
-                $("#user-list").prepend(create_el(data));
+                $("#user-list .user-item").removeClass("user-selected");
+                $("#user-list").prepend(create_el(data).addClass("user-selected"));
                 notice.show(data.firstname + " " + data.lastname + " added");
+                selected_user = {
+                    id: data.id,
+                    name: data.firstname + " " + data.lastname 
+                }
+                show_section()
+                {% if edit_perms %}
+                show_perms();
+                {% endif %}
             }, (data) => {
                 let message = "Error ocurred";
                 if("error" in data.responseJSON) {
@@ -94,24 +409,8 @@
             })
             return false;
         })
-        let users = [];
-        function create_el(data, org = true) {
-            let link = "/dashboard/organization/{{ user.organization.id}}/user/" + data.id;
-            if(org = false) {
-                link = "/dashboard/user/" + data.id;
-            }
-            const el = $('<div class="user-item" data-userid="' + data.id + '"></a>');
-            el.append("<img src='" + data.image + "'>");
-            el.append("<a href=" + link + " class='user-name'>" + data.firstname + " " + data.lastname + "</a>");
-            {% if remove_users %}
-            if(data.id != {{user.id}}) {
-                el.append('<button class="btn btn-blue remove-user"><i class="fas fa-ban"></i></button>')
-            }
-            {% endif %}
-            return el;
-        }
         function set_list_state(state) {
-            $("#user-list").html('<div class="user-list-state">' + state + '</div>')
+            $("#user-list").html('<li class="user-list-state">' + state + '</li>')
         }
         function list_users(ls) {
             set_list_state('<img src="/static/images/loader.gif" class="loader">')
@@ -128,14 +427,6 @@
         $("#add-user").on("click", () => {
             modal.show();
         })
-        $("#filter-form input[type='checkbox']").on("change", function() {
-            if(!$(this).prop('checked') == false) {
-                $("#filter-form input:not([name='" + $(this).attr("name") + "'])").prop("checked", false)
-                get_users($(this).attr("name"));
-            } else {
-                $(this).prop('checked', true)
-            }
-        })
         function display_by_namefilter(name) {
             name = $.trim(name);
             if(name == "") {
@@ -148,8 +439,8 @@
             list_users(results);
             return false
         }
-        $("#filter-form").on("keyup", function() {
-            display_by_namefilter($(this).find("[name='username']").val());
+        $("#user-input").on("keyup", function() {
+            display_by_namefilter($(this).val());
         })
         function get_users(order="") {
             Organization.get_users(order, (data) => {

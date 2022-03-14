@@ -125,16 +125,18 @@ input {
     color: white;
     background-color: var(--blue);
 }
-.btn-blue:hover:not([disabled]) {
+.btn-blue:hover {
     background-color: var(--darker-blue)
 }
 .btn-white {
     background-color: white;
 }
-.btn-white:hover:not([disabled]) {
-    border: 1px solid white;
-    color: white;
+.btn-white:hover {
+    color: black;
     background-color: transparent;
+}
+.btn.btn-sel-blue {
+    border: 1px solid var(--blue);
 }
 
 .btn-green {
@@ -144,7 +146,13 @@ input {
 .btn-green:hover:not([disabled]) {
     background-color: #00A064;
 }
-
+.btn.btn-red {
+    background-color: #FF3333;
+    color: white;
+}
+.btn.btn-red:hover {
+    background-color: #C42424;
+}
 .modal {
     position: fixed;
     left: 0px;
@@ -241,6 +249,31 @@ input {
     color: red;
     text-align: center;
 }
+.modal .modal-search-results {
+    padding-bottom: 10px;
+}
+.modal .modal-search-results > *.selected {
+    background-color: var(--blue);
+}
+.modal .modal-search-results > *.selected > * {
+    color: white;
+}
+.modal .modal-search-results .selected-listing {
+    background-color: var(--blue);
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+    display: inline-block;
+    cursor: default;
+}
+.modal .modal-search-results .selected-listing > * {
+    font-size: 12px;
+    color: white;
+    display: inline-block;
+}
+.modal .modal-search-results .selected-listing .del-listing {
+    margin: 0 10px;
+}
 .alert {
     position: absolute;
     top: 0px;
@@ -293,7 +326,7 @@ input {
     -webkit-transition: opacity 0.3s;
     -moz-transition: opacity 0.3s;
     -o-transition: opacity 0.3s;
-    z-index: 1000;
+    z-index: 1100;
 }
 .notice p {
     color: white;
