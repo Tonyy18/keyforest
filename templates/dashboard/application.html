@@ -1,0 +1,101 @@
+{% extends "dashboard/sidebar.html" %}
+{% block title %}{{ request.user.organization.name }} | Applications{% endblock %}
+{% block body %}
+<section class="dashboard-page">
+    <section class="page-section">
+        <header>
+            <div class="flex">
+                <img src="{{app.image.url}}" />
+                <h1>{{app.name}}</h1>
+                <a href="{{app.id}}/settings" class="btn btn-green">Settings<i class="fas fa-cog"></i></a>
+            </div>
+        </header>
+        <div class="box-section">
+            <div class="box chart-box">
+                <header>
+                    <h3>Licenses activated</h3>
+                </header>
+                <div class="chart">
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+            <div class="box chart-box">
+                <header>
+                    <h3>API requests</h3>
+                </header>
+                <div class="chart">
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+            <div class="box chart-box">
+                <header>
+                    <h3>Licenses sold</h3>
+                </header>
+                
+            </div>
+        </div>
+        <header>
+            <div class="flex">
+                <h2>Licenses</h2>
+                <a href="{{app.id}}/license/new" class="btn btn-green">Create<i class="fas fa-plus"></i></a>
+            </div>
+        </header>
+        <ul class="list list-white no-item-imgs" id="app-list">
+            <li class="list-header list-item">
+                <div class="item-cells">
+                    <p>Name</p>
+                    <p>Amount</p>
+                    <p>Expiration</p>
+                    <p>Duration</p>
+                    <p>Created</p>
+                </div>
+            </li>
+            <li class="list-message">
+                {{app.name}} doesn't have any licenses
+            </li>
+            <!--
+            <li>
+                <a href="#" class="list-item">
+                <div class="item-image"></div>
+                <div class="item-cells">
+                    <p>License</p>
+                    <p>Licenses</p>
+                    <p>Author</p>
+                    <p>Created</p>
+                </div>
+                </a>
+            </li>
+            -->
+        </ul>
+    </section>
+</section>
+<script>
+const ctx = document.getElementById('myChart').getContext('2d');
+const data = {
+    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    datasets: [
+        {
+            label: "Dataset 1",
+            data: [5,10,12,6,9],
+            fill: false,
+            borderColor: "#e2e2e2",
+            backgroundColor: "black"
+        }
+    ]
+}
+const config = {
+  type: 'line',
+  data: data,
+  options: {
+    plugins: {
+      legend: {
+          display: false
+      }
+    },
+    responsive: true,
+    maintainAspectRatio: false
+  }
+};
+const myChart = new Chart(ctx, config);
+</script>
+{% endblock %}

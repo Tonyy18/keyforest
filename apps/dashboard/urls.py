@@ -22,5 +22,7 @@ urlpatterns = [
     path("organizations/", dashboardViews.organizations),
     path("organization/<int:id>", dashboardViews.summary),
     path("organization/<int:id>/apps", dashboardViews.applications),
-    path("organization/<int:id>/users", dashboardViews.users)
+    path("organization/<int:id>/users", dashboardViews.users),
+    path("organization/<int:id>/app/<int:app_id>", dashboardViews.app),
+    path("organization/<int:id>/app/<int:app_id>/license/new", dashboardViews.new_license)
 ]

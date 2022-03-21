@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from common.parameters import User
-from project.models import Organization, User_connection
-from common.utils import is_connected, has_permission
+from project.models import Organization, User_connection, Application
+from common.utils import *
 from common.parameters import Permissions
 # Create your views here.
 
@@ -24,7 +24,7 @@ def organizations(request):
         return render(request, "dashboard/organizations.html", {
             "page": "organizations"
         })
-    return HttpResponse("You are not part of any organization")
+    return HttpResponseNotFound()
 
 @login_required
 def summary(request, id):
@@ -82,4 +82,46 @@ def users(request, id):
         "add_users": add_users,
         "remove_users": remove_users,
         "edit_perms": edit_perms
+    })
+
+@login_required
+def app(request, id, app_id):
+    #specific application
+    if(request.user.organization == None):
+        return redirect("/dashboard/organizations")
+    con = is_connected(request, id)
+    if(not con):
+        return error(request, "You are not part of this organization")
+
+    app = Application.objects.filter(organization_id = id, id=app_id)
+    if(not app.exists()):
+        return HttpResponse("Doesn't exist")
+    app = app[0]
+    if(not has_app_permissions(con, app)):
+        return HttpResponseNotFound()
+
+    return render(request, "dashboard/application.html", {
+        "page": "apps",
+        "app": app
+    })
+
+@login_required
+def new_license(request, id, app_id):
+    #create license for an application
+    if(request.user.organization == None):
+        return redirect("/dashboard/organizations")
+    con = is_connected(request, id)
+    if(not con):
+        return error(request, "You are not part of this organization")
+
+    app = Application.objects.filter(organization_id = id, id=app_id)
+    if(not app.exists()):
+        return HttpResponseNotFound()
+    app = app[0]
+    if(not has_app_permissions(con, app)):
+        return HttpResponseNotFound()
+
+    return render(request, "dashboard/new_license.html", {
+        "page": "apps",
+        "app": app
     })

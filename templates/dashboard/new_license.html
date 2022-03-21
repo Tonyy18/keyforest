@@ -1,0 +1,101 @@
+{% extends "dashboard/sidebar.html" %}
+{% block title %}{{ request.user.organization.name }} | Applications{% endblock %}
+{% block body %}
+<section class="dashboard-page" id="c_lc_page">
+    <section class="page-section">
+        <header>
+            <h1>Create license</h1>
+        </header>
+        <div class="input-section">
+            <div class="i-s-input">
+                <span class="i-s-text">
+                    <p>Application</p>
+                </span>
+                <div class="app-selection">
+                    <img src="{{app.image.url}}">
+                    <p>{{app.name}}</p>
+                    <i class="fas fa-check"></i>
+                </div>
+            </div>
+            <div class="i-s-input flex-grow">
+                <span class="i-s-text">
+                    <p>License name</p>
+                </span>
+                <input type="text" class="input input-default" placeholder="License name">
+            </div>
+            <div class="i-s-input flex-grow">
+                <span class="i-s-text">
+                    <p>Amount</p>
+                </span>
+                <input type="number" class="input input-default" placeholder="Infinite" min="1">
+            </div>
+            <div class="i-s-input flex-grow">
+                <span class="i-s-text">
+                    <p>Expiration</p>
+                    <span class="reset reset-expi i-s-l-btn" style="display: none">reset</span>
+                </span>
+                <input type="text" class="input input-default" placeholder="Never" id="datepicker">
+            </div>
+        </div>
+        <div class="input-section">
+            <div class="i-s-inline">
+                <div class="i-s-input">
+                    <span class="i-s-text">
+                        <p>Price</p>
+                    </span>
+                    <input type="text" class="input input-default" placeholder="Free" id="price">
+                </div>
+                <div class="i-s-input">
+                    <span class="i-s-text">
+                        <p>Duration (in days)</p>
+                    </span>
+                    <input type="number" class="input input-default" placeholder="Never ending" min="0">
+                </div>
+                <div class="i-s-input">
+                    <span class="i-s-text">
+                        <p>Description</p>
+                    </span>
+                    <textarea class="input input-default" placeholder="Describe your license"></textarea>
+                </div>
+            </div>
+            <div class="i-s-inline parameter-table">
+                <header>
+                    <h2>Parameters</h2>
+                    <i class="fas fa-plus btn-i btn-green" id="add-param-i"></i>
+                </header>
+                <ul class="parameter-i-list" id="param-list">
+                    <li>
+                        <input type="text" class="input input-default" placeholder="Name">
+                        <input type="text" class="input input-default" placeholder="Value">
+                        <i class="fas fa-minus btn-blue btn-i remove-param-i"></i>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</section>
+<script>
+    function create_param_input() {
+        const li = $("<li></li>")
+        li.append("<input type='text' class='input input-default' placeholder='Name'>");
+        li.append("<input type='text' class='input input-default' placeholder='Value'>");
+        li.append("<i class='fas fa-minus btn-i btn-blue remove-param-i'></i>");
+        return li;
+    }
+    $("#param-list").on("click", ".remove-param-i", function() {
+        $(this).parent().remove();
+    })
+    $("#add-param-i").click(function() {
+        $("#param-list").prepend(create_param_input());
+    })
+    flatpickr('#datepicker', {
+        onChange: () => {
+            $(".reset-expi").show();
+        }
+    });
+    $(".reset").click(function() {
+        $(this).parent().parent().find("input").val("")
+        $(this).hide();
+    })
+</script>
+{% endblock %}

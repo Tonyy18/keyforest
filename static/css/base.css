@@ -17,6 +17,7 @@
     --darker-blue: #007CC3;
     --red: #FF4848;
     --green: #00DA88;
+    --darker-green: #00A064;
 }
 html, body {
     height: 100%;
@@ -152,6 +153,13 @@ input {
 }
 .btn.btn-red:hover {
     background-color: #C42424;
+}
+.btn-i {
+    padding: 5px 10px;
+    border-radius: 2px;
+}
+header .btn-i {
+    margin-left: 15px;
 }
 .modal {
     position: fixed;

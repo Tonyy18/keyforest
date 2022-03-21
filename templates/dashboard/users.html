@@ -88,6 +88,52 @@
                             </div>
                         </div>
                     </div>
+                    <div class="user-chat users-section">
+                        <div class="user-chat-messages">
+                            <!--
+                            <div class="message">
+                                <img src="{{user.image.url}}">
+                                <div class="message-texts">
+                                    <h4>Onni Lehikoinen<span class="message-time">9:40 AM</span></h4>
+                                    <div class="message-content">
+                                        <p>Moro</p>
+                                        <p>Moro</p>
+                                        <p>Moro</p>
+                                        <p>Moro</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="message-timeline">
+                                <span class="timeline-line">
+                                    <hr>
+                                </span>
+                                <div class="timeline-date">
+                                    <p>Yesterday</p><i class='fas fa-angle-down'></i>
+                                </div>
+                                <span class="timeline-line">
+                                    <hr>
+                                </span>
+                            </div>
+                            <div class="message">
+                                <img src="{{user.image.url}}">
+                                <div class="message-texts">
+                                    <h4>Onni Lehikoinen <span class="message-time">9:42 AM</span></h4>
+                                    <div class="message-content">
+                                        <p>Moro</p>
+                                        <p>Moro</p>
+                                        <p>Moro</p>
+                                        <p>Moro</p>
+                                    </div>
+                                </div>
+                            </div>
+                            -->
+                        </div>
+                        <div class="user-chat-inputs">
+                            <form>
+                            <textarea class="input input-default" placeholder="Message to onni lehikoinen"></textarea>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -262,7 +308,7 @@
             $(".btn").removeClass("btn-sel-blue");
             $("#chat-btn").addClass("btn-sel-blue");
             $(".users-section, #save-btn").hide();
-            $("#user-chat").show();
+            $(".user-chat").show();
         }
         $("#chat-btn").click(function() {
             show_chat()

@@ -48,11 +48,9 @@ class Permissions:
 
     class Remove_users:
         name = "remove_users"
+        
 
 class Permission_groups:
-    class Manage_users:
-        name = "manage_users"
-        permissions = [Permissions.Add_users, Permissions.Remove_users]
 
     class All_permissions:
         name = "*"

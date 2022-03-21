@@ -176,4 +176,8 @@ class Validators {
         }
         return (false)
     }
+    static price(val) {
+        const reg = /^\d{0,8}(\.\d{1,4})?$/;
+        return reg.test(val)
+    }
 }
