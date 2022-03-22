@@ -11,7 +11,7 @@
                 <span class="i-s-text">
                     <p>Application</p>
                 </span>
-                <div class="app-selection">
+                <div class="app-selection" id="app-selection" data-appid="{{app.id}}">
                     <img src="{{app.image.url}}">
                     <p>{{app.name}}</p>
                     <i class="fas fa-check"></i>
@@ -21,13 +21,13 @@
                 <span class="i-s-text">
                     <p>License name</p>
                 </span>
-                <input type="text" class="input input-default" placeholder="License name">
+                <input type="text" class="input input-default" placeholder="License name" id="name">
             </div>
             <div class="i-s-input flex-grow">
                 <span class="i-s-text">
                     <p>Amount</p>
                 </span>
-                <input type="number" class="input input-default" placeholder="Infinite" min="1">
+                <input type="number" class="input input-default" placeholder="Infinite" min="1" id="amount">
             </div>
             <div class="i-s-input flex-grow">
                 <span class="i-s-text">
@@ -49,13 +49,13 @@
                     <span class="i-s-text">
                         <p>Duration (in days)</p>
                     </span>
-                    <input type="number" class="input input-default" placeholder="Never ending" min="0">
+                    <input type="number" class="input input-default" placeholder="Never ending" min="1" id="duration">
                 </div>
                 <div class="i-s-input">
                     <span class="i-s-text">
                         <p>Description</p>
                     </span>
-                    <textarea class="input input-default" placeholder="Describe your license"></textarea>
+                    <textarea class="input input-default" placeholder="Describe your license" id="desc"></textarea>
                 </div>
             </div>
             <div class="i-s-inline parameter-table">
@@ -70,11 +70,122 @@
                         <i class="fas fa-minus btn-blue btn-i remove-param-i"></i>
                     </li>
                 </ul>
+                <button class="btn btn-green" id="save-license-btn">Save</button>
             </div>
         </div>
     </section>
 </section>
 <script>
+    const cAlert = new Alert()
+    function error(val) {
+        cAlert.show("error", val)
+    }
+    const datepicker = flatpickr('#datepicker', {
+        onChange: () => {
+            $(".reset-expi").show();
+        },
+        dateFormat: "Y-m-d",
+        minDate: "today"
+    });
+    $(".dashboard-page").on("click", "input", function(e) {
+        $(this).removeClass("error");
+    })
+    $("#save-license-btn").click(function(e) {
+        const app = $("#app-selection").attr("data-appid");
+        let name = $.trim($("#name").val());
+        let amount = $.trim($("#amount").val());
+        let expiration = $("#datepicker").val();
+        let price = $.trim($("#price").val());
+        let duration = $.trim($("#duration").val());
+        let desc = $.trim($("#desc").val());
+        let params = get_parameters();
+        if(params == false) return;
+        if(!name) {
+            error("License name cannot be empty");
+            $("#name").addClass("error");
+            return false
+        }
+        if(!price) {
+            price = null
+        } else {
+            const valid_price = Validators.price(price)
+            if(!Validators.price(price)) {
+                error("Price format is not valid")
+                $("#price").addClass("error");
+                return false;
+            } else {
+                price = valid_price;
+            }
+        }
+        if(!amount) {
+            amount = null
+        } else if(amount < 1) {
+            error("Amount cannot be less than 1")
+            $("#amount").addClass("error");
+            return false;
+        }
+        if(expiration.length == 0) {
+            expiration = null
+        }
+        if(!duration) {
+            duration = null
+        } else if(duration < 1) {
+            error("Duration cannot be less than 1")
+            $("#duration").addClass("error");
+            return false;
+        }
+        Application.create_license({
+            "app_id": app,
+            "name": name,
+            "amount": amount,
+            "expiration": expiration,
+            "price": price,
+            "duration": duration,
+            "desc": desc,
+            "params": JSON.stringify(params)
+        }, () => {
+            //Success
+        }, (data) => {
+            //Error
+            let message = "Error ocurred";
+            if("error" in data.responseJSON) {
+                message = data.responseJSON["error"]
+            }
+            cAlert.show("error", message)
+        })
+    })
+    function get_parameters() {
+        const table = $("#param-list")
+        const rows = table.find("li")
+        let data = {}
+        for(let a = 0; a < rows.length; a++) {
+            const li = rows[a];
+            const inputs = $(li).children("input");
+            const name = $.trim($(inputs[0]).val());
+            const value = $.trim($(inputs[1]).val());
+            if(name in data) {
+                //error
+                $(inputs[0]).addClass("error");
+                cAlert.show("error", "Parameter '" + name + "' exists twice");
+                return false;
+            } else {
+                if(!name && value) {
+                    cAlert.show("error", "Parameter name cannot be empty");
+                    $(inputs[0]).addClass("error");
+                    return false;
+                }
+                if(name && !value) {
+                    cAlert.show("error", "Parameter value cannot be empty");
+                    $(inputs[1]).addClass("error")
+                    return false;
+                }
+                if(name && value) {
+                    data[name] = value
+                }
+            }
+        }
+        return data;
+    }
     function create_param_input() {
         const li = $("<li></li>")
         li.append("<input type='text' class='input input-default' placeholder='Name'>");
@@ -88,11 +199,6 @@
     $("#add-param-i").click(function() {
         $("#param-list").prepend(create_param_input());
     })
-    flatpickr('#datepicker', {
-        onChange: () => {
-            $(".reset-expi").show();
-        }
-    });
     $(".reset").click(function() {
         $(this).parent().parent().find("input").val("")
         $(this).hide();

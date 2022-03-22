@@ -613,3 +613,9 @@ body {
     flex-grow: 1;
     margin: 0 10px;
 }
+.parameter-i-list {
+    min-height: 250px;
+}
+#save-license-btn {
+    float: right;
+}
