@@ -82,14 +82,14 @@ def create_license_dict(lic):
         "id": lic.id,
         "app": create_app_dict(lic.application),
         "name": lic.name,
-        "api_key": lic.api_key,
+        "api_key": str(lic.api_key),
         "bio": lic.bio,
         "parameters": json.loads(lic.parameters),
         "amount": lic.amount,
         "duration": lic.duration,
         "expiration": str(lic.expiration),
         "price": lic.price,
-        "created": lic.created,
+        "created": str(lic.created),
         "author": create_user_dict(lic.author)
     }
 

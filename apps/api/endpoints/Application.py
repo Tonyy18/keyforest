@@ -11,7 +11,7 @@ from datetime import datetime
 from django.db.models import Q
 from ..views import Codes, response, create_app_dict, create_user_dict, create_org_dict, create_license_dict
 
-def license(request):
+def licenses(request, appid):
     if(not request.user.is_authenticated):
         return response(Codes.unauthorized)
 
@@ -24,18 +24,25 @@ def license(request):
     if(not con):
         return response(Codes.unauthorized, "User is not part of the organization")
 
+    if(not appid):
+        return response(Codes.bad_request, "App id is missing")
+
+    app = Application.objects.filter(organization=org, id=appid)
+    if(not app.exists()):
+        return response(Codes.bad_request, "App not found in the organization")
+
+    app = app[0]
+    if(not has_app_permissions(con, app.name)):
+        return response(Codes.unauthorized, "You dont have permissions for this application")
+
+    if(request.method == "GET"):
+        lics = License.objects.filter(application=app)
+        results = []
+        for lic in lics:
+            results.append(create_license_dict(lic))
+        return response(Codes.ok, results)
+
     if(request.method == "POST"):
-        appid = request.POST.get("app_id")
-        if(not appid):
-            return response(Codes.bad_request, "App id is missing")
-        app = Application.objects.filter(organization=org, id=appid)
-        if(not app.exists()):
-            return response(Codes.bad_request, "App not found in the organization")
-        
-        app = app[0]
-        if(not has_app_permissions(con, app.name)):
-            return response(Codes.unauthorized, "You dont have permissions for this application")
-        
         name = request.POST.get("name")
         if(name):
             name = name.strip()

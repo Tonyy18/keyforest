@@ -13,6 +13,6 @@ urlpatterns = [
     path("organization/apps", Organization.applications),
     path("organization/users", Organization.users),
     path("organization/permissions", Organization.permissions),
-    path("organization/app/license", Application.license),
+    path("organization/app/<int:appid>/licenses", Application.licenses),
     path("permissions/", views.permissions),
 ]

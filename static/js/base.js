@@ -149,7 +149,10 @@ class Organization {
 
 class Application {
     static create_license(data, success=function(){}, error=function(){}) {
-        session_request("/api/organization/app/license", "POST", data, success, error)
+        session_request("/api/organization/app/" + data["app_id"] + "/licenses", "POST", data, success, error)
+    }
+    static get_licenses(app_id, success=function(){}, error=function(){}) {
+        session_request("/api/organization/app/" + app_id + "/licenses", "GET", "", success, error)
     }
 }
 
