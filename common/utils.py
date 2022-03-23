@@ -48,7 +48,10 @@ def has_specific_permission(con, permission):
 def random_id():
     return uuid.uuid1()
 
-def has_app_permissions(con, app_name):
+def has_app_permissions(con, app):
+    app_name = app
+    if(type(app_name) is Application):
+        app_name = app.name
     if(has_permission(con, parameters.Permissions.Access_all_apps) or has_permission(con, "app_" + app_name)):
         return True
     return False

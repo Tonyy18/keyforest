@@ -18,14 +18,17 @@ class Application:
     max_name_length = 50
     min_name_length = 3
     max_bio_length = 200 #Description length
+    license_count = 50
 
 class License:
     max_name_length = 50
     min_name_length = 6
     max_bio_length = 200
-    parameter_count = 15
-    parameter_name_max_length = 15
-    parameter_value_max_length = 15
+    max_parameter_count = 15
+    max_parameter_name_length = 15
+    max_parameter_value_length = 15
+    max_amount = 100000000
+    max_duration = 50000
 
 class Role:
     class Admin:

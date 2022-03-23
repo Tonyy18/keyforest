@@ -71,13 +71,14 @@
     })
 
     function create_app_el(data) {
+        console.log(data)
         const el = $("<li class='app'></li>");
         const link = $('<a href="/dashboard/organization/' + data.organization.id + '/app/' + data.id + '" class="list-item"></a>')
         link.append('<img class="item-image" src="' + data.image + '">')
         const cells = $('<div class="item-cells"></div>')
         cells.append('<p>' + data.name + '</p>')
         cells.append('<p>' + data.licenses + ' licenses</p>')
-        cells.append('<p>' + data.creator.name + '</p>')
+        cells.append('<p>' + data.creator.fullname + '</p>')
         cells.append('<p>' + date_format(data.created, "d.m.y") + '</p>')
         link.append(cells)
         el.append(link)

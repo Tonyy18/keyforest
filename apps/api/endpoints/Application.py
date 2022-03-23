@@ -9,7 +9,7 @@ from common import parameters,validators
 from datetime import date
 from datetime import datetime
 from django.db.models import Q
-from ..views import Codes, response, create_app_dict, create_user_dict, create_org_dict
+from ..views import Codes, response, create_app_dict, create_user_dict, create_org_dict, create_license_dict
 
 def license(request):
     if(not request.user.is_authenticated):
@@ -40,23 +40,13 @@ def license(request):
         if(name):
             name = name.strip()
         amount = request.POST.get("amount")
-        if(amount):
-            amount = amount.strip()
         expiration = request.POST.get("expiration")
-        if(expiration):
-            expiration = expiration.strip()
         price = request.POST.get("price")
-        if(price):
-            price = price.strip()
         duration = request.POST.get("duration")
-        if(duration):
-            duration = duration.strip()
         desc = request.POST.get("desc")
         if(desc):
             desc = desc.strip()
         params = request.POST.get("params")
-        if(params):
-            params = params.strip()
         #Validation
         if(len(name) < parameters.License.min_name_length):
             return response(Codes.bad_request, "License name is too short")
@@ -70,9 +60,10 @@ def license(request):
         if(lic.exists()):
             return response(Codes.bad_request, "License with the same name already exists")
         
-        ob = License(application=app, name=name)
+        ob = License(application=app, name=name, author=request.user)
 
         if(amount):
+            amount = amount.strip()
             try:
                 amount = int(amount)
             except:
@@ -80,9 +71,13 @@ def license(request):
             if(amount < 1):
                 return response(Codes.bad_request, "Amount cannot be less than 1")
 
+            if(amount > parameters.License.max_amount):
+                return response(Codes.bad_request, "Amount is too high")
+
             ob.amount = amount
 
         if(expiration):
+            expiration = expiration.strip()
             sp = expiration.split("-")
             exp_err = None
             if(len(sp) != 3):
@@ -99,6 +94,7 @@ def license(request):
             ob.expiration = exp_date
                 
         if(duration):
+            duration = duration.strip()
             try:
                 duration = int(duration)
             except:
@@ -106,9 +102,13 @@ def license(request):
             if(duration < 1):
                 return response(Codes.bad_request, "Duration cannot be less than 1")
 
+            if(duration > parameters.License.max_duration):
+                return response(Codes.bad_request, "Duration is too long")
+
             ob.duration = duration
 
         if(price):
+            price = price.strip()
             try:
                 price = float(price)
             except:
@@ -120,23 +120,24 @@ def license(request):
             ob.bio = desc
 
         if(params):
+            params = params.strip()
             try:
                 params = json.loads(params)
             except:
                 return response(Codes.bad_request, "Invalid parameters argument")
-            if(len(params) > parameters.License.parameter_count):
+            if(len(params) > parameters.License.max_parameter_count):
                 return response(Codes.bad_request, "Too many parameters. maximum of " + str(parameters.License.parameter_count))
             for key in params:
-                if(len(key) > parameters.License.parameter_name_max_length):
+                if(len(key) > parameters.License.max_parameter_name_length):
                     return response(Codes.bad_request, "One of the parameter names is too long")
-                if(len(params[key]) > parameters.License.parameter_value_max_length):
+                if(len(params[key]) > parameters.License.max_parameter_value_length):
                     return response(Codes.bad_request, "One of the parameter values is too long")
             ob.parameters = json.dumps(params)
 
         ob.visible = True
         ob.api_key = random_id()
         ob.save()
-        return response(Codes.ok)
+        return response(Codes.ok, create_license_dict(ob))
         
 
         

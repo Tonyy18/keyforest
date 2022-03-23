@@ -143,8 +143,10 @@
             "duration": duration,
             "desc": desc,
             "params": JSON.stringify(params)
-        }, () => {
+        }, (data) => {
             //Success
+            console.log(data)
+            //window.location.href = "/dashboard/organization/{{user.organization.id}}/app/" + app + "/license"
         }, (data) => {
             //Error
             let message = "Error ocurred";

@@ -54,14 +54,8 @@ def create_app_dict(app):
         "image": app.image.url,
         "bio": app.bio,
         "licenses": app.licenses,
-        "organization": {
-            "id": app.organization.id
-        },
-        "creator": {
-            "id": app.creator.id,
-            "name": app.creator.first_name + " " + app.creator.last_name,
-            "image": app.organization.creator.image.url
-        },
+        "organization": create_org_dict(app.organization),
+        "creator": create_user_dict(app.creator),
         "created": str(app.created)
     }
 def create_org_dict(org):
@@ -81,6 +75,22 @@ def create_user_dict(user):
         "lastname": user.last_name,
         "fullname": user.first_name + " " + user.last_name,
         "image": user.image.url
+    }
+
+def create_license_dict(lic):
+    return {
+        "id": lic.id,
+        "app": create_app_dict(lic.application),
+        "name": lic.name,
+        "api_key": lic.api_key,
+        "bio": lic.bio,
+        "parameters": json.loads(lic.parameters),
+        "amount": lic.amount,
+        "duration": lic.duration,
+        "expiration": str(lic.expiration),
+        "price": lic.price,
+        "created": lic.created,
+        "author": create_user_dict(lic.author)
     }
 
 def permissions(request):
