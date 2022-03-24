@@ -10,6 +10,26 @@ from common.parameters import Permissions
 def error(request, text):
     return render(request, "dashboard/error.html", {"text": text})
 
+def verify_con(request, id):
+    if(request.user.organization == None):
+        return {
+            "success": False,
+            "data": redirect("/dashboard/organizations")
+        }
+    con = is_connected(request, id)
+    if(not con):
+        return {
+            "success": False,
+            "data": error(request, "You are not part of this organization")
+        }
+    if(request.user.organization != con.organization):
+        request.user.organization = con.organization
+        request.user.save()
+    return {
+        "success": True,
+        "data": con
+     }
+
 @login_required
 def entry(request):
     #Root of dashboard
@@ -50,13 +70,10 @@ def summary(request, id):
 @login_required
 def applications(request, id):
     #List applications
-    if(request.user.organization == None):
-        return redirect("/dashboard/organizations")
-    con = is_connected(request, id)
-    if(not con):
-        return error(request, "You are not part of this organization")
-    request.user.organization = con.organization
-    request.user.save()
+    con = verify_con(request, id)
+    if(con["success"] == False):
+        return con["data"]
+    con = con["data"]
     showbtn = has_permission(con, Permissions.Create_apps)
     return render(request, "dashboard/apps.html", {
         "page": "apps",
@@ -66,13 +83,10 @@ def applications(request, id):
 @login_required
 def users(request, id):
     #User management
-    if(request.user.organization == None):
-        return redirect("/dashboard/organizations")
-    con = is_connected(request, id)
-    if(not con):
-        return error(request, "You are not part of this organization")
-    request.user.organization = con.organization
-    request.user.save()
+    con = verify_con(request, id)
+    if(con["success"] == False):
+        return con["data"]
+    con = con["data"]
     add_users = has_permission(con, Permissions.Add_users)
     remove_users = has_permission(con, Permissions.Remove_users)
     edit_perms = has_permission(con, Permissions.All)
@@ -87,11 +101,10 @@ def users(request, id):
 @login_required
 def app(request, id, app_id):
     #specific application
-    if(request.user.organization == None):
-        return redirect("/dashboard/organizations")
-    con = is_connected(request, id)
-    if(not con):
-        return error(request, "You are not part of this organization")
+    con = verify_con(request, id)
+    if(con["success"] == False):
+        return con["data"]
+    con = con["data"]
 
     app = Application.objects.filter(organization_id = id, id=app_id)
     if(not app.exists()):
@@ -108,11 +121,10 @@ def app(request, id, app_id):
 @login_required
 def new_license(request, id, app_id):
     #create license for an application
-    if(request.user.organization == None):
-        return redirect("/dashboard/organizations")
-    con = is_connected(request, id)
-    if(not con):
-        return error(request, "You are not part of this organization")
+    con = verify_con(request, id)
+    if(con["success"] == False):
+        return con["data"]
+    con = con["data"]
 
     app = Application.objects.filter(organization_id = id, id=app_id)
     if(not app.exists()):
@@ -125,3 +137,10 @@ def new_license(request, id, app_id):
         "page": "apps",
         "app": app
     })
+
+@login_required
+def license(request, id, app_id, lic_id):
+    con = verify_con(request, id)
+    if(con["success"] == False):
+        return con["data"]
+    con = con["data"]
