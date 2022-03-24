@@ -1,0 +1,38 @@
+{% extends "dashboard/sidebar.html" %}
+{% block title %}{{ request.user.organization.name }} | Applications{% endblock %}
+{% block body %}
+    <div class="modal" id="create-app-modal">
+        <div class="modal-padding">
+            <div class="modal-body">
+                <header>
+                    <p>New application</p><i class="fas fa-times modal-close"></i>
+                </header>
+                <section>
+                    <form id="create-app-form">
+                        <label>
+                            <span>Name*</span>
+                            <input type="text" class="input input-default" id="app-name" placeholder="Name for the application">
+                        </label>
+                        <label>
+                            <span>Description</span>
+                            <textarea class="input input-default" id="app-desc" placeholder="Describe your application"></textarea>
+                        </label>
+                        <input type="submit" value="Create app" class="btn btn-blue">
+                    </form>
+                </section>
+            </div>
+        </div>
+        <div class="modal-bg"></div>
+    </div>
+    <div class="dashboard-page">
+        <section class="page-section flex-grow">
+            <header>
+                <div class="flex">
+                    <h1 style="max-width: 600px" class="of-dots">{{license.name}}</h1>
+                </div>
+            </header>
+        </section>
+    </div>
+    <script>
+    </script>
+{% endblock %}

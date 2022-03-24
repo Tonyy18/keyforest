@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from common.parameters import User
-from project.models import Organization, User_connection, Application
+from project.models import Organization, User_connection, Application, License
 from common.utils import *
 from common.parameters import Permissions
 # Create your views here.
@@ -29,6 +29,21 @@ def verify_con(request, id):
         "success": True,
         "data": con
      }
+
+def verify_app_access(con, id, app_id):
+    app = Application.objects.filter(organization_id = id, id=app_id)
+    data =  {
+        "success": False,
+        "data": HttpResponseNotFound()
+    }
+    if(not app.exists()):
+        return data
+    app = app[0]
+    if(not has_app_permissions(con, app)):
+        return data
+    data["success"] = True
+    data["data"] = app
+    return data
 
 @login_required
 def entry(request):
@@ -90,7 +105,6 @@ def users(request, id):
     add_users = has_permission(con, Permissions.Add_users)
     remove_users = has_permission(con, Permissions.Remove_users)
     edit_perms = has_permission(con, Permissions.All)
-    print(remove_users)
     return render(request, "dashboard/users.html", {
         "page": "users",
         "add_users": add_users,
@@ -106,12 +120,10 @@ def app(request, id, app_id):
         return con["data"]
     con = con["data"]
 
-    app = Application.objects.filter(organization_id = id, id=app_id)
-    if(not app.exists()):
-        return HttpResponse("Doesn't exist")
-    app = app[0]
-    if(not has_app_permissions(con, app)):
-        return HttpResponseNotFound()
+    valid_app = verify_app_access(con, id, app_id)
+    if(valid_app["success"] == False):
+        return error(request, "App not found or you are missing permissions")
+    app = valid_app["data"]
 
     return render(request, "dashboard/application.html", {
         "page": "apps",
@@ -126,12 +138,10 @@ def new_license(request, id, app_id):
         return con["data"]
     con = con["data"]
 
-    app = Application.objects.filter(organization_id = id, id=app_id)
-    if(not app.exists()):
-        return HttpResponseNotFound()
-    app = app[0]
-    if(not has_app_permissions(con, app)):
-        return HttpResponseNotFound()
+    valid_app = verify_app_access(con, id, app_id)
+    if(valid_app["success"] == False):
+        return error(request, "App not found or you are missing permissions")
+    app = valid_app["data"]
 
     return render(request, "dashboard/new_license.html", {
         "page": "apps",
@@ -144,3 +154,30 @@ def license(request, id, app_id, lic_id):
     if(con["success"] == False):
         return con["data"]
     con = con["data"]
+
+    valid_app = verify_app_access(con, id, app_id)
+    if(valid_app["success"] == False):
+        return error(request, "App not found or you are missing permissions")
+    app = valid_app["data"]
+
+    lic = None
+    try:
+        lic = License.objects.get(application=app, id=lic_id)
+    except:
+        return error(request, "License not found within the application")
+    return render(request, "dashboard/license.html", {
+        "page": "licenses",
+        "app": app,
+        "license": lic
+    })
+
+@login_required
+def all_licenses(request, id):
+    con = verify_con(request, id)
+    if(con["success"] == False):
+        return con["data"]
+    con = con["data"]
+
+    return render(request, "dashboard/all_licenses.html", {
+        "page": "licenses"
+    })

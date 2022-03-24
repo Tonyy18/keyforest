@@ -107,6 +107,7 @@ body {
     display: block;
     cursor: pointer;
     padding: 20px;
+    font-size: 0px;
 }
 .sidebar .organization img,
 .sidebar .organization .org-name {

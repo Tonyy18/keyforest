@@ -21,7 +21,7 @@ class Application:
     license_count = 50
 
 class License:
-    max_name_length = 50
+    max_name_length = 30
     min_name_length = 6
     max_bio_length = 200
     max_parameter_count = 15
