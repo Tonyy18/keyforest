@@ -147,6 +147,15 @@ class Organization {
     }
 }
 
+class Application {
+    static create_license(data, success=function(){}, error=function(){}) {
+        session_request("/api/organization/app/" + data["app_id"] + "/licenses", "POST", data, success, error)
+    }
+    static get_licenses(app_id, success=function(){}, error=function(){}) {
+        session_request("/api/organization/app/" + app_id + "/licenses", "GET", "", success, error)
+    }
+}
+
 const date_format = (date, format) => {
     const split = date.split("-");
     const year = split[0];
@@ -176,8 +185,50 @@ class Validators {
         }
         return (false)
     }
+    static int(val) {
+        return isNaN(val) == false;
+    }
+    static float(val) {
+        let colon = null;
+        for(let a in val) {
+            const letter = val[a];
+            if(colon != null) return false;
+            if(letter == ".") {
+                colon = "."
+                break;
+            } else if(letter == ",") {
+                colon = ","
+                break;
+            }
+        }
+        if(colon != null){
+            let sp = val.split(colon)
+            if(sp.length != 2) return false;
+            let p1 = parseInt(sp[0])
+            let p2 = parseInt(sp[1])
+            if(isNaN(p1) || isNaN(p2)) return false;
+            return true;
+        }
+        return false
+    }
     static price(val) {
-        const reg = /^\d{0,8}(\.\d{1,4})?$/;
-        return reg.test(val)
+        const float = Validators.float(val)
+        let colon = null;
+        if(val.indexOf(".") != -1) colon = ".";
+        if(val.indexOf(",") != -1) colon = ",";
+        if(float) {
+            if(colon != null) {
+                const sp = val.split(colon);
+                if(sp[1].length == 1 || sp[1].length == 2) {
+                    if(sp[1].length == 1) {
+                        val += "0"
+                    }
+                    return val.replace(",", ".");
+                }
+            }
+        } else if(colon == null) {
+            return Validators.int(val);
+        }
+        return false;
     }
 }
