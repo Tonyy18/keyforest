@@ -171,7 +171,7 @@ def applications(request):
             results.append(create_app_dict(app))
         return response(Codes.ok, results)
 
-def permissions(request):
+def permissions(request, userid):
     if(not request.user.is_authenticated):
         return response(Codes.unauthorized)
 
@@ -184,31 +184,26 @@ def permissions(request):
     if(not con):
         return response(Codes.unauthorized, "User is not part of the organization")
 
+    if(not userid):
+        return response(Codes.bad_request, "User id was missing")
+            
+    user_con = user_is_connected(userid, org)
+    if(not user_con):
+        return response(Codes.bad_request, "User is not in the organization")
+
     if(request.method == "POST" or request.method == "UPDATE"):
         method = request.method
         if(method == "POST"):
-            userid = request.POST.get("user_id")
             perms = request.POST.get("permissions")
         elif(method == "UPDATE"):
             upd_data = QueryDict(request.body)
-            userid = upd_data.get("user_id")
             perms = upd_data.get("permission")
 
-        if(not userid):
-            return response(Codes.bad_request, "User id missing")
         if(not perms):
             if(method == "UPDATE"):
                 return response(Codes.bad_request, "Permissions missing")
             if(method == "POST"):
                 perms = ""
-        try:
-            userid = int(userid)
-        except:
-            return response(Codes.bad_request, "Invalid user id")
-
-        user_con = user_is_connected(userid, org)
-        if(not user_con):
-            return response(Codes.bad_request, "User is not int the organization")
  
         if(not has_permission(con, parameters.Permissions.All)):
             return response(Codes.unauthorized)
@@ -250,17 +245,6 @@ def permissions(request):
         return response(Codes.ok)
 
     if(request.method == "GET"):
-        userid = request.GET.get("user_id")
-        if(not userid):
-            return response(Codes.bad_request, "User id was missing")
-        try:
-            userid = int(userid)
-        except:
-            return response(Codes.bad_request, "Invalid user id")
-            
-        user_con = user_is_connected(userid, org)
-        if(not user_con):
-            return response(Codes.bad_request, "User is not in the organization")
         perms = user_con.permissions.split(",")
         res = {
             "general": [],

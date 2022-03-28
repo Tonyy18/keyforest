@@ -12,7 +12,7 @@ urlpatterns = [
     path("user/organizations", User.organizations),
     path("organization/apps", Organization.applications),
     path("organization/users", Organization.users),
-    path("organization/permissions", Organization.permissions),
+    path("organization/users/<int:userid>/permissions", Organization.permissions),
     path("organization/app/<int:appid>/licenses", Application.licenses),
     path("permissions/", views.permissions),
 ]

@@ -137,13 +137,13 @@ class Organization {
         session_request("/api/organization/users", "DELETE", {"user_id": id}, success, error)
     }
     static replace_permissions(userid, permissions, success=function(){}, error=function(){}) {
-        session_request("/api/organization/permissions", "POST", {"user_id": userid, "permissions": permissions}, success, error)
+        session_request("/api/organization/users/" + userid + "/permissions", "POST", {"permissions": permissions}, success, error)
     }
     static add_permission(userid, permissions, success=function(){}, error=function(){}) {
-        session_request("/api/organization/permissions", "UPDATE", {"user_id": userid, "permission": permissions}, success, error)
+        session_request("/api/organization/users/" + userid + "/permissions", "UPDATE", {"permission": permissions}, success, error)
     }
     static get_permissions(userid, success=function(){}, error=function(){}) {
-        session_request("/api/organization/permissions?user_id="+userid, "GET", "", success, error)
+        session_request("/api/organization/users/" + userid + "/permissions?user_id=", "GET", "", success, error)
     }
 }
 
