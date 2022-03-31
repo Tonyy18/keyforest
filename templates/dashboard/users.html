@@ -412,7 +412,7 @@
         $(".dashboard-page").on("click", ".remove-user", function() {
             const userid = $(this).parent().attr("data-userid")
             const username = $(this).parent().find(".user-name").text()
-            const conf = confirm("Are you sure you want to remove " + username + "?")
+            const conf = confirm("Are you sure you want to remove " + selected_user["name"] + "?")
             if(conf == false) return false;
             Organization.remove_user(selected_user["id"], () => {
                 cAlert.show("notice", "User removed")

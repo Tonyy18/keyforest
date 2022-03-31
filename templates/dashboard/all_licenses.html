@@ -1,65 +1,78 @@
 {% extends "dashboard/sidebar.html" %}
 {% block title %}{{ request.user.organization.name }} | Applications{% endblock %}
 {% block body %}
-    <div class="modal" id="create-app-modal">
-        <div class="modal-padding">
-            <div class="modal-body">
-                <header>
-                    <p>New application</p><i class="fas fa-times modal-close"></i>
-                </header>
-                <section>
-                    <form id="create-app-form">
-                        <label>
-                            <span>Name*</span>
-                            <input type="text" class="input input-default" id="app-name" placeholder="Name for the application">
-                        </label>
-                        <label>
-                            <span>Description</span>
-                            <textarea class="input input-default" id="app-desc" placeholder="Describe your application"></textarea>
-                        </label>
-                        <input type="submit" value="Create app" class="btn btn-blue">
-                    </form>
-                </section>
+<div class="dashboard-page">
+    <section class="page-section flex-grow">
+        <header>
+            <div class="flex">
+                <h1 style="max-width: 600px" class="of-dots">Licenses</h1>
+                <a href="licenses/new" class="btn btn-green">Create<i class="fas fa-plus"></i></a>
             </div>
-        </div>
-        <div class="modal-bg"></div>
-    </div>
-    <div class="dashboard-page">
-        <section class="page-section flex-grow">
-            <header>
-                <div class="flex">
-                    <h1 style="max-width: 600px" class="of-dots">Licenses</h1>
+        </header>
+        <ul class="list list-white no-item-imgs" id="license-list">
+            <li class="list-header list-item">
+                <div class="item-cells">
+                    <p>Name</p>
+                    <p>Application</p>
+                    <p>Amount</p>
+                    <p>Expiration</p>
+                    <p>Duration</p>
+                    <p>Created</p>
                 </div>
-            </header>
-            <ul class="list list-white no-item-imgs" id="license-list">
-                <li class="list-header list-item">
-                    <div class="item-cells">
-                        <p>Name</p>
-                        <p>Amount</p>
-                        <p>Expiration</p>
-                        <p>Duration</p>
-                        <p>Created</p>
-                    </div>
-                </li>
-                <li class="list-message" id="list-message">
-                    You apps doesn't have any licenses
-                </li>
-                <!--
-                <li>
-                    <a href="#" class="list-item">
-                    <div class="item-image"></div>
-                    <div class="item-cells">
-                        <p>License</p>
-                        <p>Licenses</p>
-                        <p>Author</p>
-                        <p>Created</p>
-                    </div>
-                    </a>
-                </li>
-                -->
-            </ul>
-        </section>
-    </div>
-    <script>
-    </script>
+            </li>
+            <li class="list-message" id="list-message">
+                You apps doesn't have any licenses
+            </li>
+        </ul>
+    </section>
+</div>
+<script>
+    function create_lic_el(data) {
+        const li = $("<li></li>");
+        const link = $("<a href='/dashboard/organization/{{user.organization.id}}/app/" + data.app.id + "/license/" + data.id + "' class='list-item'></a>")
+        const cells = $("<div class='item-cells'></div>");
+        let amount = data.amount;
+        let exp = data.expiration;
+        let duration = data.duration
+        let created = data.created
+        if(amount == null) {
+            amount = "Infinite"
+        }
+        if(exp == null || exp == "None") {
+            exp = "Never"
+        } else {
+            exp = date_format(exp, "d.m.y")
+        }
+        if(duration == null) {
+            duration = "Never ending";
+        } else {
+            duration += " days"
+        }
+        cells.append("<p>" + data.name + "</p>")
+        cells.append("<p>" + data.app.name + "</p>")
+        cells.append("<p>" + amount + "</p>")
+        cells.append("<p>" + exp + "</p>")
+        cells.append("<p>" + duration + "</p>")
+        cells.append("<p>" + date_format(created, "d.m.y") + "</p>")
+        link.append(cells)
+        li.append(link)
+        return li;
+    }
+    Organization.get_licenses((data) => {
+        $("#list-message").hide();
+        data = data.data
+        for(let a = 0; a < data.length; a++) {
+            const lic = data[a];
+            const el = create_lic_el(lic);
+            $("#license-list").append(el);
+        }
+    }, (error) => {
+        let message = "Error ocurred"
+        if("error" in data.responseJSON) {
+            message = data.responseJSON["error"];
+        }
+        $("#license-list li:not(.list-hearder):not(.list-message)").remove();
+        $("#list-message").html(message).show();
+    })
+</script>
 {% endblock %}

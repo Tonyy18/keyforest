@@ -1,6 +1,21 @@
 {% extends "dashboard/sidebar.html" %}
-{% block title %}{{ request.user.organization.name }} | Applications{% endblock %}
+{% block title %}{{ request.user.organization.name }} | Create license{% endblock %}
 {% block body %}
+<div class="modal" id="select-app-modal">
+    <div class="modal-padding">
+        <div class="modal-body">
+            <header><p>Search applications</p><i class="fas fa-times modal-close"></i></header>
+            <section>
+                    <label>
+                        <input type="text" class="input input-default" placeholder="Search apps">
+                    </label>
+                    <div class="modal-search-results">
+                    </div>
+            </section>
+        </div>
+    </div>
+    <div class="modal-bg"></div>
+</div>
 <section class="dashboard-page" id="c_lc_page">
     <section class="page-section">
         <header>
@@ -11,11 +26,19 @@
                 <span class="i-s-text">
                     <p>Application</p>
                 </span>
+                {% if app %}
                 <div class="app-selection" id="app-selection" data-appid="{{app.id}}">
                     <img src="{{app.image.url}}">
                     <p>{{app.name}}</p>
                     <i class="fas fa-check"></i>
                 </div>
+                {% endif %}
+                {% if app == None %}
+                <div class="app-selection app-not-sel" id="app-selection" data-appid="">
+                    <p>App not selected</p>
+                    <i class="fas fa-check" style="display: none"></i>
+                </div>
+                {% endif %}
             </div>
             <div class="i-s-input flex-grow">
                 <span class="i-s-text">
@@ -77,6 +100,39 @@
 </section>
 <script>
     const cAlert = new Alert()
+    const modal = new Modal("select-app-modal");
+    let apps = []
+    function create_app_search_el(data) {
+        const el = $("<div class='app-listing' data-appname='" + data.name + "' data-appid='" + data.id + "'></div>")
+        el.append('<img src="' + data.image + '">')
+        el.append('<p>' + data.name + '</p>');
+        return el
+    }
+    $("#select-app-modal").on("click", ".app-listing", function() {
+        const name = $(this).attr("data-appname");
+        const id = $(this).attr("data-appid")
+        const image = $(this).find("img").attr("src")
+        modal.close();
+        $("#app-selection").removeClass("app-not-sel").attr("data-appid", id)
+    })
+    $("#select-app-modal input[type=text]").on("keyup", function(e) {
+        const app_name = $.trim($(this).val());
+        $("#select-app-modal .modal-search-results").empty();
+        if(app_name == "") return;
+        for(let a = 0; a < apps.length; a++) {
+            const app = apps[a];
+            if(app.name.toLowerCase().includes(app_name.toLowerCase())) {
+                const el = create_app_search_el(app);
+                $("#select-app-modal .modal-search-results").prepend(el);
+            }
+        }
+    })
+    $("#app-selection").on("click", function() {
+        modal.show();
+    })
+    Organization.get_apps((data) => {
+        apps = data.data
+    })
     function error(val) {
         cAlert.show("error", val)
     }
@@ -87,11 +143,16 @@
         dateFormat: "Y-m-d",
         minDate: "today"
     });
-    $(".dashboard-page").on("click", "input", function(e) {
+    $(".dashboard-page").on("click", "input, .app-selection", function(e) {
         $(this).removeClass("error");
     })
     $("#save-license-btn").click(function(e) {
-        const app = $("#app-selection").attr("data-appid");
+        let app = $("#app-selection").attr("data-appid");
+        if(Validators.int(app) == false) {
+            $("#app-selection").addClass("error");
+            error("Select the targeted app");
+            return;
+        }
         let name = $.trim($("#name").val());
         let amount = $.trim($("#amount").val());
         let expiration = $("#datepicker").val();

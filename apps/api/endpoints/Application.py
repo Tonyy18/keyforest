@@ -142,7 +142,6 @@ def licenses(request, appid):
             ob.parameters = json.dumps(params)
 
         ob.visible = True
-        ob.api_key = random_id()
         ob.save()
         return response(Codes.ok, create_license_dict(ob))
         

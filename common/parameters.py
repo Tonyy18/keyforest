@@ -1,8 +1,15 @@
 
-org_name_length = 50
+from common import parameters
 
 class User:
     org_count = 5 #max organizations to create
+    max_firstname_length = 30
+    min_firstname_length = 2
+    max_lastname_length = 30
+    min_lastname_length = 2
+    max_password_length = 50
+    min_password_length = 3
+    max_email_length = 100
 
 class Organization:
     max_name_length = 50

@@ -134,25 +134,30 @@ class Organization {
         session_request("/api/organization/users", "POST", {"email": email}, success, error)
     }
     static remove_user(id, success=function(){}, error=function(){}) {
-        session_request("/api/organization/users", "DELETE", {"user_id": id}, success, error)
+        session_request("/api/organization/users/" + id, "DELETE", "", success, error)
     }
     static replace_permissions(userid, permissions, success=function(){}, error=function(){}) {
+        //Removes the old permissions and replaces with the new ones
         session_request("/api/organization/users/" + userid + "/permissions", "POST", {"permissions": permissions}, success, error)
     }
     static add_permission(userid, permissions, success=function(){}, error=function(){}) {
+        //Add one permission to the list
         session_request("/api/organization/users/" + userid + "/permissions", "UPDATE", {"permission": permissions}, success, error)
     }
     static get_permissions(userid, success=function(){}, error=function(){}) {
         session_request("/api/organization/users/" + userid + "/permissions?user_id=", "GET", "", success, error)
     }
+    static get_licenses(success=function(){}, error=function(){}) {
+        session_request("/api/organization/licenses", "GET", "", success, error)
+    }
 }
 
 class Application {
     static create_license(data, success=function(){}, error=function(){}) {
-        session_request("/api/organization/app/" + data["app_id"] + "/licenses", "POST", data, success, error)
+        session_request("/api/organization/apps/" + data["app_id"] + "/licenses", "POST", data, success, error)
     }
     static get_licenses(app_id, success=function(){}, error=function(){}) {
-        session_request("/api/organization/app/" + app_id + "/licenses", "GET", "", success, error)
+        session_request("/api/organization/apps/" + app_id + "/licenses", "GET", "", success, error)
     }
 }
 
@@ -186,7 +191,7 @@ class Validators {
         return (false)
     }
     static int(val) {
-        return isNaN(val) == false;
+        return (val != "" && isNaN(val) == false);
     }
     static float(val) {
         let colon = null;

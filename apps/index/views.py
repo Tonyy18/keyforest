@@ -12,7 +12,7 @@ def logout(request):
     return redirect("/")
 
 def landingpage(request):
-    testbench = False;
+    testbench = False
     if(request.user.is_authenticated and request.user.role in parameters.Role.testbench_access):
         testbench = True
     return render(request, "index/index.html", {
@@ -50,26 +50,29 @@ def register(request):
         data["password"] = password
 
         success = 0
-        if(len(firstname) < 2):
+        if(len(firstname) < parameters.User.min_firstname_length):
             data["errors"]["firstname"] = "Firstname is too short"
-        elif(len(firstname) > 30):
+        elif(len(firstname) > parameters.User.max_firstname_length):
             data["errors"]["firstname"] = "Firstname is too long"
         else:
             success = success + 1
 
-        if(len(lastname) < 2):
+        if(len(lastname) < parameters.User.min_lastname_length):
             data["errors"]["lastname"] = "Lastname is too short"
-        elif(len(lastname) > 30):
+        elif(len(lastname) > parameters.User.max_lastname_length):
             data["errors"]["lastname"] = "Lastname is too long"
         else:
             success = success + 1
 
         validEmail = False
-        try:
-            validate_email(email)
-            validEmail = True
-        except:
-            data["errors"]["email"] = "Invalid email"
+        if(len(email) <= parameters.User.max_email_length):
+            try:
+                validate_email(email)
+                validEmail = True
+            except:
+                data["errors"]["email"] = "Invalid email"
+        else:
+            data["errors"]["email"] = "Email is too long"
 
         try:
             if(validEmail):
@@ -78,9 +81,9 @@ def register(request):
         except:
             success = success + 1
 
-        if(len(password) < 3):
+        if(len(password) < parameters.User.min_password_length):
             data["errors"]["password"] = "Password is too short"
-        elif(len(password) > 50):
+        elif(len(password) > parameters.User.max_password_length):
             data["errors"]["password"] = "Password is too long"
         else:
             success = success + 1

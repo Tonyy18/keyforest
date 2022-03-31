@@ -388,7 +388,6 @@ body {
     width: 100%;
     align-items: center;
     height: 45px;
-    padding-left: 20px;
 }
 .app-listing img {
     height: 35px;
@@ -572,12 +571,19 @@ body {
     padding: 4px;
     cursor: default;
 }
+.input-section .app-selection.error {
+    border: 1px solid red;
+}
+.input-section .app-selection.error p {
+    color: red;
+}
 .input-section .app-selection:hover {
     background-color: var(--blue);
 }
 .input-section .app-selection:hover * {
     color: white;
 }
+
 .input-section .app-selection img {
     height: 32px;
     width: 32px;
@@ -588,6 +594,10 @@ body {
 }
 .input-section .app-selection .fas {
     padding-right: 5px;
+}
+.input-section .app-selection.app-not-sel p {
+    line-height: 32px;
+    padding-left: 10px;
 }
 .input-section .i-s-input textarea {
     resize: none;

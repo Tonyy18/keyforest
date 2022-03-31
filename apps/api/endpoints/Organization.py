@@ -1,7 +1,7 @@
 import abc
 from django.shortcuts import render
 from django.http import HttpResponse, QueryDict
-from project.models import Organization, User_connection, Application, Invitation, User
+from project.models import Organization, User_connection, Application, Invitation, User, License
 from common.utils import *
 from django.contrib.auth.decorators import login_required
 import json
@@ -9,9 +9,30 @@ from common import parameters,validators
 from datetime import date
 from datetime import datetime
 from django.db.models import Q
-from ..views import Codes, response, create_app_dict, create_user_dict, create_org_dict
+from ..views import Codes, create_license_dict, response, create_app_dict, create_user_dict, create_org_dict
 
-def users(request):
+def licenses(request):
+    #List all licenses
+    if(not request.user.is_authenticated):
+        return response(Codes.unauthorized)
+
+    org = get_api_org(request)
+
+    if(org == None):
+        return response(Codes.bad_request, "Couldn't solve the target organization")
+
+    con = is_connected(request, org)
+    if(not con):
+        return response(Codes.unauthorized, "User is not part of the organization")
+
+    all_licenses = License.objects.filter(application__organization=org)
+    results = []
+    for lic in all_licenses:
+        if(has_app_permissions(con, lic.application)):
+            results.append(create_license_dict(lic))
+    return response(Codes.ok, results)
+
+def users(request, userid=None):
     if(not request.user.is_authenticated):
         return response(Codes.unauthorized)
 
@@ -76,8 +97,6 @@ def users(request):
         return response(Codes.ok, create_user_dict(user))
 
     if(request.method == "DELETE"):
-        del_data = QueryDict(request.body)
-        userid = del_data.get("user_id")
         if(not userid):
             return response(Codes.bad_request, "User id was missing")
         if(not has_permission(con, parameters.Permissions.Remove_users)):
@@ -151,7 +170,7 @@ def applications(request):
         if(Application.objects.filter(organization=org, name=name).exists()):
             return response(Codes.forbidden, "Application called " + name + " already exists in the organization")
 
-        app = Application(name=name, organization=org, api_key=random_id(), bio=bio, creator=request.user)
+        app = Application(name=name, organization=org, bio=bio, creator=request.user)
         app.save()
             
         per_added = add_app_permission(con, app)

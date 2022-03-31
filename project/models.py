@@ -4,16 +4,18 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.conf import settings
 import datetime
+from django.core.validators import MaxValueValidator, MinValueValidator
+import uuid
 
 class Organization(models.Model):
-    name = models.TextField(null=False)
+    name = models.TextField(null=False, max_length=50)
     creator = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="organization_creator"
     )
     image = models.ImageField(upload_to="organizations/", default="organizations/default.png")
-    about = models.TextField(null=True)
+    about = models.TextField(null=True, max_length=200)
     website_link = models.TextField(null=True)
     created = models.DateField(auto_now_add=True)
     applications = models.IntegerField(default=0)
@@ -23,10 +25,10 @@ class Organization(models.Model):
 
 class User(AbstractBaseUser):
     username = None
-    first_name = models.TextField(null=False)
-    last_name = models.TextField(null=False)
+    first_name = models.TextField(null=False, max_length=30)
+    last_name = models.TextField(null=False, max_length=30)
     password = models.TextField(null=False)
-    email = models.TextField(null=False)
+    email = models.TextField(null=False, unique=True, max_length=100)
     image = models.ImageField(upload_to="users/", default="users/default.jpg", unique=False)
     organization = models.ForeignKey(Organization, null=True, on_delete=models.SET_NULL)
     USERNAME_FIELD = 'email'
@@ -64,10 +66,10 @@ class Invitation(models.Model):
 
 class Application(models.Model):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
-    name = models.TextField(null=False)
+    name = models.TextField(null=False, max_length=50)
     image = models.ImageField(upload_to="applications/", default="applications/default.png")
-    api_key = models.TextField(null=False)
-    bio = models.TextField(null=True)
+    api_key = models.UUIDField(default=uuid.uuid4, editable=False)
+    bio = models.TextField(null=True, max_length=200)
     download_link = models.TextField(null=True)
     website_link = models.TextField(null=True)
     creator = models.ForeignKey(
@@ -81,12 +83,18 @@ class Application(models.Model):
 
 class License(models.Model):
     application = models.ForeignKey(Application, on_delete=models.CASCADE)
-    name = models.TextField(null=False)
-    api_key = models.TextField(null=False)
-    bio = models.TextField(null=True)
-    parameters = models.TextField(null=True)
-    amount = models.IntegerField(null=True)
-    duration = models.IntegerField(null=True)
+    name = models.TextField(null=False, max_length=30)
+    api_key = models.UUIDField(default=uuid.uuid4, editable=False)
+    bio = models.TextField(null=True, max_length=200)
+    parameters = models.TextField(null=True, default="{}")
+    amount = models.IntegerField(null=True,validators=[
+        MaxValueValidator(100000000),
+        MinValueValidator(1)
+    ])
+    duration = models.IntegerField(null=True,validators=[
+        MaxValueValidator(50000),
+        MinValueValidator(1)
+    ])
     expiration = models.DateField(null=True)
     price = models.FloatField(null=True)
     visible = models.BooleanField(default=True)

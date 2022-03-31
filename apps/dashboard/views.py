@@ -131,17 +131,20 @@ def app(request, id, app_id):
     })
 
 @login_required
-def new_license(request, id, app_id):
+def new_license(request, id, app_id = None):
     #create license for an application
     con = verify_con(request, id)
     if(con["success"] == False):
         return con["data"]
     con = con["data"]
 
-    valid_app = verify_app_access(con, id, app_id)
-    if(valid_app["success"] == False):
-        return error(request, "App not found or you are missing permissions")
-    app = valid_app["data"]
+    if(app_id != None):
+        valid_app = verify_app_access(con, id, app_id)
+        if(valid_app["success"] == False):
+            return error(request, "App not found or you are missing permissions")
+        app = valid_app["data"]
+    else:
+        app = None
 
     return render(request, "dashboard/new_license.html", {
         "page": "apps",
