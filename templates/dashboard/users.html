@@ -55,6 +55,9 @@
                     <ul class="user-list" id="user-list" style="margin-top: 20px">
                     </ul>
                 </div>
+                <div class="sidebar-section-content error-page" id="error-section" style="display: none">
+                    error
+                </div>
                 <div class="sidebar-section-content" id="content" style="display: none">
                     <header>
                         <div class="flex">
@@ -189,7 +192,7 @@
                 if(a != to_save.length - 1) to_save_str += ",";
             }
             Organization.replace_permissions(selected_user["id"], to_save_str, function() {
-                cAlert.show("notice", "Permissions added to " + selected_user["name"])
+                cAlert.show("notice", "Permissions changed to " + selected_user["name"])
             }, (data) => {
                 let message = "Error ocurred";
                 if("error" in data.responseJSON) {
@@ -286,6 +289,7 @@
         function show_section() {
             if(selected_user == null) return;
             $("#content").show();
+            hide_error();
             $("#c-name").text(selected_user["name"])
             display_perms()
         }
@@ -417,7 +421,13 @@
             Organization.remove_user(selected_user["id"], () => {
                 cAlert.show("notice", "User removed")
                 $("#user-list .user-item[data-userid='" + selected_user["id"] + "']").remove();
+                users = users.filter((el) => {
+                    return el["id"] != userid
+                })
                 hide_content()
+                if(users.length == 1) {
+                    show_error("No other users");
+                }
             }, (data) => {
                 let message = "Error ocurred";
                 if("error" in data.responseJSON) {
@@ -458,11 +468,16 @@
         function set_list_state(state) {
             $("#user-list").html('<li class="user-list-state">' + state + '</li>')
         }
+        function show_error(error) {
+            $("#content").hide();
+            $("#error-section").show().html(error);
+        }
+        function hide_error() {
+            $("#error-section").hide();
+        }
         function list_users(ls) {
-            set_list_state('<img src="/static/images/loader.gif" class="loader">')
-            if(ls.length == 0) {
-                set_list_state("No users found")
-                return false;
+            if(ls.length == 1) {
+                show_error("No other users")
             }
             $("#user-list").empty();
             for(a in ls) {
@@ -489,6 +504,7 @@
             display_by_namefilter($(this).val());
         })
         function get_users(order="") {
+            set_list_state('<img src="/static/images/loader.gif" class="loader">')
             Organization.get_users(order, (data) => {
                 users = data.data
                 list_users(users);
@@ -498,7 +514,7 @@
                 if("error" in data.responseJSON) {
                     message = data.responseJSON["error"]
                 }
-                set_list_state(message)
+                show_error(message)
             })
         };
         get_users("name");

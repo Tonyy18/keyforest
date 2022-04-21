@@ -178,7 +178,7 @@ body {
 .dashboard-page .page-section > header:not(:first-child) {
     padding: 50px 0 30px 0;
 }
-.dashboard-page .page-section > header img {
+.dashboard-page .page-section > header .header-img {
     height: 50px;
     width: 50px;
     margin-right: 15px;
@@ -221,8 +221,11 @@ body {
 .list.no-item-imgs .list-item {
     padding: 19.5px;
 }
-.list .list-item:not(.list-header):hover {
+.list.list-white .list-item:not(.list-header):hover {
     background-color: #FAFAFA;
+}
+.list.list-trans .list-item:not(.list-header):hover {
+    background-color: #F0F0F0;
 }
 .list > :not(:first-child) {
     border-top: 1px solid #E2E2E2;
@@ -277,9 +280,7 @@ body {
 .list .list-error {
     color: red;
 }
-.invitation-list .item-cells > :first-child {
-    flex-grow: 1;
-}
+
 
 /*ITEM LIST END*/
 
