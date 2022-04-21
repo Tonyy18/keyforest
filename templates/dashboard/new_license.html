@@ -114,6 +114,11 @@
         const image = $(this).find("img").attr("src")
         modal.close();
         $("#app-selection").removeClass("app-not-sel").attr("data-appid", id)
+        $("#app-selection img").remove();
+        $("#app-selection").prepend("<img src='" + image + "'>")
+        $("#app-selection p").html(name);
+        $("#select-app-modal .modal-search-results").empty();
+        $("#select-app-modal input[type=text]").val("");
     })
     $("#select-app-modal input[type=text]").on("keyup", function(e) {
         const app_name = $.trim($(this).val());

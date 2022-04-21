@@ -389,6 +389,9 @@ body {
     align-items: center;
     height: 45px;
 }
+.perms-management .sel-apps .app-listing {
+    padding-left: 15px;
+}
 .app-listing img {
     height: 35px;
     width: 35px;

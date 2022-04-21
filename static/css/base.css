@@ -18,6 +18,7 @@
     --red: #FF4848;
     --green: #00DA88;
     --darker-green: #00A064;
+    --font-color: #4B4B4B;
 }
 html, body {
     height: 100%;

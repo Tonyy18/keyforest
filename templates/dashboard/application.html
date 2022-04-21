@@ -1,4 +1,5 @@
 {% extends "dashboard/sidebar.html" %}
+{% load static %}
 {% block title %}{{ request.user.organization.name }} | Applications{% endblock %}
 {% block body %}
 <section class="dashboard-page">
@@ -40,8 +41,9 @@
                 <a href="{{app.id}}/license/new" class="btn btn-green">Create<i class="fas fa-plus"></i></a>
             </div>
         </header>
-        <ul class="list list-white no-item-imgs" id="license-list">
+        <ul class="list list-white" id="license-list">
             <li class="list-header list-item">
+                <div class="item-image"></div>
                 <div class="item-cells">
                     <p>Name</p>
                     <p>Amount</p>
@@ -96,6 +98,7 @@
         cells.append("<p>" + exp + "</p>")
         cells.append("<p>" + duration + "</p>")
         cells.append("<p>" + date_format(created, "d.m.y") + "</p>")
+        link.append("<img src='{% static 'images/license.png'%}' class='item-image'>")
         link.append(cells)
         li.append(link)
         return li;
