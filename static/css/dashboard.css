@@ -505,21 +505,27 @@ body {
 .box-section {
     text-align: center;
 }
+
 .box-section .box {
-    display: inline-block;
-    margin:  15px;
-}
-.box-section .box {
-    width: 400px;
     text-align: left;
+    display: inline-block;
+    margin: 15px;
     background-color: white;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
     border-radius: 5px;
-    height: 300px;
     vertical-align: top;
+}
+.box-section .box.large-box {
+    width: 400px;
+}
+.box-section .box.medium-box {
+    width: 300px;
 }
 .box-section .box header {
     padding: 20px;
+}
+.box.chart-box {
+    height: 300px;
 }
 .box.chart-box .chart {
     height: calc(100% - 63px);
