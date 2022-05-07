@@ -23,7 +23,7 @@
                 </div>
             </li>
             <li class="list-message" id="list-message">
-                You apps doesn't have any licenses
+                Your apps doesn't have any licenses
             </li>
         </ul>
     </section>
@@ -62,9 +62,9 @@
         return li;
     }
     Organization.get_licenses((data) => {
-        $("#list-message").hide();
         data = data.data
         for(let a = 0; a < data.length; a++) {
+            $("#list-message").hide();
             const lic = data[a];
             const el = create_lic_el(lic);
             $("#license-list").append(el);
