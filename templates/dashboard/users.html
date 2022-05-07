@@ -475,8 +475,8 @@
         function hide_error() {
             $("#error-section").hide();
         }
-        function list_users(ls) {
-            if(ls.length == 1) {
+        function list_users(ls, filtering = false) {
+            if(ls.length == 1 && filtering == false) {
                 show_error("No other users")
             }
             $("#user-list").empty();
@@ -491,7 +491,7 @@
         function display_by_namefilter(name) {
             name = $.trim(name);
             if(name == "") {
-                list_users(users);
+                list_users(users, true);
                 return false;
             };
             const results = users.filter((user) => {
@@ -501,7 +501,7 @@
                 set_list_state("No matching user");
                 return;
             }
-            list_users(results);
+            list_users(results, true);
             return false
         }
         $("#user-input").on("keyup", function() {
