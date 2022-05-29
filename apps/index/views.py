@@ -5,6 +5,7 @@ from project.models import User
 from django.contrib.auth import authenticate, login, logout as _logout
 from django.contrib.auth.decorators import login_required
 from common import parameters
+from project.models import User_connection
 
 # Create your views here.
 def logout(request):
@@ -13,10 +14,14 @@ def logout(request):
 
 def landingpage(request):
     testbench = False
+    dashboard = False
     if(request.user.is_authenticated and request.user.role in parameters.Role.testbench_access):
         testbench = True
+    if(User_connection.objects.filter(user=request.user).exists()):
+        dashboard = True
     return render(request, "index/index.html", {
-        "testbench": testbench
+        "testbench": testbench,
+        "dashboard": dashboard
     })
 
 def signin(request):

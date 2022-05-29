@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'apps.index',
     'apps.api',
     'apps.testbench',
+    'apps.marketplace',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

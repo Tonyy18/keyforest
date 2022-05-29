@@ -29,7 +29,10 @@
         <div class="collapse flex-grow">
             <ul class="menu menu-right">
                 {% if user.is_authenticated %}
+                    <li><a href="/market">Marketplace</a></li>
+                    {% if dashboard %}
                     <li><a href="/dashboard">Dashboard</a></li>
+                    {% endif %}
                     {% if testbench %}
                     <li><a href="/testbench">Test bench</a></li>
                     {% endif %}
