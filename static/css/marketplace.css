@@ -1,0 +1,54 @@
+.navbar {
+    border-bottom: 1px solid #E2E2E2;
+    height: 65px;
+}
+.navbar .container {
+    display: flex;
+    align-items: center;
+}
+.navbar .collapse,
+.navbar .menu {
+    flex-grow: 1;
+    display: flex;
+}
+.navbar .logo {
+    font-size: 20px;
+    font-weight: normal;
+    padding-right: 15px;
+}
+.navbar .menu li {
+    display: flex;
+    align-items: center;
+}
+.navbar .menu li.form-item {
+    flex-grow: 1;
+    margin: 0 10px;
+}
+.navbar .menu .form-item form {
+    width: 100%;
+    display: block;
+}
+.navbar .menu .form-item form label {
+    display: flex;
+    border: 1px solid #E2E2E2;
+    border-radius: 5px;
+    font-size: 0px;
+    height: 35px;
+    align-items: center;
+}
+.navbar .menu .form-item form label input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    font-size: 13px;
+}
+.navbar .menu .form-item form label .fas {
+    padding: 0 15px;
+    color: DarkGray;
+}
+.navbar .menu a {
+    padding: 10px;
+}
+.navbar .menu a:hover {
+    color: var(--blue);
+}

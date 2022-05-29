@@ -17,7 +17,7 @@ def landingpage(request):
     dashboard = False
     if(request.user.is_authenticated and request.user.role in parameters.Role.testbench_access):
         testbench = True
-    if(User_connection.objects.filter(user=request.user).exists()):
+    if(request.user.is_authenticated and User_connection.objects.filter(user=request.user).exists()):
         dashboard = True
     return render(request, "index/index.html", {
         "testbench": testbench,
