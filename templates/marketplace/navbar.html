@@ -2,6 +2,9 @@
 {% load static %}
 {% block b_head %}
 <link rel="stylesheet" type="text/css" href="{% static '/css/marketplace.css'%}">
+<script src="{% static '/js/marketplace.js'%}"></script>
+{% block head%}
+{% endblock %}
 {% endblock %}
 {% block b_body %}
 <nav class="navbar">
@@ -12,10 +15,10 @@
         <div class="collapse">
             <ul class="menu">
                 <li class="form-item">
-                    <form>
+                    <form id="search-form">
                         <label>
                             <i class="fas fa-search"></i>
-                            <input type="text" placeholder="Search">
+                            <input type="text" placeholder="Search" id="search-value">
                         </label>
                     </form>
                 </li>
@@ -31,4 +34,6 @@
         </div>
     </div>
 </nav>
+{% block body %}
+{% endblock %}
 {% endblock %}

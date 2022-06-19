@@ -2,6 +2,7 @@ import abc
 from django.shortcuts import render
 from django.http import HttpResponse, QueryDict
 from project.models import Organization, User_connection, Application, Invitation, User, License
+from django.conf import settings
 from common.utils import *
 from django.contrib.auth.decorators import login_required
 import json
@@ -10,6 +11,9 @@ from datetime import date
 from datetime import datetime
 from django.db.models import Q
 from ..views import Codes, response, create_app_dict, create_user_dict, create_org_dict, create_license_dict
+import stripe
+stripe.api_key = settings.API_KEYS["stripe"]
+
 
 def licenses(request, appid):
     if(not request.user.is_authenticated):
@@ -144,6 +148,4 @@ def licenses(request, appid):
         ob.visible = True
         ob.save()
         return response(Codes.ok, create_license_dict(ob))
-        
-
         

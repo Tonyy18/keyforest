@@ -4,3 +4,6 @@ from django.http import HttpResponse
 # Create your views here.
 def market_index(request):
     return render(request, "marketplace/index.html")
+    
+def search(request, search_str):
+    return render(request, "marketplace/search.html")
