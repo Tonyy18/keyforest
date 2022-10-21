@@ -2,10 +2,10 @@ import abc
 from django.shortcuts import render
 from django.http import HttpResponse, QueryDict
 from project.models import Organization, User_connection, Application, Invitation, User, License
-from common.utils import *
+from lib.utils import *
 from django.contrib.auth.decorators import login_required
 import json
-from common import parameters,validators
+from lib import parameters,validators
 from datetime import date
 from datetime import datetime
 from django.db.models import Q

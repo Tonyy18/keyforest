@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
-AUTHENTICATION_BACKENDS = ['common.backends.Authentication']
+AUTHENTICATION_BACKENDS = ['lib.backends.Authentication']
 LOGIN_URL = "/signin"
 AUTH_USER_MODEL = 'project.User'
 INSTALLED_APPS = [
@@ -132,3 +132,5 @@ STATICFILES_DIRS = [
 ]
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+stripe_api_key = "sk_test_nLL4dQrz7Ktg0sBAJle5bMKL"

@@ -99,6 +99,7 @@ class License(models.Model):
     price = models.FloatField(null=True)
     visible = models.BooleanField(default=True)
     created = models.DateField(auto_now_add=True)
+    stripe_id = models.IntegerField(null=True)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

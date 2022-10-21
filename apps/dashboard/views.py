@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
-from common.parameters import User
+from lib.parameters import User
 from project.models import Organization, User_connection, Application, License
-from common.utils import *
-from common.parameters import Permissions
+from lib.utils import *
+from lib.parameters import Permissions
 # Create your views here.
 
 def error(request, text):

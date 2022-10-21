@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from common import parameters
+from lib import parameters
 
 # Create your views here.
 @login_required

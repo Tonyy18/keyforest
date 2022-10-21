@@ -4,7 +4,7 @@ from django.core.validators import validate_email
 from project.models import User
 from django.contrib.auth import authenticate, login, logout as _logout
 from django.contrib.auth.decorators import login_required
-from common import parameters
+from lib import parameters
 from project.models import User_connection
 
 # Create your views here.
