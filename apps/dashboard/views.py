@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFou
 from django.contrib.auth.decorators import login_required
 from lib.parameters import User
 from project.models import Organization, User_connection, Application, License
-from lib.utils import *
+from lib.utils.common import *
 from lib.parameters import Permissions
 # Create your views here.
 

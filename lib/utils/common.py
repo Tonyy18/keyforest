@@ -1,7 +1,7 @@
 from project.models import User_connection, Organization, Application, User
 import uuid
 import inspect
-from . import parameters
+from lib import parameters
 def is_connected(request, id):
     if(type(id) is Organization):
         o = User_connection.objects.filter(organization=id, user=request.user)

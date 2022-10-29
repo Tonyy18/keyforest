@@ -1,6 +1,4 @@
 
-from lib import parameters
-
 class User:
     org_count = 5 #max organizations to create
     max_firstname_length = 30

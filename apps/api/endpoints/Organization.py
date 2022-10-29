@@ -2,7 +2,7 @@ import abc
 from django.shortcuts import render
 from django.http import HttpResponse, QueryDict
 from project.models import Organization, User_connection, Application, Invitation, User, License
-from lib.utils import *
+from lib.utils.common import *
 from django.contrib.auth.decorators import login_required
 import json
 from lib import parameters,validators

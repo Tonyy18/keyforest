@@ -84,6 +84,7 @@ class Application(models.Model):
 class License(models.Model):
     application = models.ForeignKey(Application, on_delete=models.CASCADE)
     name = models.TextField(null=False, max_length=30)
+    image = models.ImageField(upload_to="licenses/", default="applications/default.png")
     api_key = models.UUIDField(default=uuid.uuid4, editable=False)
     bio = models.TextField(null=True, max_length=200)
     parameters = models.TextField(null=True, default="{}")
