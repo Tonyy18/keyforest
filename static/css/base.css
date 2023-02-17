@@ -19,6 +19,7 @@
     --green: #00DA88;
     --darker-green: #00A064;
     --font-color: #4B4B4B;
+    --light-border: #E2E2E2;
 }
 html, body {
     height: 100%;

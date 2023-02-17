@@ -1,0 +1,82 @@
+.navbar {
+    border-bottom: 1px solid #E2E2E2;
+    height: 100px;
+}
+.navbar .container {
+    display: flex;
+    align-items: center;
+}
+.navbar header {
+    padding-right: 10px;
+}
+.navbar header .logo {
+    font-size: 25px;
+    color: black;
+}
+.navbar .collapse {
+    flex-grow: 1;
+    display: flex;
+}
+.navbar .menu:first-child {
+    flex-grow: 1;
+}
+.navbar .menu {
+    display: flex;
+    font-size: 0px;
+}
+.navbar .menu li {
+    display: block;
+}
+.navbar .menu li a {
+    padding: 10px 15px;
+}
+
+.app-thumb {
+    width: 277px;
+    height: 303px;
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+}
+.app-thumb .app-image {
+    width: 100%;
+    padding-top: 66.66%;
+    background-size: cover;
+}
+.app-thumb .app-info {
+    height: calc(100% - 184.64px); /*Minus image height*/
+    display: flex;
+    padding: 10px;
+}
+.app-thumb .app-info .left {
+    height: 100%;
+    text-align: center;
+}
+.app-thumb .app-info .left img {
+    height: 38px;
+    width: 38px;
+    border-radius: 100%;
+}
+.app-thumb .app-info .right {
+    flex-grow: 1;
+    height: 100%;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.app-thumb .app-name {
+    font-size: 15px;
+    line-height: 20px;
+    padding-bottom: 5px;
+    height: calc(100% - 38px);
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.app-thumb .app-creator {
+    font-size: 13px;
+    color: #757575;
+    padding-bottom: 3px;
+}
+.app-thumb .app-stars {
+    font-size: 5px;
+}

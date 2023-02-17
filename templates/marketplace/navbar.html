@@ -1,0 +1,31 @@
+{% extends "include/base.html" %}
+{% load static %}
+{% block b_head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/marketplace.css'%}">
+{% endblock %}
+{% block b_body %}
+<nav class="navbar">
+    <div class="container">
+        <header>
+            <a href="/" class="logo">Key Forest</a>
+        </header>
+        <div class="collapse">
+            <ul class="menu">
+                <li>
+                    <a href="/">Home</a>
+                </li>
+            </ul>
+            <ul class="menu menu-right">
+                <li>
+                    <a href="/signin">Login</a>
+                </li>
+                <li>
+                    <a href="/register">Register</a>
+                </li>
+            </ul>
+        </ul>
+    </div>
+</nav>
+{% block body%}
+{% endblock %}
+{% endblock %}
