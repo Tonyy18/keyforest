@@ -2,17 +2,37 @@
 {% load static %}
 {% block b_head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/marketplace.css'%}">
+<script>
+$(function() {
+    $("#menu-toggle").click(function() {
+        $("#navbar").toggleClass("open");
+    })
+})
+</script>
 {% endblock %}
 {% block b_body %}
-<nav class="navbar">
+<nav class="navbar" id="navbar">
     <div class="container">
         <header>
             <a href="/" class="logo">Key Forest</a>
+            <button class="menu-toggle" id="menu-toggle">
+                <div></div>
+                <div></div>
+                <div></div>
+            </button>
         </header>
         <div class="collapse">
+            <header>
+                <a href="/" class="logo">Key Forest</a>
+            </header>
             <ul class="menu">
                 <li>
                     <a href="/">Home</a>
+                </li>
+                <li class="search-menu-item">
+                    <form>
+                        <input type="text" placeholder="Search" class="input input-default">
+                    </form>
                 </li>
             </ul>
             <ul class="menu menu-right">

@@ -85,10 +85,10 @@ DATABASES = {
         'NAME': 'project',
         'ENGINE': 'django.db.backends.mysql',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'root',
     }
 }
-
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

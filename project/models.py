@@ -28,7 +28,7 @@ class User(AbstractBaseUser):
     first_name = models.TextField(null=False, max_length=30)
     last_name = models.TextField(null=False, max_length=30)
     password = models.TextField(null=False)
-    email = models.TextField(null=False, unique=True, max_length=100)
+    email = models.CharField(null=False, unique=True, max_length=100)
     image = models.ImageField(upload_to="users/", default="users/default.jpg", unique=False)
     organization = models.ForeignKey(Organization, null=True, on_delete=models.SET_NULL)
     USERNAME_FIELD = 'email'
