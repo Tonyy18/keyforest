@@ -1,3 +1,7 @@
+
+body > .container {
+    height: calc(100% - 70px);
+}
 .navbar {
     border-bottom: 1px solid #E2E2E2;
     height: 70px;
@@ -93,6 +97,84 @@
 	transform: rotate(-135deg);
 }
 
+.app-thumb {
+    width: 277px;
+    height: 303px;
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+}
+.app-thumb .app-image {
+    width: 100%;
+    padding-top: 66.66%;
+    background-size: cover;
+}
+.app-thumb .app-info {
+    height: calc(100% - 184.64px); /*Minus image height*/
+    display: flex;
+    padding: 10px;
+}
+.app-thumb .app-info .left {
+    height: 100%;
+    text-align: center;
+}
+.app-thumb .app-info .left img {
+    height: 38px;
+    width: 38px;
+    border-radius: 100%;
+}
+.app-thumb .app-info .right {
+    flex-grow: 1;
+    height: 100%;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.app-thumb .app-name {
+    font-size: 15px;
+    line-height: 20px;
+    padding-bottom: 5px;
+    height: calc(100% - 38px);
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.app-thumb .app-creator {
+    font-size: 13px;
+    color: #757575;
+    padding-bottom: 3px;
+}
+.app-thumb .app-stars {
+    font-size: 5px;
+}
+
+.search-filters {
+    width: 200px;
+    height: 100%;
+    border-radius: 5px;
+    border: 1px solid var(--light-border);
+}
+.search-filters header {
+    padding: 10px 15px;
+    border-bottom: 1px solid #E2E2E2;
+    margin-bottom: 5px;
+}
+.search-filters header p {
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+.search-filters ul li {
+    display: flex;
+    padding: 5px 15px;
+}
+.search-filters ul li label {
+    flex-grow: 1;
+    display: flex;
+}
+.search-filters ul li label span {
+    flex-grow: 1;
+    font-size: 13px;
+}
+
 @media(max-width: 768px) {
     .navbar .container {
         display: block;
@@ -144,54 +226,4 @@
     .navbar .menu li:not(.search-menu-item):hover a {
         color: white;
     }
-}
-
-.app-thumb {
-    width: 277px;
-    height: 303px;
-    background-color: white;
-    border-radius: 3px;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
-}
-.app-thumb .app-image {
-    width: 100%;
-    padding-top: 66.66%;
-    background-size: cover;
-}
-.app-thumb .app-info {
-    height: calc(100% - 184.64px); /*Minus image height*/
-    display: flex;
-    padding: 10px;
-}
-.app-thumb .app-info .left {
-    height: 100%;
-    text-align: center;
-}
-.app-thumb .app-info .left img {
-    height: 38px;
-    width: 38px;
-    border-radius: 100%;
-}
-.app-thumb .app-info .right {
-    flex-grow: 1;
-    height: 100%;
-    padding-left: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-.app-thumb .app-name {
-    font-size: 15px;
-    line-height: 20px;
-    padding-bottom: 5px;
-    height: calc(100% - 38px);
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-.app-thumb .app-creator {
-    font-size: 13px;
-    color: #757575;
-    padding-bottom: 3px;
-}
-.app-thumb .app-stars {
-    font-size: 5px;
 }

@@ -36,12 +36,19 @@ $(function() {
                 </li>
             </ul>
             <ul class="menu menu-right">
+                {% if user.is_authenticated == False %}
+                    <li>
+                        <a href="/signin">Login</a>
+                    </li>
+                    <li>
+                        <a href="/register">Register</a>
+                    </li>
+                {% endif %}
+                {% if user.is_authenticated == True %}
                 <li>
-                    <a href="/signin">Login</a>
+                    <a href="/logout">Logout</a>
                 </li>
-                <li>
-                    <a href="/register">Register</a>
-                </li>
+                {% endif %}
             </ul>
         </ul>
     </div>

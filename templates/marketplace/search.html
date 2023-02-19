@@ -1,0 +1,54 @@
+{% extends "marketplace/navbar.html" %}
+{% load static %}
+{% block body %}
+<div class="container flex">
+    <div class="search-filters">
+        <header>
+            <p>Filters</p>
+        </header>
+        <ul>
+            <li>
+                <label>
+                    <span>Applications</span>
+                    <input type="radio" name="type" value="Applications" checked>
+                </label>
+            </li>
+            <li>
+                <label>
+                    <span>Licenses</span>
+                    <input type="radio" name="type" value="Applications">
+                </label>
+            </li>
+            <li>
+                <label>
+                    <span>Organizations</span>
+                    <input type="radio" name="type" value="Applications">
+                </label>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--
+<div class="app-thumb">
+    <div class="app-image" style="background-image: url({% static 'images/thumbnail-test.jpg'%})">
+    </div>
+    <div class="app-info">
+        <div class="left">
+            <img src="{% static 'images/test.png'%}">
+        </div>
+        <div class="right">
+            <p class="app-name">Visual Studio Community</p>
+            <p class="app-creator">Microsoft</p>
+            <div class="app-stars">
+                <i class="fa-regular fa-star"></i>
+                <i class="fa-regular fa-star"></i>
+                <i class="fa-regular fa-star"></i>
+                <i class="fa-regular fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+            </div>
+        </div>
+    </div>
+</div>
+-->
+
+{% endblock %}

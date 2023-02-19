@@ -7,9 +7,12 @@ from django.contrib.auth.decorators import login_required
 from lib import parameters
 from project.models import User_connection
 
+
 # Create your views here.
 def logout(request):
     _logout(request)
+    if(request.META.get("HTTP_REFERER")):
+        return redirect(request.META.get("HTTP_REFERER"))
     return redirect("/")
 
 def landingpage(request):
@@ -26,6 +29,9 @@ def landingpage(request):
     })
 
 def signin(request):
+    if(request.user.is_authenticated):
+        if(request.META.get("HTTP_REFERER")):
+            return redirect(request.META.get("HTTP_REFERER"))
     data = {"error": ""}
     if(request.method == "POST"):
         email = request.POST.get("email")
