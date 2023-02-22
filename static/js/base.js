@@ -14,6 +14,27 @@ function getCookie(name) {
     return cookieValue;
 }
 
+$(function() {
+    $(".border-slider").each(function() {
+        const slider = $(this);
+        const lis = $(this).find("li:not(.active-border)");
+        const border = $(this).find(".active-border");
+        const padding = $(lis[0]).css("padding").split(" ")[1].slice(0, -2)
+        function getLiWidth(li) {
+            return $(li).width() + (padding * 2)
+        }
+        border.css("width", getLiWidth(lis[0]));
+        $(lis).on("click", function(e) {
+            $(lis).removeClass("active");
+            $(this).addClass("active");
+            border.animate({
+                "width": getLiWidth(e.target),
+                "left": -($(slider).offset().left - $(e.target).offset().left)
+            }, 200)
+        }) 
+    });
+})
+
 class Modal {
     constructor(id) {
         this.id = id;

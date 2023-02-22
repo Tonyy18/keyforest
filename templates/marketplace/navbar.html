@@ -2,13 +2,7 @@
 {% load static %}
 {% block b_head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/marketplace.css'%}">
-<script>
-$(function() {
-    $("#menu-toggle").click(function() {
-        $("#navbar").toggleClass("open");
-    })
-})
-</script>
+<script src="{% static 'js/marketplace.js'%}"></script>
 {% endblock %}
 {% block b_body %}
 <nav class="navbar" id="navbar">
@@ -30,21 +24,24 @@ $(function() {
                     <a href="/">Home</a>
                 </li>
                 <li class="search-menu-item">
-                    <form>
-                        <input type="text" placeholder="Search" class="input input-default">
+                    <form id="search-form">
+                        <input type="text" placeholder="Search" class="input input-default" value="{% if query %}{{ query }}{% endif %}">
                     </form>
                 </li>
             </ul>
             <ul class="menu menu-right">
                 {% if user.is_authenticated == False %}
                     <li>
-                        <a href="/signin">Login</a>
+                        <a href="/signin?next={{request.path}}">Login</a>
                     </li>
                     <li>
                         <a href="/register">Register</a>
                     </li>
                 {% endif %}
                 {% if user.is_authenticated == True %}
+                <li>
+                    <a href="/account">Account</a>
+                </li>
                 <li>
                     <a href="/logout">Logout</a>
                 </li>

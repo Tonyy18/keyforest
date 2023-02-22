@@ -32,6 +32,8 @@ def signin(request):
     if(request.user.is_authenticated):
         if(request.META.get("HTTP_REFERER")):
             return redirect(request.META.get("HTTP_REFERER"))
+        else:
+            return redirect("/")
     data = {"error": ""}
     if(request.method == "POST"):
         email = request.POST.get("email")
@@ -48,6 +50,11 @@ def signin(request):
     return render(request, "index/signin.html", data)
 
 def register(request):
+    if(request.user.is_authenticated):
+        if(request.META.get("HTTP_REFERER")):
+            return redirect(request.META.get("HTTP_REFERER"))
+        else:
+            return redirect("/")
     data = {"errors":{}}
 
     if(request.method == "POST"):

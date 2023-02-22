@@ -3,14 +3,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
 
-* {
-    font-size: 14px;
-    font-family: "Poppins";
-    box-sizing: border-box;
-    padding: 0px;
-    margin: 0px;
-    color: #4B4B4B;
-}
 :root {
     --gray-background: #F2F3F3;
     --blue: #00AAFF;
@@ -20,6 +12,14 @@
     --darker-green: #00A064;
     --font-color: #4B4B4B;
     --light-border: #E2E2E2;
+}
+* {
+    font-size: 14px;
+    font-family: "Poppins";
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+    color: var(--font-color);
 }
 html, body {
     height: 100%;
@@ -56,6 +56,9 @@ a {
 }
 .f-a {
     align-items: center;
+}
+.tac {
+    text-align: center;
 }
 .flex-grow {
     flex-grow: 1;

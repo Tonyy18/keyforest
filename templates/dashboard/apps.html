@@ -60,8 +60,8 @@
         }, function(data) {
             //success
             const el = create_app_el(data.data);
+            $("#app-list .list-header .list-message").remove();
             $("#app-list .list-header").after(el);
-            get_ap
         }, function(data) {
             //error
             cAlert.show("error", data.responseJSON.error)
