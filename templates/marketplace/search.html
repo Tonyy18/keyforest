@@ -1,16 +1,13 @@
 {% extends "marketplace/navbar.html" %}
 {% load static %}
 {% block body %}
-<nav class="subnav">
+<!-- <nav class="subnav">
     <div class="container">
         <div class="collapse">
             <ul class="border-slider">
                 <li class="active-border"></li>
-                <li class="">
+                <li class="active">
                     Applications
-                </li>
-                <li>
-                    Licenses
                 </li>
                 <li>
                     Organizations
@@ -24,77 +21,18 @@
             </ul>
         </div>
     </div>
-</nav>
+</nav> -->
 <div class="container search-results">
     <header>
-        <h1>Search results (152)</h1>
+        <h1>Search results (<span id="search-results-count"></span>)</h1>
     </header>
-    <div class="search-results-objects">
-        <div class="tac">
+    <div class="search-results-objects" id="search-results-objects">
+        <!-- <div class="tac">
             <img src="/static/images/loader.gif" class="loader">
-        </div>
-        <a href="#" class="app-thumb">
-            <div class="app-image" style="background-image: url({% static 'images/thumbnail-test.jpg'%})">
-            </div>
-            <div class="app-info">
-                <div class="left">
-                    <img src="{% static 'images/test.png'%}">
-                </div>
-                <div class="right">
-                    <p class="app-name">Visual Studio Community</p>
-                    <p class="app-creator">Microsoft</p>
-                    <div class="app-stars">
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a href="#" class="app-thumb">
-            <div class="app-image" style="background-image: url({% static 'images/thumbnail-test.jpg'%})">
-            </div>
-            <div class="app-info">
-                <div class="left">
-                    <img src="{% static 'images/test.png'%}">
-                </div>
-                <div class="right">
-                    <p class="app-name">Visual Studio Community</p>
-                    <p class="app-creator">Microsoft</p>
-                    <div class="app-stars">
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a href="#" class="app-thumb">
-            <div class="app-image" style="background-image: url({% static 'images/thumbnail-test.jpg'%})">
-            </div>
-            <div class="app-info">
-                <div class="left">
-                    <img src="{% static 'images/test.png'%}">
-                </div>
-                <div class="right">
-                    <p class="app-name">Visual Studio Community</p>
-                    <p class="app-creator">Microsoft</p>
-                    <div class="app-stars">
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                </div>
-            </div>
-        </a>
+        </div> -->
+        <!-- <h2 class="tac no-results">No results found</h2> -->
     </div>
-    <div class="container tac">
+    <!-- <div class="container tac">
         <ul class="pagination">
             <li>First</li>
             <li>
@@ -110,29 +48,9 @@
             </li>
             <li>Last</li>
         </ul>
-    </div>
+    </div> -->
 </div>
-<!--
-<a href="#" class="app-thumb">
-            <div class="app-image" style="background-image: url({% static 'images/thumbnail-test.jpg'%})">
-            </div>
-            <div class="app-info">
-                <div class="left">
-                    <img src="{% static 'images/test.png'%}">
-                </div>
-                <div class="right">
-                    <p class="app-name">Visual Studio Community</p>
-                    <p class="app-creator">Microsoft</p>
-                    <div class="app-stars">
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                </div>
-            </div>
-        </a>
--->
-
+<script>
+    add_search_results("{{data}}")
+</script>
 {% endblock %}

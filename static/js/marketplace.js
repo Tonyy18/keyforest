@@ -10,3 +10,43 @@ $(function() {
         return false;
     })
 })
+const loader = $('<div class="tac"><img src="/static/images/loader.gif" class="loader"></div>');
+function build_app_thumbnail(app) {
+    const parent = $('<a href="/market/app/' + app.id + '" class="app-thumb"></a>');
+    const image = $('<div class="app-image" style="background-image: url(' + app.image + ')"></div>')
+    const info = $('<div class="app-info"></div>')
+    info.append($('<div class="left"></div>').append('<img src="' + app.organization.image + '">'));
+    const right = $('<div class="right"></div>');
+    right.append('<p class="app-name">' + app.name + '</p>').append('<p class="app-creator">' + app.organization.name + '</p>')
+    const stars = $('<div class="app-stars"></div>');
+    for(let a = 0; a < 5; a++) {
+        if(a == 4 && app.reputation % 1 != 0) {
+            stars.append('<i class="fa-solid fa-star-half-stroke"></i>');
+            break;
+        }
+        if(a < app.reputation) {
+            stars.append('<i class="fa-solid fa-star"></i>')
+        } else {
+            stars.append('<i class="fa-regular fa-star"></i>')
+        }
+    }
+    right.append(stars);
+    info.append(right)
+    parent.append(image)
+    parent.append(info)
+    return parent
+}
+function add_search_results(data) {
+    $("#search-results-objects").html(loader)
+    data = JSON.parse(data.replaceAll("&quot;", "\""))
+    const els = []
+    $("#search-results-count").html(data.data.length)
+    for(let a = 0; a < data.data.length; a++) {
+        const app = data.data[a]
+        els.push(build_app_thumbnail(app));
+    }
+    $("#search-results-objects").empty();
+    for(let a = 0; a < els.length; a++) {
+        $("#search-results-objects").append(els[a]);
+    }
+}

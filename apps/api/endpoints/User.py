@@ -9,7 +9,7 @@ from lib import parameters,validators
 from datetime import date
 from datetime import datetime
 from django.db.models import Q
-from ..views import Codes, response, create_app_dict, create_user_dict, create_org_dict
+from lib.utils.api_utils import Codes, response, create_app_dict, create_user_dict, create_org_dict
 
 def organizations(request):
     if(not request.user.is_authenticated):

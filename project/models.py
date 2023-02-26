@@ -78,6 +78,7 @@ class Application(models.Model):
     )
     created = models.DateField(auto_now_add=True)
     licenses = models.IntegerField(default=0)
+    reputation = models.FloatField(default=0)
     class Meta:
         db_table = "applications"
 

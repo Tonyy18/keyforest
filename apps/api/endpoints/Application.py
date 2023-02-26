@@ -9,7 +9,7 @@ from lib import parameters,validators
 from datetime import date
 from datetime import datetime
 from django.db.models import Q
-from ..views import Codes, response, create_app_dict, create_user_dict, create_org_dict, create_license_dict
+from lib.utils.api_utils import Codes, response, create_app_dict, create_user_dict, create_org_dict, create_license_dict
 
 def licenses(request, appid):
     if(not request.user.is_authenticated):
@@ -144,6 +144,3 @@ def licenses(request, appid):
         ob.visible = True
         ob.save()
         return response(Codes.ok, create_license_dict(ob))
-        
-
-        

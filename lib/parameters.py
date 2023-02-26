@@ -18,6 +18,7 @@ class Organization:
 class API:
     max_org_search = 10 #maxmium results in one search
     max_user_search = 10 #maxmium results in one search
+    max_app_search = 20 #maxmium results in one search
 
 class Application:
     max_name_length = 50
