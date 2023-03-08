@@ -86,9 +86,7 @@ def create_license_dict(lic):
         "author": create_user_dict(lic.author)
     }
 
-def find_applications(request, query, limit=None):
-    if(not request.user.is_authenticated):
-        return response(Codes.unauthorized)
+def find_applications(query, limit=None):
     results = []
     if(limit != None):
         try:
@@ -103,3 +101,10 @@ def find_applications(request, query, limit=None):
     code = Codes.ok
     code["data"] = results
     return code
+
+def get_organization_by_id(id):
+    try:
+        org = Organization.objects.get(id=id)
+        return org
+    except:
+        return None
