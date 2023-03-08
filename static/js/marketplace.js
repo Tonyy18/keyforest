@@ -11,6 +11,7 @@ $(function() {
     })
 })
 const loader = $('<div class="tac"><img src="/static/images/loader.gif" class="loader"></div>');
+const no_search_results = $('<h2 class="tac no-results">No results found</h2>')
 function build_app_thumbnail(app) {
     const parent = $('<a href="/market/app/' + app.id + '" class="app-thumb"></a>');
     const image = $('<div class="app-image" style="background-image: url(' + app.image + ')"></div>')
@@ -37,10 +38,13 @@ function build_app_thumbnail(app) {
     return parent
 }
 function add_search_results(data) {
-    $("#search-results-objects").html(loader)
     data = JSON.parse(data.replaceAll("&quot;", "\""))
     const els = []
     $("#search-results-count").html(data.data.length)
+    if(data.data.length == 0) {
+        $("#search-results-objects").html(no_search_results);
+        return;
+    }
     for(let a = 0; a < data.data.length; a++) {
         const app = data.data[a]
         els.push(build_app_thumbnail(app));
