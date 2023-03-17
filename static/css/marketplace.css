@@ -109,9 +109,6 @@ body > .container {
     display: flex;
     background-color: white;
 }
-.subnav .container {
-    text-align: center;
-}
 .subnav .collapse {
     display: inline-block;
 }
@@ -123,28 +120,32 @@ body > .container {
 .subnav .collapse ul:not(:first-child) {
     margin-left: 50px;
 }
-.subnav .collapse ul li,
-.subnav .collapse ul li .label {
+.subnav .collapse ul .subnav-item,
+.subnav .collapse ul .subnav-item .label {
     display: inline-block;
     line-height: 40px;
     font-size: 13px;
     cursor: default;
 }
-.subnav .collapse ul li,
-.subnav .collapse ul li .label,
-.subnav .collapse ul li .fas {
+.subnav .collapse ul .subnav-item,
+.subnav .collapse ul .subnav-item .label,
+.subnav .collapse ul .subnav-item .fas {
     color: #737373;
 }
-.subnav .collapse ul li {
+.subnav .collapse ul .subnav-item {
     padding: 0 15px;
 }
-.subnav .collapse ul li:hover,
-.subnav .collapse ul li.active,
-.subnav .collapse ul li:hover .label,
-.subnav .collapse ul li:hover .fas {
+.subnav .collapse ul .subnav-item:hover,
+.subnav .collapse ul .subnav-item.active,
+.subnav .collapse ul .subnav-item:hover .label,
+.subnav .collapse ul .subnav-item:hover .fas {
     color: var(--darker-blue);
 }
-.subnav .collapse ul li .fas {
+.subnav .collapse ul.link-nav .subnav-item.active {
+    border-bottom: 2px solid var(--darker-blue);
+    margin-bottom: -2px;
+}
+.subnav .collapse ul .subnav-item .fas {
     margin-left: 10px;
 }
 .subnav .collapse ul .active-border {

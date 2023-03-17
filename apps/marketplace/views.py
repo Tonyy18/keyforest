@@ -14,7 +14,7 @@ def searchPage(request, query):
         if(query):
             apps = api_utils.find_applications(query)
             data = apps
-    return render(request, "marketplace/search.html", {
+    return render(request, "marketplace/search_page.html", {
         "query": query,
         "data": json.dumps(data)
     })

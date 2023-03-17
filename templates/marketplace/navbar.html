@@ -3,6 +3,8 @@
 {% block b_head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/marketplace.css'%}">
 <script src="{% static 'js/marketplace.js'%}"></script>
+{% block head %}
+{% endblock %}
 {% endblock %}
 {% block b_body %}
 <nav class="navbar" id="navbar">
@@ -50,6 +52,6 @@
         </ul>
     </div>
 </nav>
-{% block body%}
+{% block body %}
 {% endblock %}
 {% endblock %}
