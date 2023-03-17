@@ -88,6 +88,16 @@ DATABASES = {
         'PASSWORD': 'root',
     }
 }
+"""
+DATABASES = {
+    'default': {
+        'NAME': os.path.join(BASE_DIR, "sqlite3", "database.db"),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'USER': 'root',
+        'PASSWORD': 'root',
+    }
+}
+"""
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
 # Password validation
