@@ -86,7 +86,7 @@ def create_license_dict(lic):
         "author": create_user_dict(lic.author)
     }
 
-def find_applications(query, limit=None):
+def get_applications_by_name(query, limit=None):
     results = []
     if(limit != None):
         try:
@@ -96,6 +96,22 @@ def find_applications(query, limit=None):
         apps = Application.objects.filter(name__icontains=query)[limit:parameters.API.max_app_search]
     else:
         apps = Application.objects.filter(name__icontains=query)
+    for app in apps:
+        results.append(create_app_dict(app))
+    code = Codes.ok
+    code["data"] = results
+    return code
+
+def get_applications_by_orgId(id, limit=None):
+    results = []
+    if(limit != None):
+        try:
+            limit = int(limit)
+        except:
+            limit = 0
+        apps = Application.objects.filter(organization_id=id)[limit:parameters.API.max_org_search]
+    else:
+        apps = Application.objects.filter(organization_id=id)
     for app in apps:
         results.append(create_app_dict(app))
     code = Codes.ok

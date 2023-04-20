@@ -7,24 +7,25 @@ from lib.utils import api_utils
 from django.contrib.auth.decorators import login_required
 import json
 from lib import parameters,validators
+from lib.utils import api_utils
 from datetime import date
 from datetime import datetime
 from django.db.models import Q
 
 def permissions(request):
     if(not request.user.is_authenticated):
-        return response(api_utils.Codes.unauthorized)
+        return api_utils.response(api_utils.Codes.unauthorized)
 
     if(request.method == "GET"):
         permissions = parameters.Permission_groups.All_permissions.by_name
         res = []
         for perm in permissions:
             res.append(perm)
-        return response(api_utils.Codes.ok, res)
+        return api_utils.response(api_utils.Codes.ok, res)
 
 def organizations(request):
     if(not request.user.is_authenticated):
-        return response(api_utils.Codes.unauthorized)
+        return api_utils.response(api_utils.Codes.unauthorized)
 
     if(request.method == "GET"):
         #Search organizations by name
@@ -52,6 +53,6 @@ def applications(request):
             code = api_utils.Codes.bad_request
             code["error"] = "Applications name is missing"
         else:
-            code = api_utils.find_applications(name)
+            code = api_utils.get_applications_by_name(name)
         return api_utils.response(code)
 
