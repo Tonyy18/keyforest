@@ -23,9 +23,14 @@ def sellerPage(request, orgId):
     org = api_utils.get_organization_by_id(orgId)
     if(org != None):
         apps = api_utils.get_applications_by_orgId(orgId)
-        print(apps)
         return render(request, "marketplace/seller_page.html", {
             "org": org,
             "apps": apps["data"]
         })
-    return render(request, "marketplace/seller_page.html")
+
+def appPage(request, orgId, appId):
+    org = api_utils.get_organization_by_id(orgId)
+    if(org != None):
+        return render(request, "marketplace/app_page.html", {
+            "org": org
+        })

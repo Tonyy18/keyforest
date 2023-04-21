@@ -1,55 +1,25 @@
-{% extends "marketplace/navbar.html" %}
-{% load static %}
-{% block head %}
-<link rel="stylesheet" type="text/css" href="{% static '/css/seller_page.css' %}">
-{% endblock %}
-{% block body %}
-<div class="seller-header">
-    <div class="container flex">
-        <div class="seller-profile">
-            <img src="{{ org.image.url }}">
-            <h2>{{org.name}}</h2>
+{% extends "marketplace/seller_page_header.html" %}
+{% block s_body%}
+{% for app in apps %}
+<a href="/market/seller/1/app/{{app.id}}" class="app-thumb">
+    <div class="app-image" style="background-image: url({{app.image}})"></div>
+    <div class="app-info">
+        <div class="left">
+            <img src="{{app.organization.image}}">
         </div>
-    </div>
-</div>
-<nav class="subnav">
-    <div class="container">
-        <div class="collapse">
-            <ul class="link-nav">
-                <a href="/market/seller/{{org.id}}" class="active subnav-item">
-                    Applications
-                </a>
-                <a href="/market/seller/{{org.id}}/about" class="subnav-item">
-                    About
-                </a>
-                <a href="/market/seller/{{org.id}}/reviews" class="subnav-item">
-                    Reviews
-                </a>
-            </ul>
-        </div>
-    </div>
-</nav>
-<div class="container" style="padding-top: 20px">
-    {% for app in apps %}
-    <a href="/market/seller/1/app/{{app.id}}" class="app-thumb">
-        <div class="app-image" style="background-image: url({{app.image}})"></div>
-        <div class="app-info">
-            <div class="left">
-                <img src="{{app.organization.image}}">
-            </div>
-            <div class="right">
-                <p class="app-name">{{app.name}}</p>
-                <p class="app-creator">{{app.organization.name}}</p>
-                <div class="app-stars">
-                    <i class="fa-regular fa-star"></i>
-                    <i class="fa-regular fa-star"></i>
-                    <i class="fa-regular fa-star"></i>
-                    <i class="fa-regular fa-star"></i>
-                    <i class="fa-regular fa-star"></i>
-                </div>
+        <div class="right">
+            <p class="app-name">{{app.name}}</p>
+            <p class="app-creator">{{app.organization.name}}</p>
+            <div class="app-stars">
+                <i class="fa-regular fa-star"></i>
+                <i class="fa-regular fa-star"></i>
+                <i class="fa-regular fa-star"></i>
+                <i class="fa-regular fa-star"></i>
+                <i class="fa-regular fa-star"></i>
             </div>
         </div>
-    </a>
-    {% endfor %}
+    </div>
+</a>
+{% endfor %}
 </div>
 {% endblock %}
