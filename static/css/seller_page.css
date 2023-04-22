@@ -67,7 +67,7 @@
 .license-list .list-item .item-cells *:last-child {
     overflow: visible;
 }
-.license-list .list-item .item-cells button {
+.license-list .list-item .item-cells .buy-button {
    padding: 0px 10px;;
    right: 0px;
    line-height: 36px;

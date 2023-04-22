@@ -38,7 +38,7 @@
                 <p>{% if license.price %}{{license.price}}${% else %}Free{% endif %}</p>
                 <p>{% if license.duration %}{{license.duration}} + days{% else %}Never ending{% endif %}</p>
                 <div>
-                <button class="btn btn-green buy-button">Purchase</button>
+                <a href="/market/buy/{{license.id}}" class="btn btn-green buy-button">Purchase</a>
                 </div>
             </div>
         </div>
