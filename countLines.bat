@@ -1,0 +1,1 @@
+cloc . --exclude-list-file=cloc_exclude.txt

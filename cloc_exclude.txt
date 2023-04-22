@@ -1,0 +1,8 @@
+venv
+static/images
+static/webfonts
+sqlite3
+project/migrations
+static/css/all.css
+static/css/jquery-ui.min.css
+static/js/jquery-ui-min.js

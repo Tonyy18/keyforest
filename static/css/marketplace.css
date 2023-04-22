@@ -237,6 +237,7 @@ body > .container {
     height: 110px; /*Minus image height*/
     display: flex;
     padding: 10px;
+    text-overflow: hidden;
 }
 .app-thumb .app-info .left {
     height: 100%;
@@ -252,20 +253,19 @@ body > .container {
     height: 100%;
     padding-left: 10px;
     padding-top: 5px;
-    padding-bottom: 5px;
+    position: relative;
+    width: calc(100% - 38px);
 }
 .app-thumb .app-name {
     font-size: 14px;
     line-height: 20px;
-    padding-bottom: 5px;
-    height: calc(100% - 38px);
-    text-overflow: ellipsis;
-    overflow: hidden;
+    padding-bottom: 10px;
+    height: calc(100% - 20px);
 }
 .app-thumb .app-creator {
-    font-size: 13px;
+    font-size: 12px;
     color: #757575;
-    padding-bottom: 3px;
+    width: 100%;
 }
 .app-thumb .app-stars {
     font-size: 5px;

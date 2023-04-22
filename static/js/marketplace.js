@@ -19,19 +19,6 @@ function build_app_thumbnail(app) {
     info.append($('<div class="left"></div>').append('<img src="' + app.organization.image + '">'));
     const right = $('<div class="right"></div>');
     right.append('<p class="app-name">' + app.name + '</p>').append('<p class="app-creator">' + app.organization.name + '</p>')
-    const stars = $('<div class="app-stars"></div>');
-    for(let a = 0; a < 5; a++) {
-        if(a == 4 && app.reputation % 1 != 0) {
-            stars.append('<i class="fa-solid fa-star-half-stroke"></i>');
-            break;
-        }
-        if(a < app.reputation) {
-            stars.append('<i class="fa-solid fa-star"></i>')
-        } else {
-            stars.append('<i class="fa-regular fa-star"></i>')
-        }
-    }
-    right.append(stars);
     info.append(right)
     parent.append(image)
     parent.append(info)

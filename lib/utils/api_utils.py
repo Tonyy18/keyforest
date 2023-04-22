@@ -1,4 +1,4 @@
-from project.models import Organization, User_connection, Application, Invitation, User
+from project.models import Organization, User_connection, Application, Invitation, User, License
 from lib.utils.common import *
 from django.http import HttpResponse, QueryDict
 import json
@@ -48,8 +48,7 @@ def create_app_dict(app):
         "licenses": app.licenses,
         "organization": create_org_dict(app.organization),
         "creator": create_user_dict(app.creator),
-        "created": str(app.created),
-        "reputation": app.reputation
+        "created": str(app.created)
     }
 def create_org_dict(org):
     return {
@@ -86,7 +85,7 @@ def create_license_dict(lic):
         "author": create_user_dict(lic.author)
     }
 
-def find_applications(query, limit=None):
+def get_applications_by_name(query, limit=None):
     results = []
     if(limit != None):
         try:
@@ -102,9 +101,39 @@ def find_applications(query, limit=None):
     code["data"] = results
     return code
 
+def get_applications_by_orgId(id, limit=None):
+    results = []
+    if(limit != None):
+        try:
+            limit = int(limit)
+        except:
+            limit = 0
+        apps = Application.objects.filter(organization_id=id)[limit:parameters.API.max_org_search]
+    else:
+        apps = Application.objects.filter(organization_id=id)
+    for app in apps:
+        results.append(create_app_dict(app))
+    code = Codes.ok
+    code["data"] = results
+    return code
+
 def get_organization_by_id(id):
     try:
         org = Organization.objects.get(id=id)
         return org
+    except:
+        return None
+
+def get_application_by_id(id):
+    try:
+        app = Application.objects.get(id=id)
+        return app
+    except:
+        return None
+
+def get_licenses_for_appId(appId):
+    try:
+        licenses = License.objects.filter(application=appId)
+        return licenses
     except:
         return None

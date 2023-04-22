@@ -23,7 +23,7 @@ class API:
 class Application:
     max_name_length = 50
     min_name_length = 3
-    max_bio_length = 200 #Description length
+    max_bio_length = 600 #Description length
     license_count = 50
 
 class License:

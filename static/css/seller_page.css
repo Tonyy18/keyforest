@@ -17,3 +17,60 @@
     font-size: 20px;
     font-weight: normal;
 }
+.app-header {
+    margin-bottom: 20px;
+}
+.app-header .app-image-container {
+    width: 400px;
+    padding-left: 10px;
+    border-radius: 10px;
+    display: inline-block;
+}
+.app-header .app-image {
+    width: 100%;
+    padding-top: 66.66%;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    vertical-align: top;
+}
+.app-header .app-info {
+    display: inline-block;
+    width: calc(100% - 410px);
+    padding-right: 10px;
+    vertical-align: top;
+}
+
+.app-info h1 {
+    font-size: 30px;
+    flex-grow: 1;
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-weight: normal;
+    padding-bottom: 20px;
+}
+.app-info .app-desc {
+    line-height: 20px;
+}
+.app-info .app-desc .app-desc-empty{
+    font-style: italic;
+}
+.licenses-header h1 {
+    font-weight: normal;
+    font-size: 22px;
+    padding-bottom: 20px;
+}
+
+/*Modifications to the original list*/
+.license-list .list-item .item-cells *:last-child {
+    overflow: visible;
+}
+.license-list .list-item .item-cells button {
+   padding: 0px 10px;;
+   right: 0px;
+   line-height: 36px;
+   position: absolute;
+   top: calc(50% - 18px);
+}

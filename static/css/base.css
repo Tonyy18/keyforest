@@ -349,3 +349,86 @@ header .btn-i {
 .notice.notice-red {
     background-color: #C60000;
 }
+
+/*ITEM LIST*/
+.list-white {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+}
+.list li {
+    list-style: none;
+}
+.list .list-header {
+    font-size: 14px;
+}
+.list > li {
+    position: relative;
+}
+.list .list-item {
+    display: flex;
+    padding: 15px;
+    align-items: center;
+}
+.list.no-item-imgs .list-item {
+    padding: 19.5px;
+}
+.list.list-white .list-item:not(.list-header):hover {
+    background-color: #FAFAFA;
+}
+.list.list-trans .list-item:not(.list-header):hover {
+    background-color: #F0F0F0;
+}
+.list > :not(:first-child) {
+    border-top: 1px solid #E2E2E2;
+}
+.list .list-item .item-image {
+    height: 30px;
+    width: 30px;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+.list .list-item .item-cells {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+}
+.list .list-item .item-cells > * {
+    padding: 0 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+}
+.list .list-item .item-cells > :first-child{
+    width: 35%;
+}
+.list .list-item .item-cells > :not(:first-child) {
+    flex-basis: 100px;
+    flex-grow: 1;
+}
+.list .list-item .item-cells > :last-child .fas {
+    position: absolute;
+    right: 0px;
+    top: calc(50% - 6.8px);
+}
+.list .list-item .item-cells > :last-child .fa-check {
+    color: var(--green);
+}
+.list .list-item .item-cells > :last-child .fa-star {
+    color: gold;
+}
+.list .list-error {
+    text-align: center;
+    font-weight: bolder;
+    padding: 15px 0;
+}
+.list .list-message {
+    text-align: center;
+    padding: 50px 0;
+    font-size: 18px;
+    color: darkgray;
+}
+.list .list-error {
+    color: red;
+}
