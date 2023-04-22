@@ -43,9 +43,10 @@
             </div>
         </div>
     </li> 
-    {% endfor %}
-    <!--<li class="list-message" id="list-message">
+    {% empty %}
+    <li class="list-message" id="list-message">
         This app doesn't have any licenses
-    </li>-->
+    </li>
+    {% endfor %}
 </ul>
 {% endblock %}
