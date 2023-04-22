@@ -31,6 +31,12 @@ def sellerPage(request, orgId):
 def appPage(request, orgId, appId):
     org = api_utils.get_organization_by_id(orgId)
     if(org != None):
+        app = api_utils.get_application_by_id(appId)
+        licenses = []
+        if(app != None):
+            licenses = api_utils.get_licenses_for_appId(app.id)
         return render(request, "marketplace/app_page.html", {
-            "org": org
+            "org": org,
+            "app": app,
+            "licenses": licenses
         })

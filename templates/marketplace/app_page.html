@@ -1,4 +1,51 @@
 {% extends "marketplace/seller_page_header.html" %}
+{% load static %}
 {% block s_body %}
-
+<div class="app-header">
+    <div class="app-info">
+        <h1>{{app.name}}</h1>
+        <div class="app-desc">
+            {% if app.bio %}
+            {{app.bio}}
+            {% else %}
+            <span class="app-desc-empty">App has no description</span>
+            {% endif %}
+        </div>
+    </div>
+    <div class="app-image-container">
+        <div class="app-image" style="background-image: url({{app.image.url}})"></div>
+    </div>
+</div>
+<div class="licenses-header">
+    <h1>Available licenses</h1>
+</div>
+<ul class="list list-trans license-list">
+    <li class="list-header list-item">
+        <div class="item-image"></div>
+        <div class="item-cells">
+            <p>Name</p>
+            <p>Price</p>
+            <p>Duration</p>
+            <p></p>
+        </div>
+    </li>
+    {% for license in licenses %}
+    <li>
+        <div class="list-item">
+            <img class="item-image" src="{% static '/images/license.png'%}">
+            <div class="item-cells">
+                <p>{{license.name}}</p>
+                <p>{% if license.price %}{{license.price}}${% else %}Free{% endif %}</p>
+                <p>{% if license.duration %}{{license.duration}} + days{% else %}Never ending{% endif %}</p>
+                <div>
+                <button class="btn btn-green buy-button">Purchase</button>
+                </div>
+            </div>
+        </div>
+    </li> 
+    {% endfor %}
+    <!--<li class="list-message" id="list-message">
+        This app doesn't have any licenses
+    </li>-->
+</ul>
 {% endblock %}

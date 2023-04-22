@@ -69,7 +69,7 @@ class Application(models.Model):
     name = models.TextField(null=False, max_length=50)
     image = models.ImageField(upload_to="applications/", default="applications/default.png")
     api_key = models.UUIDField(default=uuid.uuid4, editable=False)
-    bio = models.TextField(null=True, max_length=200)
+    bio = models.TextField(null=True, max_length=600)
     download_link = models.TextField(null=True)
     website_link = models.TextField(null=True)
     creator = models.ForeignKey(
@@ -78,7 +78,6 @@ class Application(models.Model):
     )
     created = models.DateField(auto_now_add=True)
     licenses = models.IntegerField(default=0)
-    reputation = models.FloatField(default=0)
     class Meta:
         db_table = "applications"
 
