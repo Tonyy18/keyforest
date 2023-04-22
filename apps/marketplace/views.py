@@ -16,7 +16,7 @@ def searchPage(request, query):
             data = apps
     return render(request, "marketplace/search_page.html", {
         "query": query,
-        "data": json.dumps(data)
+        "apps": data["data"]
     })
 
 def sellerPage(request, orgId):

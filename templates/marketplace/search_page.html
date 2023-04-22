@@ -27,9 +27,20 @@
         <h1>Search results (<span id="search-results-count"></span>)</h1>
     </header>
     <div class="search-results-objects" id="search-results-objects">
-        <div class="tac">
-            <img src="/static/images/loader.gif" class="loader">
-        </div>
+        {% for app in apps %}
+        <a href="/market/seller/1/app/{{app.id}}" class="app-thumb">
+            <div class="app-image" style="background-image: url({{app.image}})"></div>
+            <div class="app-info">
+                <div class="left">
+                    <img src="{{app.organization.image}}">
+                </div>
+                <div class="right">
+                    <p class="app-name">{{app.name}}</p>
+                    <p class="app-creator">{{app.organization.name}}</p>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
         <!-- <h2 class="tac no-results">No results found</h2> -->
     </div>
     <!-- <div class="container tac">
