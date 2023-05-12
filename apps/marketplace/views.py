@@ -30,8 +30,6 @@ def sellerPage(request, orgId):
         })
 
 def license_filter(license):
-    print(license.expiration)
-    print(datetime.date(datetime.now()))
     if(license.visible):
         if(license.expiration == None or license.expiration > datetime.date(datetime.now())):
             return True
