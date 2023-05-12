@@ -36,7 +36,7 @@
             <div class="item-cells">
                 <p>{{license.name}}</p>
                 <p>{% if license.price %}{{license.price}}${% else %}Free{% endif %}</p>
-                <p>{% if license.duration %}{{license.duration}} + days{% else %}Never ending{% endif %}</p>
+                <p>{% if license.duration %}{{license.duration}} days{% else %}Never ending{% endif %}</p>
                 <div>
                 <a href="/market/buy/{{license.id}}" class="btn btn-green buy-button">Purchase</a>
                 </div>

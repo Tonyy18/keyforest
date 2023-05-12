@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from lib.utils.common import *
 from lib.utils import api_utils
+from datetime import datetime
 import json
 # Create your views here.
 def market_index(request):
@@ -28,6 +29,14 @@ def sellerPage(request, orgId):
             "apps": apps["data"]
         })
 
+def license_filter(license):
+    print(license.expiration)
+    print(datetime.date(datetime.now()))
+    if(license.visible):
+        if(license.expiration == None or license.expiration > datetime.date(datetime.now())):
+            return True
+    return False
+
 def appPage(request, orgId, appId):
     org = api_utils.get_organization_by_id(orgId)
     if(org != None):
@@ -35,6 +44,7 @@ def appPage(request, orgId, appId):
         licenses = []
         if(app != None):
             licenses = api_utils.get_licenses_for_appId(app.id)
+            licenses = filter(license_filter, licenses)
         return render(request, "marketplace/app_page.html", {
             "org": org,
             "app": app,
