@@ -7,5 +7,5 @@ urlpatterns = [
     path("search/<str:query>", views.searchPage),
     path("seller/<int:orgId>", views.sellerPage),
     path("seller/<int:orgId>/app/<int:appId>", views.appPage),
-    path("buy/<int:licenseId>", views.buyPage)
+    path("checkout/<int:licenseId>", views.checkoutPage)
 ]

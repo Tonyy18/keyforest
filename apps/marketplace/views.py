@@ -49,5 +49,5 @@ def appPage(request, orgId, appId):
             "licenses": licenses
         })
 
-def buyPage(request, licenseId):
-    return render(request, "marketplace/buy_page.html")
+def checkoutPage(request, licenseId):
+    return render(request, "marketplace/checkout_page.html")
