@@ -1,5 +1,6 @@
 {% extends "marketplace/seller_page_header.html" %}
 {% load static %}
+{% load license_tags %}
 {% block s_body %}
 <div class="app-header">
     <div class="app-info">
@@ -25,7 +26,7 @@
         <div class="item-cells">
             <p>Name</p>
             <p>Price</p>
-            <p>Duration</p>
+            <p>Subscription period</p>
             <p></p>
         </div>
     </li>
@@ -36,7 +37,7 @@
             <div class="item-cells">
                 <p>{{license.name}}</p>
                 <p>{% if license.price %}{{license.price}}${% else %}Free{% endif %}</p>
-                <p>{% if license.duration %}{{license.duration}} days{% else %}Never ending{% endif %}</p>
+                <p>{% subscription_to_string license %}</p>
                 <div>
                 <a href="/market/checkout/{{license.id}}" class="btn btn-green buy-button">Purchase</a>
                 </div>

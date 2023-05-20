@@ -35,6 +35,7 @@ class License:
     max_parameter_value_length = 15
     max_amount = 100000000
     max_duration = 50000
+    duration_types = ["never ending", "days", "weeks", "months"]
 
 class Role:
     class Admin:

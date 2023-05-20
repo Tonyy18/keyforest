@@ -50,6 +50,7 @@ def licenses(request, appid):
         expiration = request.POST.get("expiration")
         price = request.POST.get("price")
         duration = request.POST.get("duration")
+        durationType = request.POST.get("durationType")
         desc = request.POST.get("desc")
         if(desc):
             desc = desc.strip()
@@ -100,19 +101,29 @@ def licenses(request, appid):
             
             ob.expiration = exp_date
                 
-        if(duration):
+        if(duration and duration > 0):
             duration = duration.strip()
             try:
                 duration = int(duration)
             except:
-                return response(Codes.bad_request, "Invalid duration argument")
+                return response(Codes.bad_request, "Invalid subscription period argument")
             if(duration < 1):
-                return response(Codes.bad_request, "Duration cannot be less than 1")
+                return response(Codes.bad_request, "Subscription period cannot be less than 1")
 
             if(duration > parameters.License.max_duration):
-                return response(Codes.bad_request, "Duration is too long")
+                return response(Codes.bad_request, "Subscription period is too long")
 
             ob.duration = duration
+            
+            if(not durationType):
+                durationType = 0
+            try:
+                durationType = int(durationType)
+            except:
+                return response(Codes.bad_request, "Invalid subscription type argument")
+            if(len(parameters.License.duration_types) - 1 < durationType):
+                return response(Codes.bad_request, "Invalid subscription period argument")
+            ob.durationType = durationType
 
         if(price):
             price = price.strip()

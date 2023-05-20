@@ -288,9 +288,14 @@ body {
 .app-perms .sel-button,
 .app-listing {
     background-color: white;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
     margin-bottom: 5px;
     cursor: pointer;
+}
+.app-listing:not(:last-child) {
+    border-bottom: 1px solid #E2E2E2;
+}
+.app-listing:hover p {
+    color: var(--darker-blue);
 }
 .app-perms .sel-button {
     width: 100%;
@@ -313,8 +318,8 @@ body {
     padding-left: 15px;
 }
 .app-listing img {
-    height: 35px;
-    width: 35px;
+    height: 30px;
+    width: 30px;
     border-radius: 5px;
     margin-right: 10px;
 }
@@ -323,6 +328,7 @@ body {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    font-size: 13px;
 }
 .app-listing-all {
     padding: 10px 5px;
@@ -507,12 +513,8 @@ body {
     color: red;
 }
 .input-section .app-selection:hover {
-    background-color: var(--blue);
+    border: 1px solid var(--blue);
 }
-.input-section .app-selection:hover * {
-    color: white;
-}
-
 .input-section .app-selection img {
     height: 32px;
     width: 32px;
@@ -528,10 +530,31 @@ body {
     line-height: 32px;
     padding-left: 10px;
 }
+
 .input-section .i-s-input textarea {
     resize: none;
     width: 450px;
     height: 150px;
+}
+.i-s-with-buttons input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.i-s-with-buttons button {
+    border: 1px solid #E2E2E2;
+    border-left: none;
+}
+.i-s-with-buttons button:hover,
+.i-s-with-buttons button.selected {
+    background-color: var(--blue);
+    color: white;
+}
+.i-s-with-buttons button:not(:last-child) {
+    border-radius: 0;
+}
+.i-s-with-buttons button:last-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
 .parameter-table {
     flex-grow: 1;

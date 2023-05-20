@@ -52,7 +52,7 @@
                 </span>
                 <input type="number" class="input input-default" placeholder="Infinite" min="1" id="amount">
             </div>
-            <div class="i-s-input flex-grow">
+            <div class="i-s-input flex">
                 <span class="i-s-text">
                     <p>Expiration</p>
                     <span class="reset reset-expi i-s-l-btn" style="display: none">reset</span>
@@ -70,9 +70,14 @@
                 </div>
                 <div class="i-s-input">
                     <span class="i-s-text">
-                        <p>Duration (in days)</p>
+                        <p>Subscription period</p>
                     </span>
-                    <input type="number" class="input input-default" placeholder="Never ending" min="1" id="duration">
+                    <div class="flex i-s-with-buttons" id="duration-selection">
+                        <input type="number" class="input input-default" placeholder="Never ending" min="1" id="duration">
+                        <button class="btn btn-white" data-value="1">Days</button>
+                        <button class="btn btn-white" data-value="2">Weeks</button>
+                        <button class="btn btn-white selected" data-value="3">Months</button>
+                    </div>
                 </div>
                 <div class="i-s-input">
                     <span class="i-s-text">
@@ -131,6 +136,10 @@
                 $("#select-app-modal .modal-search-results").prepend(el);
             }
         }
+    })
+    $("#duration-selection button").on("click", function(e) {
+        $("#duration-selection button").removeClass("selected");
+        $(this).addClass("selected")
     })
     $("#app-selection").on("click", function() {
         modal.show();
@@ -193,12 +202,18 @@
         if(expiration.length == 0) {
             expiration = null
         }
+        durationType = 3
         if(!duration) {
             duration = null
+            durationType = 0
         } else if(duration < 1) {
             error("Duration cannot be less than 1")
             $("#duration").addClass("error");
             return false;
+        } else {
+            $("#duration-selection button.selected").each(function() {
+                durationType = $(this).attr("data-value")
+            })
         }
         Application.create_license({
             "app_id": app,
@@ -208,7 +223,8 @@
             "price": price,
             "duration": duration,
             "desc": desc,
-            "params": JSON.stringify(params)
+            "params": JSON.stringify(params),
+            "durationType": parseInt(durationType)
         }, (data) => {
             //Success
             data = data.data
