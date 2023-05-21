@@ -48,7 +48,7 @@
                     <p>Name</p>
                     <p>Amount</p>
                     <p>Expiration</p>
-                    <p>Duration</p>
+                    <p>Subscription period</p>
                     <p>Created</p>
                 </div>
             </li>
@@ -78,7 +78,7 @@
         const cells = $("<div class='item-cells'></div>");
         let amount = data.amount;
         let exp = data.expiration;
-        let duration = data.duration
+        let subscription_period = data.subscription_period
         let created = data.created
         if(amount == null) {
             amount = "Infinite"
@@ -88,15 +88,15 @@
         } else {
             exp = date_format(exp, "d.m.y")
         }
-        if(duration == null) {
-            duration = "Never ending";
+        if(subscription_period == null) {
+            subscription_period = "Never ending";
         } else {
-            duration += " days"
+            subscription_period += " days"
         }
         cells.append("<p>" + data.name + "</p>")
         cells.append("<p>" + amount + "</p>")
         cells.append("<p>" + exp + "</p>")
-        cells.append("<p>" + duration + "</p>")
+        cells.append("<p>" + subscription_period + "</p>")
         cells.append("<p>" + date_format(created, "d.m.y") + "</p>")
         link.append("<img src='{% static 'images/license.png'%}' class='item-image'>")
         link.append(cells)

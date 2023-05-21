@@ -49,8 +49,8 @@ def licenses(request, appid):
         amount = request.POST.get("amount")
         expiration = request.POST.get("expiration")
         price = request.POST.get("price")
-        duration = request.POST.get("duration")
-        durationType = request.POST.get("durationType")
+        subscription_period = request.POST.get("subscription_period")
+        subscription_type = request.POST.get("subscription_type")
         desc = request.POST.get("desc")
         if(desc):
             desc = desc.strip()
@@ -101,29 +101,27 @@ def licenses(request, appid):
             
             ob.expiration = exp_date
                 
-        if(duration and duration > 0):
-            duration = duration.strip()
+        if(subscription_period and subscription_period > 0):
+            subscription_period = subscription_period.strip()
             try:
-                duration = int(duration)
+                subscription_period = int(subscription_period)
             except:
                 return response(Codes.bad_request, "Invalid subscription period argument")
-            if(duration < 1):
-                return response(Codes.bad_request, "Subscription period cannot be less than 1")
 
-            if(duration > parameters.License.max_duration):
+            if(subscription_period > parameters.License.max_subscription_period):
                 return response(Codes.bad_request, "Subscription period is too long")
 
-            ob.duration = duration
+            ob.subscription_period = subscription_period
             
-            if(not durationType):
-                durationType = 0
+            if(not subscription_type):
+                return response(Codes.bad_request, "Subscription type is missing")
             try:
-                durationType = int(durationType)
+                subscription_type = int(subscription_type)
             except:
                 return response(Codes.bad_request, "Invalid subscription type argument")
-            if(len(parameters.License.duration_types) - 1 < durationType):
+            if(len(parameters.License.subscription_types) - 1 < subscription_type):
                 return response(Codes.bad_request, "Invalid subscription period argument")
-            ob.durationType = durationType
+            ob.subscription_type = subscription_type
 
         if(price):
             price = price.strip()

@@ -72,8 +72,8 @@
                     <span class="i-s-text">
                         <p>Subscription period</p>
                     </span>
-                    <div class="flex i-s-with-buttons" id="duration-selection">
-                        <input type="number" class="input input-default" placeholder="Never ending" min="1" id="duration">
+                    <div class="flex i-s-with-buttons" id="subscription-selection">
+                        <input type="number" class="input input-default" placeholder="Never ending" min="1" id="subscription_period">
                         <button class="btn btn-white" data-value="1">Days</button>
                         <button class="btn btn-white" data-value="2">Weeks</button>
                         <button class="btn btn-white selected" data-value="3">Months</button>
@@ -137,8 +137,8 @@
             }
         }
     })
-    $("#duration-selection button").on("click", function(e) {
-        $("#duration-selection button").removeClass("selected");
+    $("#subscription-selection button").on("click", function(e) {
+        $("#subscription-selection button").removeClass("selected");
         $(this).addClass("selected")
     })
     $("#app-selection").on("click", function() {
@@ -171,7 +171,7 @@
         let amount = $.trim($("#amount").val());
         let expiration = $("#datepicker").val();
         let price = $.trim($("#price").val());
-        let duration = $.trim($("#duration").val());
+        let subscription_period = $.trim($("#subscription_period").val());
         let desc = $.trim($("#desc").val());
         let params = get_parameters();
         if(params == false) return;
@@ -202,17 +202,17 @@
         if(expiration.length == 0) {
             expiration = null
         }
-        durationType = 3
-        if(!duration) {
-            duration = null
-            durationType = 0
-        } else if(duration < 1) {
-            error("Duration cannot be less than 1")
-            $("#duration").addClass("error");
+        subscription_type = 3
+        if(!subscription_period) {
+            subscription_period = null
+            subscription_type = 0
+        } else if(subscription_period < 1) {
+            error("subscription period cannot be less than 1")
+            $("#subscription_period").addClass("error");
             return false;
         } else {
-            $("#duration-selection button.selected").each(function() {
-                durationType = $(this).attr("data-value")
+            $("#subscription-selection button.selected").each(function() {
+                subscription_type = $(this).attr("data-value")
             })
         }
         Application.create_license({
@@ -221,10 +221,10 @@
             "amount": amount,
             "expiration": expiration,
             "price": price,
-            "duration": duration,
+            "subscription_period": subscription_period,
             "desc": desc,
             "params": JSON.stringify(params),
-            "durationType": parseInt(durationType)
+            "subscription_type": parseInt(subscription_type)
         }, (data) => {
             //Success
             data = data.data

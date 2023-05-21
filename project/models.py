@@ -93,14 +93,14 @@ class License(models.Model):
         MaxValueValidator(100000000),
         MinValueValidator(1)
     ])
-    duration = models.IntegerField(null=True,validators=[
+    subscription_period = models.IntegerField(null=True,validators=[
         MaxValueValidator(50000),
         MinValueValidator(1)
     ])
-    durationType = models.IntegerField(null=False, validators=[
-        MaxValueValidator(len(params.License.duration_types)),
+    subscription_type = models.IntegerField(null=False, validators=[
+        MaxValueValidator(len(params.License.subscription_types)),
         MinValueValidator(0)
-    ])
+    ], default=params.License.subscription_types[0])
     expiration = models.DateField(null=True)
     price = models.FloatField(null=True)
     visible = models.BooleanField(default=True)
