@@ -101,7 +101,7 @@ def licenses(request, appid):
             
             ob.expiration = exp_date
                 
-        if(subscription_period and subscription_period > 0):
+        if(subscription_period):
             subscription_period = subscription_period.strip()
             try:
                 subscription_period = int(subscription_period)
@@ -110,6 +110,9 @@ def licenses(request, appid):
 
             if(subscription_period > parameters.License.max_subscription_period):
                 return response(Codes.bad_request, "Subscription period is too long")
+            
+            if(subscription_period < 1):
+                return response(Codes.bad_request, "Subscription cannot be 0")
 
             ob.subscription_period = subscription_period
             

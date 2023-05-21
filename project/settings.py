@@ -72,7 +72,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
             'libraries': {
-                'license_tags': "tags.license_tags"
+                'license_tags': "tags.license_tags",
+                'parameter_tags': "tags.parameter_tags"
             }
         },
     },

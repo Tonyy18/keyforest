@@ -1,5 +1,6 @@
 {% extends "dashboard/sidebar.html" %}
 {% load static %}
+{% load parameter_tags %}
 {% block title %}{{ request.user.organization.name }} | Applications{% endblock %}
 {% block body %}
 <div class="dashboard-page">
@@ -29,6 +30,7 @@
     </section>
 </div>
 <script>
+    let subscription_types = JSON.parse('{% get_subscription_types %}'.replaceAll("&quot;", "\""))
     function create_lic_el(data) {
         const li = $("<li></li>");
         const link = $("<a href='/dashboard/organization/{{user.organization.id}}/app/" + data.app.id + "/license/" + data.id + "' class='list-item'></a>")
@@ -36,6 +38,7 @@
         let amount = data.amount;
         let exp = data.expiration;
         let subscription_period = data.subscription_period
+        let subscription_type = data.subscription_type
         let created = data.created
         if(amount == null) {
             amount = "Infinite"
@@ -46,9 +49,13 @@
             exp = date_format(exp, "d.m.y")
         }
         if(subscription_period == null) {
-            subscription_period = "Never ending";
+            subscription_period = subscription_types[subscription_type];
         } else {
-            subscription_period += " days"
+            str = subscription_types[subscription_type];
+            if(subscription_period == 1) {
+                str = str.substring(0, str.length - 1)
+            }
+            subscription_period += " " + str
         }
         cells.append("<p>" + data.name + "</p>")
         cells.append("<p>" + data.app.name + "</p>")
