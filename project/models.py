@@ -9,14 +9,14 @@ import uuid
 from lib import parameters as params
 
 class Organization(models.Model):
-    name = models.TextField(null=False, max_length=50)
+    name = models.TextField(null=False, max_length=params.Organization.max_name_length, min_length=params.Organization.min_name_length)
     creator = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="organization_creator"
     )
     image = models.ImageField(upload_to="organizations/", default="organizations/default.png")
-    about = models.TextField(null=True, max_length=200)
+    about = models.TextField(null=True, max_length=params.Organization.max_bio_length)
     website_link = models.TextField(null=True)
     created = models.DateField(auto_now_add=True)
     applications = models.IntegerField(default=0)
@@ -26,10 +26,10 @@ class Organization(models.Model):
 
 class User(AbstractBaseUser):
     username = None
-    first_name = models.TextField(null=False, max_length=30)
-    last_name = models.TextField(null=False, max_length=30)
+    first_name = models.TextField(null=False, max_length=params.User.max_firstname_length, min_length=params.User.min_firstname_length)
+    last_name = models.TextField(null=False, max_length=params.User.max_lastname_length, min_length=params.User.min_lastname_length)
     password = models.TextField(null=False)
-    email = models.CharField(null=False, unique=True, max_length=100)
+    email = models.CharField(null=False, unique=True, max_length=params.User.max_email_length)
     image = models.ImageField(upload_to="users/", default="users/default.jpg", unique=False)
     organization = models.ForeignKey(Organization, null=True, on_delete=models.SET_NULL)
     USERNAME_FIELD = 'email'
@@ -67,10 +67,10 @@ class Invitation(models.Model):
 
 class Application(models.Model):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
-    name = models.TextField(null=False, max_length=50)
+    name = models.TextField(null=False, max_length=params.Application.max_name_length, min_length=params.Application.min_name_length)
     image = models.ImageField(upload_to="applications/", default="applications/default.png")
     api_key = models.UUIDField(default=uuid.uuid4, editable=False)
-    bio = models.TextField(null=True, max_length=600)
+    bio = models.TextField(null=True, max_length=params.Application.max_bio_length)
     download_link = models.TextField(null=True)
     website_link = models.TextField(null=True)
     creator = models.ForeignKey(
@@ -84,17 +84,17 @@ class Application(models.Model):
 
 class License(models.Model):
     application = models.ForeignKey(Application, on_delete=models.CASCADE)
-    name = models.TextField(null=False, max_length=30)
+    name = models.TextField(null=False, max_length=params.License.max_name_length, min_length= params.License.min_name_length)
     image = models.ImageField(upload_to="licenses/", default="applications/default.png")
     api_key = models.UUIDField(default=uuid.uuid4, editable=False)
-    bio = models.TextField(null=True, max_length=200)
+    bio = models.TextField(null=True, max_length=params.License.max_bio_length)
     parameters = models.TextField(null=True, default="{}")
     amount = models.IntegerField(null=True,validators=[
-        MaxValueValidator(100000000),
+        MaxValueValidator(params.License.max_amount),
         MinValueValidator(1)
     ])
     subscription_period = models.IntegerField(null=True,validators=[
-        MaxValueValidator(50000),
+        MaxValueValidator(params.License.max_subscription_period),
         MinValueValidator(1)
     ])
     subscription_type = models.IntegerField(null=False, validators=[
