@@ -129,11 +129,15 @@ def licenses(request, appid):
         if(price):
             price = price.strip()
             try:
-                price = float(price)
+                price = "{:.2f}".format(float(price))
             except:
                 return response(Codes.bad_request, "Invalid price argument")
 
-            ob.price = price
+            price = float(price)
+            if(price < 0.01):
+                return response(Codes.bad_request, "Price cannot be negative")
+            if(price > 0.00):
+                ob.price = price
 
         if(desc):
             ob.bio = desc
