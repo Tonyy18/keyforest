@@ -88,7 +88,6 @@ input {
     outline: none;
 }
 .input {
-    line-height: 40px;
     border-radius: 5px;
     padding: 0 15px;
     width: 100%;
@@ -96,6 +95,12 @@ input {
     -webkit-transition: border 0.3s, color 0.3s;
     -o-transition: border 0.3s, color 0.3s;
     -moz-transition: border 0.3s, color 0.3s;
+}
+textarea.input {
+    padding: 15px;
+}
+.input:not(textarea) {
+    line-height: 40px;
 }
 .input.error {
     border: 1px solid red;
