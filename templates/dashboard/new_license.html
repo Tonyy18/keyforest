@@ -202,10 +202,10 @@
         if(expiration.length == 0) {
             expiration = null
         }
-        subscription_type = 3
-        if(!subscription_period) {
+        subscription_type = 3 //Default
+        if(!subscription_period || subscription_period == 0) {
             subscription_period = null
-            subscription_type = 0
+            subscription_type = 0 //Never ending
         } else if(subscription_period < 1) {
             error("subscription period cannot be less than 1")
             $("#subscription_period").addClass("error");
@@ -214,6 +214,15 @@
             $("#subscription-selection button.selected").each(function() {
                 subscription_type = $(this).attr("data-value")
             })
+        }
+        if(subscription_period != null) {
+            try {
+                subscription_period = Math.round(subscription_period)
+            } catch(e) {
+                error("subscription period is invalid")
+                $("#subscription_period").addClass("error");
+                return false;
+            }
         }
         Application.create_license({
             "app_id": app,

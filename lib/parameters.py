@@ -30,7 +30,7 @@ class Application:
 class License:
     max_name_length = 30
     min_name_length = 6
-    max_bio_length = 200
+    max_bio_length = 300
     max_parameter_count = 15
     max_parameter_name_length = 15
     max_parameter_value_length = 15

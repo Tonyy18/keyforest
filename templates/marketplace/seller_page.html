@@ -1,16 +1,14 @@
 {% extends "marketplace/seller_page_header.html" %}
+{% load application_tags %}
 {% block s_body%}
 {% for app in apps %}
 <a href="/market/seller/1/app/{{app.id}}" class="app-thumb">
-    <div class="app-image" style="background-image: url({{app.image}})"></div>
+    <div class="app-image" style="background-image: url({{app.image}})">
+        <span class="app-price">Free</span>
+    </div>
     <div class="app-info">
-        <div class="left">
-            <img src="{{app.organization.image}}">
-        </div>
-        <div class="right">
-            <p class="app-name">{{app.name}}</p>
-            <p class="app-creator">{{app.organization.name}}</p>
-        </div>
+        <h3 class="app-name">{% get_thumbnail_name app.name %}</h3>
+        <p class="app-creator">{{app.organization.name}}</p>
     </div>
 </a>
 {% endfor %}

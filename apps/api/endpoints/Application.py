@@ -62,7 +62,7 @@ def licenses(request, appid):
             return response(Codes.bad_request, "License name is too long")
         
         if(len(desc) > parameters.License.max_bio_length):
-            return response(Codes.bad_request, "License description is too long")
+            return response(Codes.bad_request, "License description can only be " + str(parameters.License.max_bio_length) + " character long")
         
         lic = License.objects.filter(application=app, name=name)
         if(lic.exists()):
@@ -112,19 +112,22 @@ def licenses(request, appid):
                 return response(Codes.bad_request, "Subscription period is too long")
             
             if(subscription_period < 1):
-                return response(Codes.bad_request, "Subscription cannot be 0")
+                subscription_period = None
 
             ob.subscription_period = subscription_period
             
-            if(not subscription_type):
-                return response(Codes.bad_request, "Subscription type is missing")
-            try:
-                subscription_type = int(subscription_type)
-            except:
-                return response(Codes.bad_request, "Invalid subscription type argument")
-            if(len(parameters.License.subscription_types) - 1 < subscription_type):
-                return response(Codes.bad_request, "Invalid subscription period argument")
-            ob.subscription_type = subscription_type
+            if(subscription_period != None):
+                if(not subscription_type):
+                    return response(Codes.bad_request, "Subscription type is missing")
+                try:
+                    subscription_type = int(subscription_type)
+                except:
+                    return response(Codes.bad_request, "Invalid subscription type argument")
+                if(len(parameters.License.subscription_types) - 1 < subscription_type):
+                    return response(Codes.bad_request, "Invalid subscription type argument")
+                ob.subscription_type = subscription_type
+            else:
+                ob.subscription_type = 0
 
         if(price):
             price = price.strip()
