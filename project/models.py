@@ -100,7 +100,7 @@ class License(models.Model):
     subscription_type = models.IntegerField(null=False, validators=[
         MaxValueValidator(len(params.License.subscription_types)),
         MinValueValidator(0)
-    ], default=params.License.subscription_types[0])
+    ], default=0)
     expiration = models.DateField(null=True)
     price = models.FloatField(null=True)
     visible = models.BooleanField(default=True)

@@ -232,43 +232,31 @@ body > .container {
     border-top-right-radius: 3px;
     border-top-left-radius: 3px;
     background-position: center;
+    position: relative;
+}
+.app-thumb .app-image .app-price {
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+    color: white;
+    background-color: var(--font-color);
+    padding: 5px 8px;
+    border-radius: 3px;
+    text-align: center;
 }
 .app-thumb .app-info {
     height: 110px; /*Minus image height*/
-    display: flex;
     padding: 10px;
     text-overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
-.app-thumb .app-info .left {
-    height: 100%;
-    text-align: center;
-}
-.app-thumb .app-info .left img {
-    height: 38px;
-    width: 38px;
-    border-radius: 100%;
-}
-.app-thumb .app-info .right {
+.app-thumb .app-info .app-name {
+    font-size: 16px;
     flex-grow: 1;
-    height: 100%;
-    padding-left: 10px;
-    padding-top: 5px;
-    position: relative;
-    width: calc(100% - 38px);
 }
-.app-thumb .app-name {
-    font-size: 14px;
-    line-height: 20px;
-    padding-bottom: 10px;
-    height: calc(100% - 20px);
-}
-.app-thumb .app-creator {
-    font-size: 12px;
-    color: #757575;
-    width: 100%;
-}
-.app-thumb .app-stars {
-    font-size: 5px;
+.app-thumb .app-info .app-creator {
+    color: var()
 }
 @media(max-width: 1100px) {
     .search-results {

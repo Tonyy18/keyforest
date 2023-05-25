@@ -25,6 +25,7 @@ class Application:
     min_name_length = 3
     max_bio_length = 600 #Description length
     license_count = 50
+    thumbnail_name_length = 45
 
 class License:
     max_name_length = 30

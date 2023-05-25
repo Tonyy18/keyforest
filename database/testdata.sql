@@ -1,0 +1,1 @@
+INSERT INTO users (first_name, last_name, password, email, image, email_confirmed, role) VALUES ("Testi", "Käyttäjä", "pbkdf2_sha256$390000$XeonVsikvilmCDECcKlbXM$cluNNGO5Bb982c1g1k6G/Htaem4TufrCEYW0zTvzbZM=", "testi@keyforest.com", "users/default.jpg", 0, 1)
