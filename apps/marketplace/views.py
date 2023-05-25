@@ -4,6 +4,7 @@ from lib.utils.common import *
 from lib.utils import api_utils
 from datetime import datetime
 import json
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 def market_index(request):
     return render(request, "marketplace/index.html")
@@ -30,6 +31,7 @@ def sellerPage(request, orgId):
         })
 
 def license_filter(license):
+    #filter out hidden and expirated licenses
     if(license.visible):
         if(license.expiration == None or license.expiration > datetime.date(datetime.now())):
             return True
@@ -49,5 +51,6 @@ def appPage(request, orgId, appId):
             "licenses": licenses
         })
 
+@login_required
 def checkoutPage(request, licenseId):
     return render(request, "marketplace/checkout_page.html")

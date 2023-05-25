@@ -1,1 +1,6 @@
-INSERT INTO users (first_name, last_name, password, email, image, email_confirmed, role) VALUES ("Testi", "Käyttäjä", "pbkdf2_sha256$390000$XeonVsikvilmCDECcKlbXM$cluNNGO5Bb982c1g1k6G/Htaem4TufrCEYW0zTvzbZM=", "testi@keyforest.com", "users/default.jpg", 0, 1)
+
+INSERT INTO users (first_name, last_name, password, email, image, email_confirmed, role) VALUES ("Testi", "Käyttäjä", "pbkdf2_sha256$390000$XeonVsikvilmCDECcKlbXM$cluNNGO5Bb982c1g1k6G/Htaem4TufrCEYW0zTvzbZM=", "testi@keyforest.com", "users/default.jpg", 0, 1);
+INSERT INTO organizations (name, image, created, applications, users, creator_id) VALUES ("Keyforest", "organizations/default.png", "2023-05-25", 1, 1, 1);
+INSERT INTO user_connections (user_id, organization_id, permissions, added) VALUES (1, 1, "*", "2023-05-25");
+INSERT INTO applications (name, image, api_key, created, licenses, creator_id, organization_id) VALUES ("aplikaatio", "applications/default.png", "188ba927fb6f4cd28ed1b7924161fb92", "2023-05-25", 1, 1, 1);
+INSERT INTO licenses (name, image, api_key, parameters, amount, subscription_period, subscription_type, expiration, price, visible, created, stripe_id, application_id, author_id) VALUES ("lisenssi", "applications/default.png", "6d1986f328ae45ca86c74b74f123d457", "{}", null, 1, 3, null, 9.99, 1, "2023-05-25", null, 1, 1);
