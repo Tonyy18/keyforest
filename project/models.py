@@ -9,7 +9,7 @@ import uuid
 from lib import parameters as params
 
 class Organization(models.Model):
-    name = models.TextField(null=False, max_length=params.Organization.max_name_length, min_length=params.Organization.min_name_length)
+    name = models.TextField(null=False, max_length=params.Organization.max_name_length)
     creator = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -26,8 +26,8 @@ class Organization(models.Model):
 
 class User(AbstractBaseUser):
     username = None
-    first_name = models.TextField(null=False, max_length=params.User.max_firstname_length, min_length=params.User.min_firstname_length)
-    last_name = models.TextField(null=False, max_length=params.User.max_lastname_length, min_length=params.User.min_lastname_length)
+    first_name = models.TextField(null=False, max_length=params.User.max_firstname_length)
+    last_name = models.TextField(null=False, max_length=params.User.max_lastname_length)
     password = models.TextField(null=False)
     email = models.CharField(null=False, unique=True, max_length=params.User.max_email_length)
     image = models.ImageField(upload_to="users/", default="users/default.jpg", unique=False)
@@ -67,7 +67,7 @@ class Invitation(models.Model):
 
 class Application(models.Model):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
-    name = models.TextField(null=False, max_length=params.Application.max_name_length, min_length=params.Application.min_name_length)
+    name = models.TextField(null=False, max_length=params.Application.max_name_length)
     image = models.ImageField(upload_to="applications/", default="applications/default.png")
     api_key = models.UUIDField(default=uuid.uuid4, editable=False)
     bio = models.TextField(null=True, max_length=params.Application.max_bio_length)
@@ -84,7 +84,7 @@ class Application(models.Model):
 
 class License(models.Model):
     application = models.ForeignKey(Application, on_delete=models.CASCADE)
-    name = models.TextField(null=False, max_length=params.License.max_name_length, min_length= params.License.min_name_length)
+    name = models.TextField(null=False, max_length=params.License.max_name_length)
     image = models.ImageField(upload_to="licenses/", default="applications/default.png")
     api_key = models.UUIDField(default=uuid.uuid4, editable=False)
     bio = models.TextField(null=True, max_length=params.License.max_bio_length)
