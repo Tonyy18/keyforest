@@ -90,7 +90,11 @@ DATABASES = {
         'NAME': 'project',
         'ENGINE': 'django.db.backends.mysql',
         'USER': 'root',
-        'PASSWORD': 'root',
+        'PASSWORD': '',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+            'use_unicode': True
+        }
     }
 }
 """
