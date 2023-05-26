@@ -138,3 +138,10 @@ def get_licenses_for_appId(appId):
         return licenses
     except:
         return None
+
+def get_license_by_id(id):
+    try:
+        lic = License.objects.get(id=id)
+        return lic
+    except:
+        return None

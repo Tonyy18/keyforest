@@ -53,4 +53,8 @@ def appPage(request, orgId, appId):
 
 @login_required
 def checkoutPage(request, licenseId):
-    return render(request, "marketplace/checkout_page.html")
+    license = api_utils.get_license_by_id(licenseId)
+    if(license == None):
+        #License not found
+        return None
+    return render(request, "marketplace/checkout_page.html", {"license": license})

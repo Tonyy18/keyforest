@@ -437,3 +437,14 @@ header .btn-i {
 .list .list-error {
     color: red;
 }
+
+.page-divider {
+    height: 100%;
+    width: 100%;
+    font-size: 0px;
+}
+.page-divider > div {
+    width: 50%;
+    height: 100%;
+    vertical-align: top;
+}
