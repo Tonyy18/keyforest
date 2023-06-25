@@ -123,6 +123,7 @@ textarea.input {
     -moz-transition: background-color 0.3s, color 0.3s;
     display: inline-block;
     text-decoration: none;
+    text-align: center;
     border: 1px solid transparent;
 }
 .btn[disabled] {

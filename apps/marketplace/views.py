@@ -53,7 +53,7 @@ def appPage(request, orgId, appId):
 
 @login_required
 def checkoutPage(request, licenseId):
-    license = api_utils.get_license_by_id(licenseId)
+    license = api_utils.get_license_by_id(licenseId, True)
     if(license == None):
         #License not found
         return None

@@ -29,7 +29,7 @@
     </header>
     <div class="search-results-objects" id="search-results-objects">
         {% for app in apps %}
-        <a href="/market/seller/1/app/{{app.id}}" class="app-thumb">
+        <a href="/market/seller/{{app.organization.id}}/app/{{app.id}}" class="app-thumb">
             <div class="app-image" style="background-image: url({{app.image}})">
                 <span class="app-price">Free</span>
             </div>

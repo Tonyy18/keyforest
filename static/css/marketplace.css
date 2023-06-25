@@ -257,7 +257,139 @@ body > .container {
     flex-grow: 1;
     letter-spacing: 1px;
 }
-
+.checkout {
+    width: 400px;
+    margin: 0 auto;
+}
+.checkout header {
+    text-align: center;
+    padding-bottom: 50px;
+    padding-top: 100px;
+}
+.checkout header h1 {
+    font-size: 40px;
+}
+.checkout header h2 {
+    font-size: 20px;
+}
+.checkout .checkout-card {
+    border-radius: 10px;
+    border: 1px solid #E2E2E2;
+    width: 400px;
+}
+.checkout .checkout-card .ch-app-image {
+    width: 100%;
+    padding-top: 50%;
+    border-radius: 10px;
+    background-size: cover;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    background-position: center;
+    position: relative;
+}
+.checkout .checkout-card .ch-app-image .ch-app-img-layout {
+    background-color: rgba(0,0,0,0.1);
+    backdrop-filter: blur(2px);
+    position: absolute;
+    border-radius: 10px;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+}
+.checkout .checkout-card .ch-owner-data {
+    position: absolute;
+    align-items: center;
+    bottom: 0px;
+    width: 100%;
+    font-size: 0px;
+    padding: 10px;
+}
+.checkout .checkout-card .ch-owner-data img {
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+    display: inline-block;
+    vertical-align: middle;
+}
+.checkout .checkout-card .ch-owner-data .ch-owner-names {
+    display: inline-block;
+    width: calc(100% - 60px);
+    vertical-align: middle;
+}
+.checkout .checkout-card .ch-owner-data .ch-owner-names a:first-child {
+    font-size: 20px;
+}
+.checkout .checkout-card .ch-owner-data .ch-owner-names * {
+    color: white;
+    display: block;
+    font-weight: bold;
+    padding-left: 10px;
+    text-shadow: 0px 0px 5px rgba(0, 0, 0, 1);
+}
+.checkout .checkout-card .license-data {
+    padding: 10px;
+}
+.checkout .checkout-card .license-data h2 {
+    font-size: 25px;
+    padding: 20px;
+    padding-top: 10px;
+    text-align: center;
+    letter-spacing: 1px;
+}
+.checkout .checkout-card .license-data .purchase-btn {
+    width: 100%;
+    font-size: 16px;
+}
+.checkout .checkout-card .license-data .license-desc {
+   text-align: center;
+   margin-bottom: 10px;
+   overflow: hidden;
+   position: relative;
+}
+.checkout .checkout-card .license-data .license-desc.hidden {
+    height: 50px;
+}
+.checkout .checkout-card .license-data .license-desc .overflow-blur {
+    position: absolute;
+    display: none;
+    width: 100%;
+    left: 0px;
+    bottom: 0px;
+    background-color: rgba(255,255,255,0.1);
+    height: 100%;
+    backdrop-filter: blur(1px);
+}
+.checkout .checkout-card .license-data .license-desc.hidden .overflow-blur {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.checkout .checkout-card .license-data .license-desc.hidden .overflow-blur .fa {
+    margin-bottom: 5px;
+}
+.checkout .checkout-card .license-data .license-desc .hide-desc {
+    background-color: #F2F2F2;
+    padding: 2px;
+    margin-top: 5px;
+}
+.checkout .checkout-card .license-data .license-params {
+    font-size: 0px;
+    margin-bottom: 10px;
+}
+.checkout .checkout-card .license-data .license-params > div {
+    text-align: center;
+    padding: 10px;
+    display: inline-block;
+    vertical-align: top;
+    width: 50%;
+}
+.checkout .checkout-card .license-data .license-params > div:not(:first-child) {
+    border-left: 1px solid #E2E2E2;
+}
+.checkout .checkout-card .license-data .license-params h3 {
+    font-size: 18px;
+}
 @media(max-width: 1100px) {
     .search-results {
         text-align: center;

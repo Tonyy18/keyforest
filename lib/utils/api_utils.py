@@ -139,9 +139,9 @@ def get_licenses_for_appId(appId):
     except:
         return None
 
-def get_license_by_id(id):
+def get_license_by_id(id, visible=False):
     try:
-        lic = License.objects.get(id=id)
+        lic = License.objects.get(id=id, visible=visible)
         return lic
     except:
         return None

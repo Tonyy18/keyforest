@@ -5,6 +5,53 @@
 {% endblock %}
 {% block b_body %}
 <div class="checkout">
-    
+    <header>
+        <h1>Keyforest</h1>
+        <h2>Checkout</h2>
+    </header>
+    <div class="checkout-card">
+        <div class="ch-app-image" style="background-image: url({{license.application.image.url}});">
+            <div class="ch-app-img-layout"></div>
+            <div class="ch-owner-data">
+                <img src="{{license.application.organization.image.url}}">
+                <div class="ch-owner-names">
+                    <a href="/market/seller/{{license.application.organization.id}}" class="of-dots">{{license.application.organization.name}}</a>
+                    <a href="/market/seller/1/app/{{license.application.id}}"class="of-dots">{{license.application.name}}</a>
+                </div>
+            </div>
+        </div>
+        <div class="license-data">
+            <h2>{{license.name}}</h2>
+            <div class="license-desc hidden">
+                <div class="overflow-blur" id="desc-blur">
+                    <div class="flex-grow"></div>
+                    <i class="fa fa-arrow-down"></i>
+                </div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam fermentum dui risus, et mattis purus viverra a. Nam sit amet fermentum enim, quis pretium ex. Proin condimentum nunc auctor elit ultrices mattis. Duis sed rutrum nibh, vitae sollicitudin quam. Maecenas nec vestibulum dui. Duis egestas.</p>
+                <div class="hide-desc" id="hide-desc">
+                    <i class="fa fa-arrow-up"></i>
+                </div>
+            </div>
+            <div class="license-params">
+                <div>
+                    <h3>Price</h3>
+                </div>
+                <div>
+                    <h3>Renewes</h3>
+                </div>
+            </div>
+            <a href="" class="btn btn-green purchase-btn">
+                Purchase
+            </a>
+        </div>
+    </div>
 </div>
+<script>
+$("#desc-blur").on("click", function() {
+    $(this).parent().removeClass("hidden")
+})
+$("#hide-desc").on("click", function() {
+    $(this).parent().removeClass("hidden").addClass("hidden")
+})
+</script>
 {% endblock %}
