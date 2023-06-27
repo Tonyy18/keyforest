@@ -35,9 +35,19 @@
             <div class="license-params">
                 <div>
                     <h3>Price</h3>
+                    <div class="param-value">
+                        {% if license.price == None %}
+                        Free
+                        {% else %}
+                        {{license.price}}$
+                        {% endif %}
+                    </div>
                 </div>
                 <div>
                     <h3>Renewes</h3>
+                    <div class="param-value">
+                        Monthly
+                    </div>  
                 </div>
             </div>
             <a href="" class="btn btn-green purchase-btn">
