@@ -37,6 +37,11 @@ class License:
     max_amount = 100000000
     max_subscription_period = 50000
     subscription_types = ["never ending", "days", "weeks", "months"]
+    subscription_types_simple = ["never ending", "daily", "weekly", "monthly"]
+
+class Pages:
+    class Checkout:
+        desc_hide_length = 150
 
 class Role:
     class Admin:

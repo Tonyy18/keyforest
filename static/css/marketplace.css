@@ -213,27 +213,24 @@ body > .container {
     border-right: 1px solid var(--light-border);
 }
 .app-thumb {
-    width: 247px;
+    width: calc(25% - 20px); /*Minus margin*/
     background-color: white;
     border-radius: 3px;
-    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.2);
     margin: 10px;
     display: inline-block;
-}
-.app-thumb:hover {
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
 }
 .app-thumb:hover .app-name {
     text-decoration: underline;
 }
 .app-thumb .app-image {
     width: 100%;
-    padding-top: 66.66%;
+    padding-top: 62.5%;
     background-size: cover;
     border-top-right-radius: 3px;
     border-top-left-radius: 3px;
     background-position: center;
     position: relative;
+    border-radius: 10px;
 }
 .app-thumb .app-image .app-price {
     position: absolute;
@@ -250,12 +247,23 @@ body > .container {
     padding: 10px;
     text-overflow: hidden;
     display: flex;
-    flex-direction: column;
 }
-.app-thumb .app-info .app-name {
-    font-size: 16px;
+.app-thumb .app-info .app-info-left img {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+}
+.app-thumb .app-info .app-info-right {
     flex-grow: 1;
-    letter-spacing: 1px;
+    padding-left: 10px;
+}
+.app-thumb .app-info .app-info-right .app-name {
+    font-size: 15.5px;
+    padding-bottom: 5px;
+}
+.app-thumb .app-info .app-info-right .app-footer {
+    font-size: 13px;
+    color: #7C7C7C;
 }
 .checkout {
     width: 400px;
@@ -347,7 +355,10 @@ body > .container {
    overflow: hidden;
    position: relative;
 }
-.checkout .checkout-card .license-data .license-desc.hidden {
+.checkout .checkout-card .license-data .license-desc .license-desc-text {
+    font-size: 15px;
+}
+.checkout .checkout-card .license-data .license-desc.hidden:not(.open) {
     height: 50px;
 }
 .checkout .checkout-card .license-data .license-desc .overflow-blur {
@@ -365,13 +376,21 @@ body > .container {
     flex-direction: column;
     align-items: center;
 }
+.checkout .checkout-card .license-data .license-desc.hidden.open .overflow-blur {
+    display: none;
+}
 .checkout .checkout-card .license-data .license-desc.hidden .overflow-blur .fa {
     margin-bottom: 5px;
 }
 .checkout .checkout-card .license-data .license-desc .hide-desc {
-    background-color: #F2F2F2;
+    border-bottom: 1px solid #E2E2E2;
     padding: 2px;
+    padding-top: 7px;
     margin-top: 5px;
+    display: none;
+}
+.checkout .checkout-card .license-data .license-desc.open .hide-desc {
+    display: block;
 }
 .checkout .checkout-card .license-data .license-params {
     font-size: 0px;
@@ -389,6 +408,10 @@ body > .container {
 }
 .checkout .checkout-card .license-data .license-params h3 {
     font-size: 18px;
+    padding-bottom: 5px;
+}
+.checkout .checkout-card .license-data .license-params .param-value {
+    font-size: 15px;
 }
 @media(max-width: 1100px) {
     .search-results {

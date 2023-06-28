@@ -1,5 +1,7 @@
 {% extends "include/base.html" %}
 {% load static %}
+{% load license_tags %}
+{% load parameter_tags %}
 {% block b_head %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/marketplace.css'%}">
 {% endblock %}
@@ -22,12 +24,12 @@
         </div>
         <div class="license-data">
             <h2>{{license.name}}</h2>
-            <div class="license-desc hidden">
+            <div class="license-desc {% if license.bio|length > 150 %}hidden{% endif %}">
                 <div class="overflow-blur" id="desc-blur">
                     <div class="flex-grow"></div>
                     <i class="fa fa-arrow-down"></i>
                 </div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam fermentum dui risus, et mattis purus viverra a. Nam sit amet fermentum enim, quis pretium ex. Proin condimentum nunc auctor elit ultrices mattis. Duis sed rutrum nibh, vitae sollicitudin quam. Maecenas nec vestibulum dui. Duis egestas.</p>
+                <p class="license-desc-text">{% if license.bio %}{{license.bio}}{% else %}<i>This license has no description</i>{% endif %}</p>
                 <div class="hide-desc" id="hide-desc">
                     <i class="fa fa-arrow-up"></i>
                 </div>
@@ -44,9 +46,9 @@
                     </div>
                 </div>
                 <div>
-                    <h3>Renewes</h3>
+                    <h3>Renews</h3>
                     <div class="param-value">
-                        Monthly
+                        {% subscription_to_readable license %}
                     </div>  
                 </div>
             </div>
@@ -58,10 +60,10 @@
 </div>
 <script>
 $("#desc-blur").on("click", function() {
-    $(this).parent().removeClass("hidden")
+    $(this).parent().addClass("open")
 })
 $("#hide-desc").on("click", function() {
-    $(this).parent().removeClass("hidden").addClass("hidden")
+    $(this).parent().removeClass("open")
 })
 </script>
 {% endblock %}

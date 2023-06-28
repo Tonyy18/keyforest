@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 :root {
     --gray-background: #F2F3F3;
@@ -15,7 +16,7 @@
 }
 * {
     font-size: 14px;
-    font-family: "Poppins";
+    font-family: "Roboto";
     box-sizing: border-box;
     padding: 0px;
     margin: 0px;

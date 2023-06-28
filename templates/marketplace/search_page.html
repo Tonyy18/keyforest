@@ -31,11 +31,15 @@
         {% for app in apps %}
         <a href="/market/seller/{{app.organization.id}}/app/{{app.id}}" class="app-thumb">
             <div class="app-image" style="background-image: url({{app.image}})">
-                <span class="app-price">Free</span>
             </div>
             <div class="app-info">
-                <h3 class="app-name">{% get_thumbnail_name app.name %}</h3>
-                <p class="app-creator">{{app.organization.name}}</p>
+                <div class="app-info-left">
+                    <img src="{{app.organization.image}}">
+                </div>
+                <div class="app-info-right">
+                    <p class="app-name">{{app.name}}</p>
+                    <p class="app-footer">{{app.organization.name}}</p>
+                </div>
             </div>
         </a>
         {% empty %}
