@@ -109,3 +109,11 @@ def get_api_org(request):
         org = request.user.organization
 
     return org
+
+def price_to_scents(price):
+    st = str(price)
+    sp = st.split(".")
+    if(len(sp[1]) < 2):
+        st = st + "0"
+    st = st.replace(".", "")
+    return int(st)

@@ -17,8 +17,6 @@ def create_session(request, license):
     if(request.user.stripe_customer_id == None):
         stripe_customers.create(request.user)
 
-    price = str(license.price)
-    price = price.replace(".", "")
     success_url = parameters.Server.url + '/checkout/{CHECKOUT_SESSION_ID}/' + str(license.id) + "/success"
     cancel_url = parameters.Server.url + '/checkout/{CHECKOUT_SESSION_ID}/' + str(license.id) + "/cancelled"
     mode = get_session_mode(license)

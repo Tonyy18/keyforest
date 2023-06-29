@@ -72,6 +72,9 @@
         <p>New organization created</p><i class="fas fa-times hide-alert"></i>
     </div>
     <div class="content">
+        <div class="page-loader" id="page-loader">
+            <img src="{% static '/images/loader.gif' %}" class="loader">
+        </div>
         {% block body %}
         
         {% endblock %}

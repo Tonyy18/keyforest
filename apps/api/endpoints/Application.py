@@ -133,10 +133,20 @@ def licenses(request, appid):
 
         if(price):
             price = price.strip()
+            is_int = True
             try:
-                price = "{:.2f}".format(float(price))
+                price = int(price)
             except:
-                return response(Codes.bad_request, "Invalid price argument")
+                is_int = False
+
+            if(is_int == False):
+                try:
+                    price = "{:.2f}".format(float(price))
+                except:
+                    return response(Codes.bad_request, "Invalid price argument")
+            else:
+                price = float(str(price) + ".00")
+            
 
             price = float(price)
             if(price < 0.01):

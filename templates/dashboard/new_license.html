@@ -1,4 +1,5 @@
 {% extends "dashboard/sidebar.html" %}
+{% load static %}
 {% block title %}{{ request.user.organization.name }} | Create license{% endblock %}
 {% block body %}
 <div class="modal" id="select-app-modal">
@@ -98,7 +99,7 @@
                         <i class="fas fa-minus btn-blue btn-i remove-param-i"></i>
                     </li>
                 </ul>
-                <button class="btn btn-green" id="save-license-btn">Save</button>
+                <button class="btn btn-green" id="save-license-btn">Create license</button>
             </div>
         </div>
     </section>
@@ -184,7 +185,7 @@
             price = null
         } else {
             const valid_price = Validators.price(price)
-            if(!Validators.price(price)) {
+            if(!valid_price) {
                 error("Price format is not valid")
                 $("#price").addClass("error");
                 return false;
@@ -224,6 +225,7 @@
                 return false;
             }
         }
+        display_page_loader();
         Application.create_license({
             "app_id": app,
             "name": name,
@@ -240,6 +242,7 @@
             window.location.href = "/dashboard/organization/{{user.organization.id}}/app/" + data.app.id + "/license/" + data.id
         }, (data) => {
             //Error
+            display_page_loader(false);
             let message = "Error ocurred";
             if("error" in data.responseJSON) {
                 message = data.responseJSON["error"]

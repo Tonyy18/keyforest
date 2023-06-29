@@ -83,6 +83,7 @@ body {
     overflow: auto;
     background-color: #fafafa;
     padding: 50px;
+    position: relative;
 }
 .sidebar a {
     text-decoration: none;

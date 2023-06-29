@@ -253,8 +253,29 @@ class Validators {
                 }
             }
         } else if(colon == null) {
-            return Validators.int(val);
+            if(Validators.int(val)) {
+                return parseInt(val)
+            }
+            return false;
         }
         return false;
+    }
+}
+
+function display_page_loader(show=true) {
+    const el = $("#page-loader")
+    if(el) {
+        if(show) {
+            el.addClass("open")
+        } else {
+            el.removeClass("open")
+        }
+    }
+}
+
+function toggle_page_loader() {
+    const el = $("#page-loader")
+    if(el) {
+        display_page_loader(!el.hasClass("open"));
     }
 }
