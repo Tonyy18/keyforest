@@ -10,6 +10,8 @@ from datetime import date
 from datetime import datetime
 from django.db.models import Q
 from lib.utils.api_utils import Codes, response, create_app_dict, create_user_dict, create_org_dict, create_license_dict
+from lib.integrations.stripe import stripe_products, stripe_prices
+import traceback
 
 def licenses(request, appid):
     if(not request.user.is_authenticated):
@@ -161,5 +163,15 @@ def licenses(request, appid):
             ob.parameters = json.dumps(params)
 
         ob.visible = True
+
+        try:
+            stripe_prod = stripe_products.create(ob)
+            ob.stripe_product_id = stripe_prod["id"]
+
+            stripe_pre = stripe_prices.create(ob, stripe_prod)
+            ob.stripe_price_id = stripe_pre["id"]
+        except Exception as e:
+            print(traceback.format_exc())
+            return response(Codes.internal, "Internal integration error")
         ob.save()
         return response(Codes.ok, create_license_dict(ob))
