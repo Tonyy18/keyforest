@@ -6,6 +6,5 @@ urlpatterns = [
     path("", views.market_index),
     path("search/<str:query>", views.searchPage),
     path("seller/<int:orgId>", views.sellerPage),
-    path("seller/<int:orgId>/app/<int:appId>", views.appPage),
-    path("checkout/<int:licenseId>", views.checkoutPage)
+    path("seller/<int:orgId>/app/<int:appId>", views.appPage)
 ]

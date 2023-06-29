@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from lib.utils.common import *
 from lib.utils import api_utils
+from lib.integrations.stripe import stripe_checkout
 from datetime import datetime
 import json
 from django.contrib.auth.decorators import login_required
@@ -50,11 +51,3 @@ def appPage(request, orgId, appId):
             "app": app,
             "licenses": licenses
         })
-
-@login_required
-def checkoutPage(request, licenseId):
-    license = api_utils.get_license_by_id(licenseId, True)
-    if(license == None):
-        #License not found
-        return None
-    return render(request, "marketplace/checkout_page.html", {"license": license})

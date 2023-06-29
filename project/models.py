@@ -35,6 +35,7 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'email'
     email_confirmed = models.BooleanField(default=False)
     role = models.IntegerField(null=True)
+    stripe_customer_id = models.TextField(null=True)
     class Meta:
         db_table = "users"
 

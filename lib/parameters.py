@@ -39,6 +39,9 @@ class License:
     subscription_types = ["never ending", "days", "weeks", "months"]
     subscription_types_simple = ["never ending", "daily", "weekly", "monthly"]
 
+class Server:
+    url = "http://localhost:3000"
+
 class Pages:
     class Checkout:
         desc_hide_length = 150

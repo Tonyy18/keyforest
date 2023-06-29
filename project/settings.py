@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'apps.api',
     'apps.testbench',
     'apps.marketplace',
+    'apps.checkout',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -152,4 +153,4 @@ STATICFILES_DIRS = [
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-stripe_api_key = "sk_test_nLL4dQrz7Ktg0sBAJle5bMKL"
+STRIPE_APIKEY = "sk_test_nLL4dQrz7Ktg0sBAJle5bMKL"

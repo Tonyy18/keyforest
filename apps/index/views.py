@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout as _logout
 from django.contrib.auth.decorators import login_required
 from lib import parameters
 from project.models import User_connection
-
+from lib.integrations.stripe import stripe_customers
 
 # Create your views here.
 def logout(request):
@@ -111,7 +111,9 @@ def register(request):
             #All fields are valid
             user = User(first_name = firstname, last_name=lastname, email=email)
             user.set_password(password)
-            user.save()
-            return redirect("/")
+            stripe_success = stripe_customers.create(user)
+            if(stripe_success):
+                user.save()
+                return redirect("/")
 
     return render(request, "index/register.html", data)
