@@ -18,5 +18,6 @@ urlpatterns = [
     path("organization/apps/<int:appid>/licenses", Application.licenses),
     path("organization/licenses", Organization.licenses),
     path("permissions/", views.permissions),
-    path("stripe/checkout/newsession/<int:licenseId>", Stripe.new_session)
+    path("stripe/checkout/newsession/<int:licenseId>", Stripe.new_session),
+    path("stripe/webhook", Stripe.webhook)
 ]
