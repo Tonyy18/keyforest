@@ -5,7 +5,6 @@ from lib import parameters
 stripe.api_key = settings.STRIPE_APIKEY
 
 def create(license):
-    print(parameters.Server.url + license.image.url)
     res = stripe.Product.create(
         name=license.name,
         description=license.bio,

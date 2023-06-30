@@ -44,8 +44,7 @@ def appPage(request, orgId, appId):
         app = api_utils.get_application_by_id(appId)
         licenses = []
         if(app != None):
-            licenses = api_utils.get_licenses_for_appId(app.id)
-            licenses = filter(license_filter, licenses)
+            licenses = api_utils.get_licenses_for_appId(app.id, only_valid=True)
         return render(request, "marketplace/app_page.html", {
             "org": org,
             "app": app,
