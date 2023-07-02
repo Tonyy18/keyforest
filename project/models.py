@@ -116,16 +116,15 @@ class License(models.Model):
     class Meta:
         db_table = "licenses"
 
-class Purchase(models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-    )
-    license = models.ForeignKey(License, on_delete=models.CASCADE)
-    activated = models.BooleanField(default=False)
-    date = models.DateField(auto_now_add=True)
+class Checkout_session(models.Model):
+    buyer = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(License, on_delete=models.CASCADE)
+    created = models.DateField(null=True)
+    session_id =  models.TextField(null=False)
+    payment_id = models.TextField(null=True)
+    status = models.IntegerField(null=False)
     class Meta:
-        db_table = "purchases"
+        db_table = "checkout_sessions"
 
 @receiver(post_save, sender=Organization)
 def create_user_connection(sender, instance, created, **kwargs):

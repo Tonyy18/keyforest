@@ -39,6 +39,14 @@ class License:
     subscription_types = ["never ending", "days", "weeks", "months"]
     subscription_types_simple = ["never ending", "daily", "weekly", "monthly"]
 
+class Stripe:
+    class Checkout:
+        class Status:
+            open = 0
+            completed = 1
+            expired = 2
+
+
 class Server:
     url = "http://localhost:3000"
 

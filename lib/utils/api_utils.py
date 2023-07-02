@@ -150,7 +150,7 @@ def get_licenses_for_appId(appId, only_valid=False):
     except:
         return None
 
-def get_license_by_id(id, visible=False):
+def get_license_by_id(id, visible=True):
     try:
         lic = License.objects.get(id=id, visible=visible)
         return lic

@@ -2,6 +2,8 @@ import stripe
 from django.conf import settings
 from django.shortcuts import redirect
 from lib import parameters
+from lib.utils import common
+from project.models import Checkout_session
 
 stripe.api_key = settings.STRIPE_APIKEY
 
@@ -32,7 +34,35 @@ def create_session(request, license):
         cancel_url=cancel_url,
         customer=request.user.stripe_customer_id
     )
-    return session.url
+    ob = Checkout_session(
+        buyer=request.user, 
+        product=license,
+        created=common.epoch_to_date(session["created"]),
+        session_id=session["id"],
+        payment_id=session["payment_intent"],
+        status=parameters.Stripe.Checkout.Status.open
+    )
+    ob.save()
+    print()
+    return session
+
+def __session_completed(data):
+    id = data["data"]["object"]["id"]
+    try:
+        Checkout_session.objects.filter(session_id=id).update(status=parameters.Stripe.Checkout.Status.completed)
+    except:
+        raise Exception("Failed updating checkout session status id: " + id)
+
+def __session_expired(data):
+    id = data["data"]["object"]["id"]
+    try:
+        Checkout_session.objects.filter(session_id=id).update(status=parameters.Stripe.Checkout.Status.expired)
+    except:
+        raise Exception("Failed updating checkout session status, session id: " + id)
+
+def handle_events(data):
+    if(data["type"] == "checkout.session.completed"):
+        __session_completed(data)
 
 def get_session(id):
     res = stripe.checkout.Session.retrieve(

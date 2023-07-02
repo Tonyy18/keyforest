@@ -5,6 +5,9 @@ from lib.utils import api_utils
 from lib.integrations.stripe import stripe_checkout, stripe_customers
 from django.views.decorators.csrf import csrf_exempt
 import json
+from project.models import Checkout_session
+from lib import parameters
+from lib.integrations.stripe import stripe_checkout, stripe_payments
 
 @login_required
 def new_session(request, licenseId):
@@ -12,21 +15,25 @@ def new_session(request, licenseId):
     if(license == None):
         #License not found
         return None
-    url = stripe_checkout.create_session(request, license)
-    return redirect(url)
+    session = stripe_checkout.create_session(request, license)
+    return redirect(session["url"])
 
 @csrf_exempt
 def webhook(request):
-    #payment_intent.succeeded link checkout session paymentintent id
-    #invoice.payment_succeeded includes product id 
     data = json.loads(request.body)
+
+    if(data["type"].startswith("checkout.")):
+        stripe_checkout.handle_events(data)
+
     if(data["type"] == "payment_intent.succeeded"):
-        #not recurring
-        pass
-    if(data["type"] == "invoice.payment_succeeded"):
-        #recurring
+        if(data["data"]["object"]["charges"]["data"][0]["invoice"] == None):
+            #one time payment. Recurring products has invoices. Here its "none"
+            stripe_payments.payment_succeeded(data)
+            pass
+
+    if(data["type"] == "invoice.paid"):
+        #subscription invoice paid
         print(data)
-        print("")
-        print("")
-        pass
+        stripe_payments.invoice_paid(data)
+
     return HttpResponse(status=200)

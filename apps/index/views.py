@@ -109,7 +109,7 @@ def register(request):
         
         if(success == 4):
             #All fields are valid
-            user = User(first_name = firstname, last_name=lastname, email=email)
+            user = User(first_name = firstname.lower().capitalize(), last_name=lastname.lower().capitalize(), email=email)
             user.set_password(password)
             stripe_success = stripe_customers.create(user)
             if(stripe_success):

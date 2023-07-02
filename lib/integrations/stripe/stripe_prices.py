@@ -5,6 +5,7 @@ from lib.utils import common
 stripe.api_key = settings.STRIPE_APIKEY
 
 def get_recurring_data(license):
+    #Determines if the stripe product should be recurring or not
     if(license.subscription_type == parameters.License.subscription_types.index("never ending")):
         raise Exception("Stripe integration: Cannot create recurring price with subscription type: " + str(license.subscription_type) + " (" +  parameters.License.subscription_types[license.subscription_type] + ")")
         return

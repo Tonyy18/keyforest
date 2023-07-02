@@ -2,6 +2,8 @@ from project.models import User_connection, Organization, Application, User
 import uuid
 import inspect
 from lib import parameters
+from time import strftime, localtime
+
 def is_connected(request, id):
     if(type(id) is Organization):
         o = User_connection.objects.filter(organization=id, user=request.user)
@@ -117,3 +119,6 @@ def price_to_scents(price):
         st = st + "0"
     st = st.replace(".", "")
     return int(st)
+
+def epoch_to_date(stamp):
+    return strftime('%Y-%m-%d', localtime(stamp))
