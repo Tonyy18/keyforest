@@ -33,7 +33,6 @@ def webhook(request):
 
     if(data["type"] == "invoice.paid"):
         #subscription invoice paid
-        print(data)
         stripe_payments.invoice_paid(data)
 
     return HttpResponse(status=200)
