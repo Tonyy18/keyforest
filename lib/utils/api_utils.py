@@ -1,6 +1,7 @@
-from project.models import Organization, User_connection, Application, Invitation, User, License
+from project.models import Organization, User_connection, Application, User, License, Purchase, Payment
 from lib.utils.common import *
 from django.http import HttpResponse, QueryDict
+
 import json
 class Codes:
     unauthorized = {
@@ -81,7 +82,7 @@ def create_license_dict(lic):
         "subscription_period": lic.subscription_period,
         "subscription_type": lic.subscription_type,
         "expiration": str(lic.expiration),
-        "price": lic.price,
+        "price": str(lic.price),
         "created": str(lic.created),
         "author": create_user_dict(lic.author)
     }
@@ -156,3 +157,15 @@ def get_license_by_id(id, visible=True):
         return lic
     except:
         return None
+
+def create_purchase(payment):
+    purchase = Payment(user=payment.buyer, product=payment.product, price=payment.price)
+    if(payment.type == "payment"):
+        purchase.receipt = payment.receipt
+    
+    if(payment.type == "invoice"):
+        purchase.invoice = payment.invoice
+
+    purchase.save()
+
+    

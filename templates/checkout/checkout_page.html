@@ -43,7 +43,7 @@
                             {% if license.price == None %}
                             Free
                             {% else %}
-                            {% number_to_price license.price %}
+                            {{ license.price }}$
                             {% endif %}
                         </div>
                     </div>

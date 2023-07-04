@@ -103,7 +103,7 @@ class License(models.Model):
         MinValueValidator(0)
     ], default=0)
     expiration = models.DateField(null=True)
-    price = models.FloatField(null=True)
+    price = models.DecimalField(null=True, decimal_places=2, max_digits=len(str(params.License.max_price)) - 1)
     visible = models.BooleanField(default=True)
     created = models.DateField(auto_now_add=True)
     stripe_product_id = models.TextField(null=True)
@@ -125,6 +125,30 @@ class Checkout_session(models.Model):
     status = models.IntegerField(null=False)
     class Meta:
         db_table = "checkout_sessions"
+
+class Payment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(License, on_delete=models.CASCADE)
+    price = models.DecimalField(null=True, decimal_places=2, max_digits=len(str(params.License.max_price)) - 1)
+    date = models.DateField(auto_now_add=True)
+    receipt = models.TextField(null=True)
+    invoice = models.TextField(null=True) #used with subscriptions
+    class Meta:
+        db_table = "payments"
+
+class Purchase(models.Model):
+    buyer = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(License, on_delete=models.CASCADE)
+    start = models.DateField(null=False)
+    end = models.DateField(null=True)
+    period_tk = models.IntegerField(null=False) #identifies recurring purchases
+    period_id = models.IntegerField(null=False) #identifies the purchase
+    activated = models.BooleanField(null=False, default=False)
+    expired = models.BooleanField(null=True, default=False)
+    activation_id = models.TextField(null=False)
+    payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
+    class Meta:
+        db_table = "purchases"
 
 @receiver(post_save, sender=Organization)
 def create_user_connection(sender, instance, created, **kwargs):

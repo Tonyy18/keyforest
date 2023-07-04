@@ -35,6 +35,7 @@ class License:
     max_parameter_name_length = 15
     max_parameter_value_length = 15
     max_amount = 100000000
+    max_price = 1000000.00
     max_subscription_period = 50000
     subscription_types = ["never ending", "days", "weeks", "months"]
     subscription_types_simple = ["never ending", "daily", "weekly", "monthly"]

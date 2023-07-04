@@ -115,10 +115,11 @@ def get_api_org(request):
 def price_to_scents(price):
     st = str(price)
     sp = st.split(".")
-    if(len(sp[1]) < 2):
-        st = st + "0"
     st = st.replace(".", "")
     return int(st)
 
 def epoch_to_date(stamp):
     return strftime('%Y-%m-%d', localtime(stamp))
+
+def cents_to_dollars(num):
+    return int(num) / 100
