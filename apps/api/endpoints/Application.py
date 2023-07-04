@@ -124,7 +124,10 @@ def licenses(request, appid):
             if(price < 0.01):
                 ob.price = None
             elif(price > 0.00):
-                ob.price = price
+                if(price > parameters.License.max_price):
+                    return response(Codes.bad_request, "Price is too high")
+                else:
+                    ob.price = price
 
         if(subscription_period):
             subscription_period = subscription_period.strip()
