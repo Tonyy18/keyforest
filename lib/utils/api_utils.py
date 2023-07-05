@@ -157,15 +157,3 @@ def get_license_by_id(id, visible=True):
         return lic
     except:
         return None
-
-def create_purchase(payment):
-    purchase = Payment(user=payment.buyer, product=payment.product, price=payment.price)
-    if(payment.type == "payment"):
-        purchase.receipt = payment.receipt
-    
-    if(payment.type == "invoice"):
-        purchase.invoice = payment.invoice
-
-    purchase.save()
-
-    

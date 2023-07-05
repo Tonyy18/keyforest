@@ -31,13 +31,6 @@ def sellerPage(request, orgId):
             "apps": apps["data"]
         })
 
-def license_filter(license):
-    #filter out hidden and expirated licenses
-    if(license.visible):
-        if(license.expiration == None or license.expiration > datetime.date(datetime.now())):
-            return True
-    return False
-
 def appPage(request, orgId, appId):
     org = api_utils.get_organization_by_id(orgId)
     if(org != None):

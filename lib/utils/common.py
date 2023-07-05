@@ -3,6 +3,9 @@ import uuid
 import inspect
 from lib import parameters
 from time import strftime, localtime
+import random
+import string
+from datetime import datetime
 
 def is_connected(request, id):
     if(type(id) is Organization):
@@ -123,3 +126,9 @@ def epoch_to_date(stamp):
 
 def cents_to_dollars(num):
     return int(num) / 100
+
+def get_current_date():
+    return datetime.date(datetime.now())
+
+def get_random_string(length = 10):
+    return ''.join(random.choices(string.ascii_lowercase, k=length))

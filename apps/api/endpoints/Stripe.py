@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from project.models import Checkout_session
 from lib import parameters
-from lib.integrations.stripe import stripe_checkout, stripe_payments
+from lib.integrations.stripe import stripe_checkout, stripe_events
 
 @login_required
 def new_session(request, licenseId):
@@ -28,11 +28,18 @@ def webhook(request):
     if(data["type"] == "payment_intent.succeeded"):
         if(data["data"]["object"]["charges"]["data"][0]["invoice"] == None):
             #one time payment. Recurring products has invoices. Here its "none"
-            stripe_payments.payment_succeeded(data)
+            stripe_events.payment_succeeded(data)
             pass
 
     if(data["type"] == "invoice.paid"):
-        #subscription invoice paid
-        stripe_payments.invoice_paid(data)
+        #subscription invoice paid. for recurring
+        print(data)
+        print("")
+        stripe_events.invoice_paid(data)
+
+    if(data["type"] == "customer.subscription.created"):
+        print(data)
+        print("")
+        stripe_events.new_subscription(data)
 
     return HttpResponse(status=200)

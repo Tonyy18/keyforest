@@ -147,6 +147,7 @@ class Purchase(models.Model):
     expired = models.BooleanField(null=True, default=False)
     activation_id = models.TextField(null=False)
     payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
+    stripe_sub_id = models.TextField(null=True)
     class Meta:
         db_table = "purchases"
 
