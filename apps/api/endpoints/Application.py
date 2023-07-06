@@ -105,18 +105,27 @@ def licenses(request, appid):
 
         if(price):
             price = price.strip()
+            price = price.replace(",",".")
             try:
                 price = float(price)
             except:
                 return response(Codes.bad_request, "Invalid price argument")
 
-            if(price < 0.01):
-                ob.price = None
-            elif(price > 0.00):
+            price_str = str(price)
+            if("." in price_str):
+                sp = price_str.split(".")
+                if(len(sp[1]) > 2):
+                    return response(Codes.bad_request, "Invalid price argument")
+
+            if(price > 0.01 and price < parameters.License.min_price):
+                return response(Codes.bad_request, "Minimum price is " + str(parameters.License.min_price) + "$")
+            elif(price >= parameters.License.min_price):
                 if(price > parameters.License.max_price):
                     return response(Codes.bad_request, "Price is too high")
                 else:
                     ob.price = price
+            else:
+                ob.price = None
 
         if(subscription_period):
             subscription_period = subscription_period.strip()

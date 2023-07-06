@@ -112,8 +112,10 @@
         return li;
     }
     Application.get_licenses({{app.id}}, function(data) {
-        $("#list-message").hide();
         data = data.data
+        if(data.length > 0) {
+            $("#list-message").hide();
+        }
         for(let a = 0; a < data.length; a++) {
             const lic = data[a];
             const el = create_lic_el(lic);

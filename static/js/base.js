@@ -227,7 +227,7 @@ class Validators {
         if(val.indexOf(".") != -1) colon = ".";
         if(colon != null) {
             let sp = val.split(".")
-            if(sp[1].length != 2) {
+            if(sp[1].length > 2) {
                 return false
             }
         }
