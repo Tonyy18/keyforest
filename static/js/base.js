@@ -207,58 +207,31 @@ class Validators {
     static email(email) {
         if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
         {
-            return (true)
+            return true
         }
-        return (false)
+        return false
     }
     static int(val) {
         return (val != "" && isNaN(val) == false);
     }
     static float(val) {
-        let colon = null;
-        for(let a in val) {
-            const letter = val[a];
-            if(colon != null) return false;
-            if(letter == ".") {
-                colon = "."
-                break;
-            } else if(letter == ",") {
-                colon = ","
-                break;
-            }
-        }
-        if(colon != null){
-            let sp = val.split(colon)
-            if(sp.length != 2) return false;
-            let p1 = parseInt(sp[0])
-            let p2 = parseInt(sp[1])
-            if(isNaN(p1) || isNaN(p2)) return false;
-            return true;
-        }
-        return false
+        return /^(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/.test(val);
     }
     static price(val) {
+        val = val.replace(",", ".")
         const float = Validators.float(val)
+        if(float == false) {
+            return false
+        }
         let colon = null;
         if(val.indexOf(".") != -1) colon = ".";
-        if(val.indexOf(",") != -1) colon = ",";
-        if(float) {
-            if(colon != null) {
-                const sp = val.split(colon);
-                if(sp[1].length == 1 || sp[1].length == 2) {
-                    if(sp[1].length == 1) {
-                        val += "0"
-                    }
-                    return val.replace(",", ".");
-                }
+        if(colon != null) {
+            let sp = val.split(".")
+            if(sp[1].length != 2) {
+                return false
             }
-        } else if(colon == null) {
-            if(Validators.int(val)) {
-                return parseInt(val)
-            }
-            return false;
         }
-        return false;
+        return true;
     }
 }
 
