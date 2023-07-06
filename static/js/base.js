@@ -231,7 +231,7 @@ class Validators {
                 return false
             }
         }
-        return true;
+        return val;
     }
 }
 

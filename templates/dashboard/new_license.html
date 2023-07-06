@@ -67,7 +67,7 @@
                     <span class="i-s-text">
                         <p>Price</p>
                     </span>
-                    <input type="number" step="0.01" class="input input-default" placeholder="Free" id="price">
+                    <input type="text" class="input input-default" placeholder="Free" id="price">
                 </div>
                 <div class="i-s-input">
                     <span class="i-s-text">
@@ -181,6 +181,7 @@
             $("#name").addClass("error");
             return false
         }
+
         if(!price) {
             price = null
         } else {
