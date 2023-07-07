@@ -139,7 +139,7 @@ class Payment(models.Model):
 class Subscription(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(License, on_delete=models.CASCADE)
-    payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
+    payment = models.ForeignKey(Payment, on_delete=models.CASCADE, null=True)
     stripe_id = models.TextField(null=True)
     status = models.IntegerField(null=False, default=False)
     start_date = models.DateField(null=True)

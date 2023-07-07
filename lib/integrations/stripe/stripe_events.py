@@ -37,12 +37,20 @@ def get_subscription_skeleton(ob):
     )
 
 def finish_new_subscription(inv, sub):
-    sub.payment.invoice = inv.invoice
+    #new payment
+    payment = get_payment_object(inv)
+    payment.invoice = inv.invoice
+    #finish the subscription
+    sub.payment = payment
     sub.start_date = inv.start_date
     sub.end_date = inv.end_date
     sub.status = parameters.Stripe.Subscription.Status.paid
     sub.payment.save()
     sub.save()
+    #new purchase
+    purchase = get_purchase_skeleton(inv)
+    purchase.subscription = sub
+    purchase.save()
 
 def handle_new_invoice(inv):
     sub_id = inv.subscription_id
@@ -62,37 +70,29 @@ def handle_new_invoice(inv):
         #Change previous period to expired
         latest_row.status = parameters.Stripe.Purchase.Status.expired
         latest_row.save()
-
-    period_tk = prev_period_tk + 1
+    #new susbcription
     new_sub = get_subscription_skeleton(inv)
     new_sub.status = parameters.Stripe.Subscription.Status.paid
     new_sub.start_date = inv.start_date
     new_sub.end_date = inv.end_date
     new_sub.period_id = prev_period_id
-    new_sub.period_tk = prev_period_tk + 1
+    new_sub.period_tk = rev_period_tk + 1
+    #new payment
     payment = get_payment_object(sub)
     payment.invoice = inv.invoice
     payment.save()
     new_sub.payment = payment
-
     new_sub.save()
+    #new purchase
     purchase = Puchase.objects.get(subscription=sub)
     purchase.subscription = new_sub
     purchase.save()
     
 
 def handle_new_subscription(sub):
-    purchase = get_purchase_skeleton(sub)
     subscription = get_subscription_skeleton(sub)
     subscription.period_id = common.get_random_string()
     subscription.status = parameters.Stripe.Subscription.Status.waiting_payment
-    purchase.subscription = subscription
-
-    payment = get_payment_object(sub)
-    payment.save()
-    purchase.payment = payment
-    purchase.subscription.payment = payment
-    purchase.subscription.save()
-    purchase.save()
+    subscription.save()
     #The subscription will be finished when the related invoice comes
     
