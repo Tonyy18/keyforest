@@ -139,13 +139,14 @@ class Payment(models.Model):
 class Purchase(models.Model):
     buyer = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(License, on_delete=models.CASCADE)
-    start = models.DateField(null=False)
-    end = models.DateField(null=True)
-    period_tk = models.IntegerField(null=False) #identifies recurring purchases
-    period_id = models.IntegerField(null=False) #identifies the purchase
+    start_date = models.DateField(null=True)
+    end_date = models.DateField(null=True)
+    period_tk = models.IntegerField(null=False, default=1) #identifies recurring purchases
+    period_id = models.TextField(null=False) #identifies the purchase
     activated = models.BooleanField(null=False, default=False)
-    expired = models.BooleanField(null=True, default=False)
+    status = models.IntegerField(null=False, default=False)
     activation_id = models.TextField(null=False)
+    activation_date = models.TextField(null=True)
     payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
     stripe_sub_id = models.TextField(null=True)
     class Meta:

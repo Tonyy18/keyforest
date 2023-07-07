@@ -33,13 +33,9 @@ def webhook(request):
 
     if(data["type"] == "invoice.paid"):
         #subscription invoice paid. for recurring
-        print(data)
-        print("")
         stripe_events.invoice_paid(data)
 
     if(data["type"] == "customer.subscription.created"):
-        print(data)
-        print("")
         stripe_events.new_subscription(data)
 
     return HttpResponse(status=200)

@@ -1,10 +1,11 @@
 from project.models import Checkout_session
 from lib.utils import common
+from lib.integrations.stripe import stripe_api
 class Invoice:
     def __parse(self, data):
         customer = data["data"]["object"]["customer"]
         product = data["data"]["object"]["lines"]["data"][0]["price"]["product"]
-        self.subscription_id = data["data"]["object"]["customer"]["subscription"]
+        self.subscription_id = data["data"]["object"]["subscription"]
         self.invoice = data["data"]["object"]["hosted_invoice_url"]
         self.price = common.cents_to_dollars(data["data"]["object"]["lines"]["data"][0]["amount"])
 
@@ -58,9 +59,9 @@ class Payment:
 class Subscription:
     def __parse(self, data):
         customer = data["data"]["object"]["customer"]
-        product = data["data"]["object"]["lines"]["plan"]["product"]
-        self.subscription_id = data["data"]["object"]["items"]["data"][0]["price"]["subscription"]
-        self.price = common.cents_to_dollars(data["data"]["object"]["lines"]["data"][0]["amount"])
+        product = data["data"]["object"]["plan"]["product"]
+        self.subscription_id = data["data"]["object"]["id"]
+        self.price = common.cents_to_dollars(data["data"]["object"]["items"]["data"][0]["price"]["unit_amount"])
         self.buyer = stripe_api.get_user_by_id(customer)
         self.product = stripe_api.get_license_by_id(product)
         if(self.buyer == None):

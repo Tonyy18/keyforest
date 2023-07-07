@@ -47,6 +47,13 @@ class Stripe:
             open = 0
             completed = 1
             expired = 2
+    class Purchase:
+        class Status:
+            waiting_payment = 0
+            paid = 1
+            activated = 2
+            not_usable = 3
+            expired = 4
 
 class Server:
     url = "http://localhost:3000"
