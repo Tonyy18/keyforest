@@ -1,4 +1,4 @@
-from project.models import Checkout_session, Purchase, Payment
+from project.models import Checkout_session, Purchase, Payment, Subscription
 from lib.integrations.stripe import stripe_api, stripe_event_objects
 from lib.utils import common
 from lib import parameters
@@ -27,37 +27,72 @@ def get_purchase_skeleton(ob):
     return Purchase(
         buyer=ob.buyer,
         product=ob.product,
-        period_id=common.get_random_string(),
-        period_tk=1,
-        activation_id=common.get_random_string(),
-        payment=get_payment_object(ob),
+        activation_id=common.get_random_string()
+    )
+def get_subscription_skeleton(ob):
+    return Subscription(
+        user=ob.buyer,
+        product=ob.product,
+        stripe_id=ob.subscription_id
     )
 
 def finish_new_subscription(inv, sub):
     sub.payment.invoice = inv.invoice
     sub.start_date = inv.start_date
     sub.end_date = inv.end_date
-    sub.status = parameters.Stripe.Purchase.Status.paid
+    sub.status = parameters.Stripe.Subscription.Status.paid
     sub.payment.save()
     sub.save()
 
 def handle_new_invoice(inv):
     sub_id = inv.subscription_id
-    subs_exist = Purchase.objects.filter(stripe_sub_id=sub_id)
+    subs_exist = Subscription.objects.filter(stripe_id=sub_id)
     if(subs_exist.count() == 1):
         sub = subs_exist.first()
-        if(sub.status == parameters.Stripe.Purchase.Status.waiting_payment and sub.buyer.id == inv.buyer.id):
+        if(sub.status == parameters.Stripe.Subscription.Status.waiting_payment and sub.user.id == inv.buyer.id):
             finish_new_subscription(inv, sub)
             return
     
     #New period for existing subscription
+    latest_row = subs_exists.last()
+    prev_period_tk = latest_row.period_tk
+    prev_period_id = latest_row.period_id
+    
+    if(latest_row.status != parameters.Stripe.Purchase.Status.expired):
+        #Change previous period to expired
+        latest_row.status = parameters.Stripe.Purchase.Status.expired
+        latest_row.save()
 
+    period_tk = prev_period_tk + 1
+    new_sub = get_subscription_skeleton(inv)
+    new_sub.status = parameters.Stripe.Subscription.Status.paid
+    new_sub.start_date = inv.start_date
+    new_sub.end_date = inv.end_date
+    new_sub.period_id = prev_period_id
+    new_sub.period_tk = prev_period_tk + 1
+    payment = get_payment_object(sub)
+    payment.invoice = inv.invoice
+    payment.save()
+    new_sub.payment = payment
+
+    new_sub.save()
+    purchase = Puchase.objects.get(subscription=sub)
+    purchase.subscription = new_sub
+    purchase.save()
+    
 
 def handle_new_subscription(sub):
     purchase = get_purchase_skeleton(sub)
-    purchase.stripe_sub_id = sub.subscription_id
-    purchase.status = parameters.Stripe.Purchase.Status.waiting_payment
-    purchase.payment.save()
+    subscription = get_subscription_skeleton(sub)
+    subscription.period_id = common.get_random_string()
+    subscription.status = parameters.Stripe.Subscription.Status.waiting_payment
+    purchase.subscription = subscription
+
+    payment = get_payment_object(sub)
+    payment.save()
+    purchase.payment = payment
+    purchase.subscription.payment = payment
+    purchase.subscription.save()
     purchase.save()
     #The subscription will be finished when the related invoice comes
     

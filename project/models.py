@@ -136,19 +136,28 @@ class Payment(models.Model):
     class Meta:
         db_table = "payments"
 
-class Purchase(models.Model):
-    buyer = models.ForeignKey(User, on_delete=models.CASCADE)
+class Subscription(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(License, on_delete=models.CASCADE)
+    payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
+    stripe_id = models.TextField(null=True)
+    status = models.IntegerField(null=False, default=False)
     start_date = models.DateField(null=True)
     end_date = models.DateField(null=True)
     period_tk = models.IntegerField(null=False, default=1) #identifies recurring purchases
     period_id = models.TextField(null=False) #identifies the purchase
+    class Meta:
+        db_table = "subscriptions"
+
+class Purchase(models.Model):
+    buyer = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(License, on_delete=models.CASCADE)
     activated = models.BooleanField(null=False, default=False)
-    status = models.IntegerField(null=False, default=False)
+    status = models.IntegerField(null=False, default=params.Stripe.Purchase.Status.not_activated)
     activation_id = models.TextField(null=False)
     activation_date = models.TextField(null=True)
-    payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
-    stripe_sub_id = models.TextField(null=True)
+    payment = models.ForeignKey(Payment, on_delete=models.CASCADE, null=True)
+    subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE, null=True)
     class Meta:
         db_table = "purchases"
 
