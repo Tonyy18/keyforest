@@ -133,7 +133,7 @@ def get_application_by_id(id):
     except:
         return None
 
-def license_filter(license):
+def license_is_valid(license):
     #filter out hidden and expired licenses
     if(license.visible):
         if(license.expiration == None or license.expiration > datetime.date(datetime.now())):
@@ -146,14 +146,18 @@ def get_licenses_for_appId(appId, only_valid=False):
         licenses = License.objects.filter(application=appId)
         if(only_valid == True):
             #Show only licenses that are visible and not expired
-            licenses = filter(license_filter, licenses)
+            licenses = filter(license_is_valid, licenses)
         return licenses
     except:
         return None
 
-def get_license_by_id(id, visible=True):
-    try:
-        lic = License.objects.get(id=id, visible=visible)
+def get_license_by_id(id, only_valid=True):
+
+    lic = License.objects.get(id=id)
+    if(only_valid):
+        if(license_is_valid(lic)):
+            return lic
+        else:
+            print("not valid")
+    else:
         return lic
-    except:
-        return None

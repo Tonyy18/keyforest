@@ -51,7 +51,8 @@ class Stripe:
         class Status:
             waiting_payment = 0
             paid = 1
-            expired = 4
+            expired = 2
+            cancelled = 3
     class Purchase:
         class Status:
             not_activated = 0
