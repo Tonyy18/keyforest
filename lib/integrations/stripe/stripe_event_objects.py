@@ -7,7 +7,7 @@ class Invoice:
         product = data["data"]["object"]["lines"]["data"][0]["price"]["product"]
         self.subscription_id = data["data"]["object"]["subscription"]
         self.invoice = data["data"]["object"]["hosted_invoice_url"]
-        self.price = common.price_to_scents(data["data"]["object"]["lines"]["data"][0]["amount"])
+        self.price = common.cents_to_dollars(data["data"]["object"]["lines"]["data"][0]["amount"])
 
         period = data["data"]["object"]["lines"]["data"][0]["period"]
         period_start = period["start"]
@@ -41,7 +41,7 @@ class Payment:
         payment_id = data["data"]["object"]["id"]
         self.receipt = data["data"]["object"]["charges"]["data"][0]["receipt_url"]
         session = Checkout_session.objects.get(payment_id=payment_id)
-        self.price = common.price_to_scents(data["data"]["object"]["amount"])
+        self.price = common.cents_to_dollars(data["data"]["object"]["amount"])
         self.buyer = session.buyer
         self.product = session.product
 
