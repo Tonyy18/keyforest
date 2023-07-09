@@ -45,14 +45,14 @@ def create_session(request, license):
     ob.save()
     return session
 
-def __session_completed(data):
+def set_session_completed(data):
     id = data["data"]["object"]["id"]
     try:
         Checkout_session.objects.filter(session_id=id).update(status=parameters.Stripe.Checkout.Status.completed)
     except:
         raise Exception("Failed updating checkout session status id: " + id)
 
-def __session_expired(data):
+def set_session_expired(data):
     id = data["data"]["object"]["id"]
     try:
         Checkout_session.objects.filter(session_id=id).update(status=parameters.Stripe.Checkout.Status.expired)
@@ -61,7 +61,9 @@ def __session_expired(data):
 
 def handle_events(data):
     if(data["type"] == "checkout.session.completed"):
-        __session_completed(data)
+        set_session_completed(data)
+    if(data["type"] == "checkout.session.expired"):
+        set_session_expired(data)
 
 def get_session(id):
     res = stripe.checkout.Session.retrieve(
