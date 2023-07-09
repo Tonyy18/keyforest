@@ -135,3 +135,8 @@ def get_current_date():
 
 def get_random_string(length = 10):
     return ''.join(random.choices(string.ascii_lowercase, k=length))
+
+def merge_two_dicts(x, y):
+    z = x.copy()   # start with keys and values of x
+    z.update(y)    # modifies z with keys and values of y
+    return z

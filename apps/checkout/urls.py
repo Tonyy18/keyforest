@@ -5,5 +5,5 @@ from . import views
 urlpatterns = [
     path("<int:licenseId>", views.checkoutPage),
     path("<str:sessionId>/<int:licenseId>/success", views.checkoutSuccess),
-    path("<str:sessionId>/<int:licenseId>/cancelled", views.checkoutSuccess)
+    path("<str:sessionId>/<int:licenseId>/cancelled", views.checkoutCancelled)
 ]

@@ -8,10 +8,17 @@
 {% block b_body %}
 <div class="checkout">
     <header>
-        <h1>Keyforest</h1>
-        <h2>Checkout</h2>
+        <a href="/market">
+            <h1>Keyforest</h1>
+            <h2>Checkout</h2>
+        </a>
     </header>
     <div class="checkout-card">
+        {% if status %}
+            <div class="session-status {% if status.type %}{{status.type}}{% endif %}" id="session-status">
+                {{status.message}}
+            </div>
+        {% endif %}
         {% csrf_token %}
         <form method="GET" action="/api/stripe/checkout/newsession/{{license.id}}">
             <div class="ch-app-image" style="background-image: url({{license.application.image.url}});">
@@ -60,6 +67,15 @@
     </div>
 </div>
 <script>
+const status = $("#session-status")
+if(status.length == 1) {
+    setTimeout(function() {
+        status.fadeIn(500)
+        setTimeout(function() {
+            status.fadeOut(500)
+        }, 10000)
+    }, 300);
+}
 $("#desc-blur").on("click", function() {
     $(this).parent().addClass("open")
 })

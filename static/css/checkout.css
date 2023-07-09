@@ -1,3 +1,6 @@
+:root {
+    --card-width: 400px;
+}
 .checkout {
     width: 400px;
     margin: 0 auto;
@@ -16,7 +19,8 @@
 .checkout .checkout-card {
     border-radius: 10px;
     border: 1px solid #E2E2E2;
-    width: 400px;
+    width: var(--card-width);
+    position: relative;
 }
 .checkout .checkout-card .ch-app-image {
     width: 100%;
@@ -145,4 +149,19 @@
 }
 .checkout .checkout-card .license-data .license-params .param-value {
     font-size: 15px;
+}
+.checkout .checkout-card .session-status {
+    width: calc(100% - 20px);
+    left: 10px;
+    top: 10px;
+    position: absolute;
+    z-index: 1000;
+    text-align: center;
+    display: none;
+    border-radius: 10px;
+    padding: 10px;
+}
+.checkout .checkout-card .session-status.error {
+    background-color: red;
+    color: white;
 }

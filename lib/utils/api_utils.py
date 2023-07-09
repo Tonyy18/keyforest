@@ -151,7 +151,7 @@ def get_licenses_for_appId(appId, only_valid=False):
     except:
         return None
 
-def get_license_by_id(id, only_valid=True):
+def get_license_by_id(id, only_valid=False):
 
     lic = License.objects.get(id=id)
     if(only_valid):
