@@ -5,6 +5,11 @@ from lib import parameters
 
 def payment_succeeded(data):
     payment = stripe_event_objects.Payment(data)
+    purchase = get_purchase_skeleton(payment)
+    purchase.payment = get_payment_object(payment)
+    purchase.payment.save()
+    purchase.save()
+
     
 def new_subscription(data):
     payment = stripe_event_objects.Subscription(data)
