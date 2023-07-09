@@ -43,7 +43,6 @@ def create_session(request, license):
         status=parameters.Stripe.Checkout.Status.open
     )
     ob.save()
-    print()
     return session
 
 def __session_completed(data):
