@@ -67,7 +67,7 @@ def handle_new_invoice(inv):
             return
     
     #New period for existing subscription
-    latest_row = subs_exists.last()
+    latest_row = subs_exist.last()
     prev_period_tk = latest_row.period_tk
     prev_period_id = latest_row.period_id
     
@@ -81,7 +81,7 @@ def handle_new_invoice(inv):
     new_sub.start_date = inv.start_date
     new_sub.end_date = inv.end_date
     new_sub.period_id = prev_period_id
-    new_sub.period_tk = rev_period_tk + 1
+    new_sub.period_tk = prev_period_tk + 1
     #new payment
     payment = get_payment_object(sub)
     payment.invoice = inv.invoice
@@ -89,7 +89,7 @@ def handle_new_invoice(inv):
     new_sub.payment = payment
     new_sub.save()
     #new purchase
-    purchase = Puchase.objects.get(subscription=sub)
+    purchase = Purchase.objects.get(subscription=sub)
     purchase.subscription = new_sub
     purchase.save()
     
