@@ -43,3 +43,6 @@ def appPage(request, orgId, appId):
             "app": app,
             "licenses": licenses
         })
+
+def accountPage(request):
+    return render(request, "marketplace/account_page.html")
