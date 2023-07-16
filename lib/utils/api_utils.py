@@ -153,7 +153,10 @@ def get_licenses_for_appId(appId, only_valid=False):
 
 def get_license_by_id(id, only_valid=False):
 
-    lic = License.objects.get(id=id)
+    try:
+        lic = License.objects.get(id=id)
+    except:
+        return None
     if(only_valid):
         if(license_is_valid(lic)):
             return lic
