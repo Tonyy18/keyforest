@@ -88,7 +88,7 @@ def handle_new_invoice(inv):
     payment.save()
     new_sub.payment = payment
     new_sub.save()
-    #new purchase
+    #update purchase subscription to the new period
     purchase = Purchase.objects.get(subscription=sub)
     purchase.subscription = new_sub
     purchase.save()
