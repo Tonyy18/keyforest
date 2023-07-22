@@ -44,5 +44,9 @@ def appPage(request, orgId, appId):
             "licenses": licenses
         })
 
+@login_required
 def accountPage(request):
-    return render(request, "marketplace/account_page.html")
+    purchases = api_utils.get_purchases(request.user)
+    return render(request, "marketplace/account_page.html", {
+        "purchases": purchases
+    })

@@ -160,7 +160,14 @@ def get_license_by_id(id, only_valid=False):
     if(only_valid):
         if(license_is_valid(lic)):
             return lic
-        else:
-            print("not valid")
     else:
         return lic
+
+def get_purchases(user):
+    if(isinstance(user, User)):
+        user = user.id
+    purchases = Purchase.objects.filter(buyer_id=user)
+    if(len(purchases)):
+        return purchases
+    return None
+    

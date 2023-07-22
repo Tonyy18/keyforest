@@ -1,5 +1,6 @@
 {% extends "marketplace/navbar.html" %}
 {% load static %}
+{% load purchase_tags %}
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static '/css/account_page.css'%}">
 {% endblock %}
@@ -18,17 +19,29 @@
                 <p></p>
             </div>
         </li>
+        {% for purchase in purchases %}
         <li>
             <div class="list-item">
                 <img class="item-image" src="{% static '/images/license.png'%}">
                 <div class="item-cells">
-                    <p>One time</p>
-                    <p>1.2.2023</p>
-                    <p>Activated</p>
-                    <p></p>
+                    <p>{{ purchase.product.name }}</p>
+                    <p>{% get_purchase_renews_text purchase %}</p>
+                    <p>{% get_purchase_status_text purchase %}</p>
+                    <div class="item-cell-buttons">
+                        <div>
+                            {% if purchase|show_key_button %}
+                            <button class="btn btn-green buy-button">Show key</Button>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             </div>
-        </li> 
+        </li>
+        {% empty %}
+        <li class="list-message" id="list-message">
+            You dont have any purchases yet
+        </li>
+        {% endfor %}
     </ul>
 </div>
 {% endblock %}
