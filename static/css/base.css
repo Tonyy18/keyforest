@@ -421,6 +421,12 @@ header .btn-i {
     white-space: nowrap;
     position: relative;
 }
+.list .list-item .item-cells a:not(.btn) {
+    color: #1E0097;
+}
+.list .list-item .item-cells a:not(.btn) {
+    text-decoration: underline;
+}
 .list.list-small .list-item .item-cells > * {
     font-size: 13px;
 }
@@ -455,6 +461,9 @@ header .btn-i {
 }
 .list .list-error {
     color: red;
+}
+.list .list-dropdown {
+    display: none;
 }
 .list .list-dropdown li {
     border: none;

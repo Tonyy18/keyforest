@@ -141,5 +141,5 @@ def merge_two_dicts(x, y):
     z.update(y)    # modifies z with keys and values of y
     return z
 
-def format_date(date, format):
+def format_date(date, format = "%d.%m.%Y"):
     return date.strftime(format)

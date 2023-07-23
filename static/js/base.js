@@ -33,6 +33,10 @@ $(function() {
             }, 200)
         }) 
     });
+    $(".list .dropdown-btn").click(function() {
+        const item = $(this).parents("li");
+        $(item).find(".list-dropdown").toggle();
+    })
 })
 
 class Modal {

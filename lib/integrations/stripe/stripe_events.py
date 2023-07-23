@@ -32,7 +32,7 @@ def get_purchase_skeleton(ob):
     return Purchase(
         buyer=ob.buyer,
         product=ob.product,
-        activation_id=common.get_random_string()
+        activation_id=common.get_random_string(length=30)
     )
 def get_subscription_skeleton(ob):
     return Subscription(

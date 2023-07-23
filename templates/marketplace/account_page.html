@@ -5,7 +5,26 @@
 <link rel="stylesheet" type="text/css" href="{% static '/css/account_page.css'%}">
 {% endblock %}
 {% block body %}
-<div class="container">
+<div class="modal" id="activation_key_modal">
+    <div class="modal-padding">
+        <div class="modal-body">
+            <header>
+                <p>Activation key for product</p><i class="fas fa-times modal-close"></i>
+            </header>
+            <section>
+                <div class="product-info">
+                    <img src="{% static '/images/license.png'%}">
+                    <h1 class="of-dots product-name">lisenssi</h1>
+                </div>
+                <label>
+                    <input type="text" class="input input-default" id="activation_key" style="text-align: center;">
+                </label>
+            </section>
+        </div>
+    </div>
+    <div class="modal-bg"></div>
+</div>
+<div class="container" style="padding: 30px 0">
     <header>
         <h1>Your licenses</h1>
     </header>
@@ -30,7 +49,7 @@
                     <div class="item-cell-buttons">
                         <div>
                             {% if purchase|show_key_button %}
-                            <button class="btn btn-green buy-button">Show key</Button>
+                            <button class="btn btn-green show_key_button" data-key="{{ purchase.activation_id }}" data-name="{{ purchase.product.name }}">Show key</Button>
                             {% endif %}
                         </div>
                     </div>
@@ -43,5 +62,64 @@
         </li>
         {% endfor %}
     </ul>
+    <header>
+        <h1>Billing</h1>
+    </header>
+    <ul class="list list-bordered">
+        <li class="list-header list-item">
+            <div class="item-image"></div>
+            <div class="item-cells">
+                <p>Product</p>
+                <p>Date</p>
+                <p>Amount</p>
+                <p>Receipt</p>
+                <p></p>
+            </div>
+        </li>
+        {% for pay in payments %}
+        <li>
+            <div class="list-item">
+                <img class="item-image" src="{% static '/images/billing.jpg' %}">
+                <div class="item-cells">
+                    <p>{{ pay.header.product.name }}</p>
+                    <p>{{ pay.header.date }}</p>
+                    <p>{{ pay.header.price }}$</p>
+                    <a href="{% if pay.header.invoice %}{{ pay.header.invoice }}{% elif pay.header.receipt %}{{ pay.header.receipt }}{% endif %}" target="_blank">Show</a>
+                    <div class="item-cell-buttons">
+                        <div>
+                            {% if pay.childs|length > 0 %}
+                            <button class="btn btn-blue dropdown-btn">Show more</Button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if pay.childs|length > 0 %}
+            <ul class="list list-small list-dropdown">
+                {% for child in pay.childs %}
+                <li class="list-item">
+                    <div class="item-image"></div>
+                    <div class="item-cells">
+                        <p></p>
+                        <p>{{child.date}}</p>
+                        <p>{{child.price}}</p>
+                        <a href="{% if child.invoice %}{{ child.invoice }}{% elif child.receipt %}{{ child.receipt }}{% endif %}" target="_blank">Show</a>
+                        <p></p>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
 </div>
+<script>
+const modal = new Modal("activation_key_modal");
+$(".show_key_button").click(function() {
+    $("#activation_key_modal .product-name").html($(this).attr("data-name"))
+    $("#activation_key_modal #activation_key").val($(this).attr("data-key"))
+    modal.show()
+})
+</script>
 {% endblock %}

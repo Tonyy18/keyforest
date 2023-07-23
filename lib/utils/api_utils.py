@@ -1,4 +1,4 @@
-from project.models import Organization, User_connection, Application, User, License, Purchase, Payment
+from project.models import Organization, User_connection, Application, User, License, Purchase, Payment, Subscription
 from lib.utils.common import *
 from django.http import HttpResponse, QueryDict
 
@@ -166,8 +166,23 @@ def get_license_by_id(id, only_valid=False):
 def get_purchases(user):
     if(isinstance(user, User)):
         user = user.id
-    purchases = Purchase.objects.filter(buyer_id=user)
+    purchases = Purchase.objects.filter(buyer_id=user).order_by("product__name")
     if(len(purchases)):
         return purchases
     return None
-    
+
+def get_payments(user):
+    if(isinstance(user, User)):
+        user = user.id
+    payments = Payment.objects.filter(user=user).order_by("product__name")
+    if(len(payments)):
+        return payments
+    return None
+
+def get_subscriptions(user):
+    if(isinstance(user, User)):
+        user = user.id
+    subs = Subscription.objects.filter(user=user).order_by("product__name")
+    if(len(subs)):
+        return subs
+    return None
