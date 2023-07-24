@@ -130,7 +130,7 @@ class Payment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(License, on_delete=models.CASCADE)
     price = models.DecimalField(null=True, decimal_places=2, max_digits=len(str(params.License.max_price)) - 1)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(null=False)
     receipt = models.TextField(null=True)
     invoice = models.TextField(null=True) #used with subscriptions
     class Meta:

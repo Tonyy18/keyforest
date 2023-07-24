@@ -23,7 +23,7 @@ def create(license, product):
         return
 
     price = common.price_to_scents(license.price)
-    
+    print("PRICE: " + str(price))
     res = None
     if(license.subscription_type != parameters.License.subscription_types.index("never ending")):
         recurring_ob = get_recurring_data(license)

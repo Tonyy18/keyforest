@@ -5,6 +5,7 @@ class Invoice:
     def __parse(self, data):
         customer = data["data"]["object"]["customer"]
         product = data["data"]["object"]["lines"]["data"][0]["price"]["product"]
+        self.created = common.epoch_to_date(data["data"]["object"]["created"])
         self.subscription_id = data["data"]["object"]["subscription"]
         self.invoice = data["data"]["object"]["hosted_invoice_url"]
         self.price = common.cents_to_dollars(data["data"]["object"]["lines"]["data"][0]["amount"])
@@ -34,10 +35,13 @@ class Invoice:
             raise Exception("Payment object is missing required price property")
         if(not self.subscription_id):
             raise Exception("Payment object is missing required subscription id property")
+        if(not self.created):
+            raise Exception("Payment object is missing required created property")
 
 class Payment:
     def __parse(self, data):
         customer = data["data"]["object"]["customer"]
+        self.created = common.epoch_to_date(data["data"]["object"]["created"])
         payment_id = data["data"]["object"]["id"]
         self.receipt = data["data"]["object"]["charges"]["data"][0]["receipt_url"]
         session = Checkout_session.objects.get(payment_id=payment_id)
@@ -55,6 +59,8 @@ class Payment:
             raise Exception("Payment object is missing required product property")
         if(not self.price):
             raise Exception("Payment object is missing required price property")
+        if(not self.price):
+            raise Exception("Payment object is missing required created property")
 
 class Subscription:
     def __parse(self, data):

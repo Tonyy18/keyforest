@@ -464,8 +464,6 @@ header .btn-i {
 }
 .list .list-dropdown li {
     border: none;
-}
-.list .list-dropdown li:first-child {
     padding-top: 0px;
 }
 .list .list-item .item-cells .item-cell-buttons {
