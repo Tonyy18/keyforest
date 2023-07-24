@@ -145,7 +145,6 @@ class Subscription(models.Model):
     start_date = models.DateField(null=True)
     end_date = models.DateField(null=True)
     period_tk = models.IntegerField(null=False, default=1) #identifies recurring purchases
-    period_id = models.TextField(null=False) #identifies the purchase
     class Meta:
         db_table = "subscriptions"
 

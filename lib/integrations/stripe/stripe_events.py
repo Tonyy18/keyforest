@@ -69,7 +69,6 @@ def handle_new_invoice(inv):
     #New period for existing subscription
     latest_row = subs_exist.last()
     prev_period_tk = latest_row.period_tk
-    prev_period_id = latest_row.period_id
     
     if(latest_row.status != parameters.Stripe.Subscription.Status.expired):
         #Change previous period to expired
@@ -80,7 +79,6 @@ def handle_new_invoice(inv):
     new_sub.status = parameters.Stripe.Subscription.Status.paid
     new_sub.start_date = inv.start_date
     new_sub.end_date = inv.end_date
-    new_sub.period_id = prev_period_id
     new_sub.period_tk = prev_period_tk + 1
     #new payment
     payment = get_payment_object(inv)
@@ -95,7 +93,6 @@ def handle_new_invoice(inv):
     
 def handle_new_subscription(sub):
     subscription = get_subscription_skeleton(sub)
-    subscription.period_id = common.get_random_string()
     subscription.status = parameters.Stripe.Subscription.Status.waiting_payment
     subscription.save()
     #The subscription will be finished when the related invoice is paid

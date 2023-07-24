@@ -12,7 +12,7 @@ def get_purchase_renews_text(purchase):
     purchase.status == p_statuses.expired or
     purchase.subscription.status == b_statuses.cancelled or 
     purchase.subscription.status == b_statuses.expired):
-        return "Never"
+        return "Not invoicing"
 
     return common.format_date(purchase.subscription.end_date, "%d.%m.%Y")
 

@@ -10,7 +10,7 @@ def create(user):
             response = stripe.Customer.create(
                 email=user.email,
                 name=user.first_name + " " + user.last_name,
-                test_clock="clock_1NXJNWI0rEDBXFZNOneUWCCI"
+                test_clock="clock_1NXJhSI0rEDBXFZN8yggV5Sw"
             )
         else:
             response = stripe.Customer.create(

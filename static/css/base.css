@@ -464,7 +464,7 @@ header .btn-i {
 }
 .list .list-dropdown li {
     border: none;
-    padding-top: 0px;
+    padding-top: 0px !important;
 }
 .list .list-item .item-cells .item-cell-buttons {
     overflow: visible;
@@ -481,7 +481,10 @@ header .btn-i {
     padding: 0 10px;
     top: calc(50% - 18px);
 }
-
+.list.list-equal .list-item .item-cells > p {
+    flex-grow: 1;
+    width: auto;
+}
 .page-divider {
     height: 100%;
     width: 100%;
