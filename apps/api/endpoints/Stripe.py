@@ -33,8 +33,6 @@ def webhook(request):
         # Invalid payload
         return HttpResponse(status=400)
     
-    print(data)
-    print()
     if(data["type"].startswith("checkout.")):
         stripe_checkout.handle_events(data)
 
@@ -50,5 +48,8 @@ def webhook(request):
 
     if(data["type"] == "customer.subscription.created"):
         stripe_events.new_subscription(data)
+
+    if(data["type"].startswith("customer.subscription.deleted")):
+        stripe_events.subscription_deleted(data)
 
     return HttpResponse(status=200)

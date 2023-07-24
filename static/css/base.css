@@ -385,9 +385,6 @@ header .btn-i {
     padding-top: 8px;
     padding-bottom: 8px;
 }
-.list.list-small .list-header {
-    padding-top: 0px;
-}
 .list.no-item-imgs .list-item {
     padding: 19.5px;
 }
@@ -467,6 +464,9 @@ header .btn-i {
 }
 .list .list-dropdown li {
     border: none;
+}
+.list .list-dropdown li:first-child {
+    padding-top: 0px;
 }
 .list .list-item .item-cells .item-cell-buttons {
     overflow: visible;

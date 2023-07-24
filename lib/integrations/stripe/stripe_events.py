@@ -60,7 +60,7 @@ def finish_new_subscription(inv, sub):
 def handle_new_invoice(inv):
     sub_id = inv.subscription_id
     subs_exist = Subscription.objects.filter(stripe_id=sub_id)
-    if(subs_exist.count() == 1):
+    if(len(subs_exist) == 1):
         sub = subs_exist.first()
         if(sub.status == parameters.Stripe.Subscription.Status.waiting_payment and sub.user.id == inv.buyer.id):
             finish_new_subscription(inv, sub)
@@ -93,11 +93,22 @@ def handle_new_invoice(inv):
     purchase.subscription = new_sub
     purchase.save()
     
-
 def handle_new_subscription(sub):
     subscription = get_subscription_skeleton(sub)
     subscription.period_id = common.get_random_string()
     subscription.status = parameters.Stripe.Subscription.Status.waiting_payment
     subscription.save()
-    #The subscription will be finished when the related invoice comes
+    #The subscription will be finished when the related invoice is paid
+
+def subscription_deleted(data):
+    sub_object = stripe_event_objects.Subscription(data)
+    subs = Subscription.objects.filter(stripe_id=sub_object.subscription_id)
+    current_period = subs.last()
+    current_period.status = parameters.Stripe.Subscription.Status.expired
+    current_period.save()
+
+    purchase = Purchase.objects.filter(subscription=current_period)
+    purchase.status = parameters.Stripe.Purchase.Status.expired
+    purchase.save()
+
     
