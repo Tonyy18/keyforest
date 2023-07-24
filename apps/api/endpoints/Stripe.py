@@ -8,6 +8,9 @@ import json
 from project.models import Checkout_session
 from lib import parameters
 from lib.integrations.stripe import stripe_checkout, stripe_events
+import stripe
+from django.conf import settings
+stripe.api_key = settings.STRIPE_APIKEY
 
 @login_required
 def new_session(request, licenseId):
@@ -22,6 +25,16 @@ def new_session(request, licenseId):
 def webhook(request):
     data = json.loads(request.body)
 
+    try:
+        event = stripe.Event.construct_from(
+        data, stripe.api_key
+        )
+    except ValueError as e:
+        # Invalid payload
+        return HttpResponse(status=400)
+    
+    print(data)
+    print()
     if(data["type"].startswith("checkout.")):
         stripe_checkout.handle_events(data)
 

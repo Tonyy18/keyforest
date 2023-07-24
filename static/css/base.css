@@ -363,6 +363,10 @@ header .btn-i {
     border-radius: 5px;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
 }
+.list.list-bordered {
+    border: 1px solid #E2E2E2;
+    border-radius: 5px;
+}
 .list li {
     list-style: none;
 }
@@ -376,6 +380,13 @@ header .btn-i {
     display: flex;
     padding: 15px;
     align-items: center;
+}
+.list.list-small .list-item {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+.list.list-small .list-header {
+    padding-top: 0px;
 }
 .list.no-item-imgs .list-item {
     padding: 19.5px;
@@ -395,6 +406,9 @@ header .btn-i {
     border-radius: 5px;
     margin-right: 5px;
 }
+.list.list-small .list-item .item-image {
+    height: 20px;
+}
 .list .list-item .item-cells {
     flex-grow: 1;
     display: flex;
@@ -406,6 +420,15 @@ header .btn-i {
     overflow: hidden;
     white-space: nowrap;
     position: relative;
+}
+.list .list-item .item-cells a:not(.btn) {
+    color: #1E0097;
+}
+.list .list-item .item-cells a:not(.btn) {
+    text-decoration: underline;
+}
+.list.list-small .list-item .item-cells > * {
+    font-size: 13px;
 }
 .list .list-item .item-cells > :first-child{
     width: 35%;
@@ -438,6 +461,27 @@ header .btn-i {
 }
 .list .list-error {
     color: red;
+}
+.list .list-dropdown {
+    display: none;
+}
+.list .list-dropdown li {
+    border: none;
+}
+.list .list-item .item-cells .item-cell-buttons {
+    overflow: visible;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.list .list-item .item-cells .item-cell-buttons > div {
+    right: 0px;
+    position: absolute;
+}
+.list .list-item .item-cells .item-cell-buttons .btn {
+    line-height: 36px;
+    padding: 0 10px;
+    top: calc(50% - 18px);
 }
 
 .page-divider {

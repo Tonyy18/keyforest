@@ -53,12 +53,14 @@ class Stripe:
             paid = 1
             expired = 2
             cancelled = 3
+            text = ["waiting payment", "paid", "expired", "cancelled"]
     class Purchase:
         class Status:
             not_activated = 0
             activated = 1
             not_usable = 2
             expired = 3
+            text = ["not activated", "activated", "not usable", "expired"]
 
 class Server:
     url = "http://localhost:3000"

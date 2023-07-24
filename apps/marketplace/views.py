@@ -43,3 +43,34 @@ def appPage(request, orgId, appId):
             "app": app,
             "licenses": licenses
         })
+
+@login_required
+def accountPage(request):
+    purchases = api_utils.get_purchases(request.user)
+    payments = api_utils.get_payments(request.user)
+    subscriptions = api_utils.get_subscriptions(request.user)
+    subs = {}
+    sub_payment_ids = []
+    results = []
+    if(subscriptions):
+        for sub in subscriptions:
+            if(sub.period_id not in subs):
+                subs[sub.period_id] = {"childs": []}
+            if("header" not in subs[sub.period_id]):
+                subs[sub.period_id]["header"] = sub.payment
+            else:
+                subs[sub.period_id]["childs"].append(sub.payment)
+            sub_payment_ids.append(sub.payment.id)
+
+        for sub in subs:
+            results.append(subs[sub])
+    
+    if(payments):
+        for pay in payments:
+            if(pay.id not in sub_payment_ids):
+                results.append({"header": pay})
+
+    return render(request, "marketplace/account_page.html", {
+        "purchases": purchases,
+        "payments": results
+    })

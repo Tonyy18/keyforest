@@ -38,8 +38,12 @@
                 <p>{{license.name}}</p>
                 <p>{% if license.price %}{{ license.price }}${% else %}Free{% endif %}</p>
                 <p>{% subscription_to_string license %}</p>
-                <div>
-                <a href="/checkout/{{license.id}}" class="btn btn-green buy-button">Purchase</a>
+                <div class="item-cell-buttons">
+                    <div>
+                        {% if user.is_authenticated %}
+                        <a href="/checkout/{{license.id}}" class="btn btn-green buy-button">Purchase</a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>

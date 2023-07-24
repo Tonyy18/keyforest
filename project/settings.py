@@ -75,7 +75,8 @@ TEMPLATES = [
             'libraries': {
                 'license_tags': "tags.license_tags",
                 'parameter_tags': "tags.parameter_tags",
-                'application_tags': "tags.application_tags"
+                'application_tags': "tags.application_tags",
+                'purchase_tags': "tags.purchase_tags"
             }
         },
     },
