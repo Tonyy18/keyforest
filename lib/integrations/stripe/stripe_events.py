@@ -60,7 +60,7 @@ def finish_new_subscription(inv, sub):
 
 def handle_new_invoice(inv):
     sub_id = inv.subscription_id
-    subs_exist = Subscription.objects.filter(stripe_id=sub_id, status=parameters.Stripe.Subscription.Status.waiting_payment)
+    subs_exist = Subscription.objects.filter(stripe_id=sub_id)
     if(len(subs_exist) == 1):
         sub = subs_exist.first()
         if(sub.status == parameters.Stripe.Subscription.Status.waiting_payment and sub.user.id == inv.buyer.id):
