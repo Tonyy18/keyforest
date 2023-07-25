@@ -63,8 +63,6 @@ def accountPage(request):
                     res["payments"].append(sub.payment)
         results.append(res)
 
-    print(results)
-
     return render(request, "marketplace/account_page.html", {
         "purchases": results
     })

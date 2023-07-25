@@ -16,8 +16,9 @@ def new_subscription(data):
     handle_new_subscription(payment)
 
 def invoice_paid(data):
-    payment = stripe_event_objects.Invoice(data)
-    handle_new_invoice(payment)
+    if(data["data"]["object"]["status"] == "paid"):
+        payment = stripe_event_objects.Invoice(data)
+        handle_new_invoice(payment)
 
 def get_payment_object(ob):
     pmt = Payment(user=ob.buyer, product=ob.product, price=ob.price, date=ob.created)
@@ -59,7 +60,7 @@ def finish_new_subscription(inv, sub):
 
 def handle_new_invoice(inv):
     sub_id = inv.subscription_id
-    subs_exist = Subscription.objects.filter(stripe_id=sub_id)
+    subs_exist = Subscription.objects.filter(stripe_id=sub_id, status=parameters.Stripe.Subscription.Status.waiting_payment)
     if(len(subs_exist) == 1):
         sub = subs_exist.first()
         if(sub.status == parameters.Stripe.Subscription.Status.waiting_payment and sub.user.id == inv.buyer.id):
