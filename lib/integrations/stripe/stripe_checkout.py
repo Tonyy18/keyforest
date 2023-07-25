@@ -34,15 +34,16 @@ def create_session(request, license):
         cancel_url=cancel_url,
         customer=request.user.stripe_customer_id
     )
-    ob = Checkout_session(
-        buyer=request.user, 
-        product=license,
-        created=common.epoch_to_date(session["created"]),
-        session_id=session["id"],
-        payment_id=session["payment_intent"],
-        status=parameters.Stripe.Checkout.Status.open
-    )
-    ob.save()
+    if(license.subscription_type == 0):
+        ob = Checkout_session(
+            buyer=request.user, 
+            product=license,
+            created=common.epoch_to_date(session["created"]),
+            session_id=session["id"],
+            payment_id=session["payment_intent"],
+            status=parameters.Stripe.Checkout.Status.open
+        )
+        ob.save()
     return session
 
 def set_session_completed(data):

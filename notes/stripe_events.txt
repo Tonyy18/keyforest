@@ -1,0 +1,32 @@
+Buying new subscription product:
+
+    charge.succeeded
+    checkout.session.completed
+    payment_method.attached
+    customer.updated
+    invoice.created
+    invoice.finalized
+    customer.subscription.created
+    invoice.updated
+    invoice.paid
+    invoice.payment_succeeded
+    customer.subscription.updated
+    payment_intent.succeeded
+    payment_intent.created
+
+Charging new subscription period
+
+    On period end date:
+        invoice.upcoming
+    
+    After charged:
+        invoice.created
+        customer.subscription.updated
+        payment_intent.succeeded
+        charge.succeeded
+        payment_intent.created
+        invoice.updated
+        invoice.paid
+        invoice.payment_succeeded
+        invoice.finalized
+
