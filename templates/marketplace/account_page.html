@@ -60,22 +60,22 @@
                 <li class="list-header list-item">
                     <div class="item-image"></div>
                     <div class="item-cells">
+                        <p>number</p>
                         <p>Creation Date</p>
                         <p>Amount</p>
                         <p>Status</p>
-                        <p>number</p>
                         <p>External link</p>
                     </div>
                 </li>
-                {% if purchase.payment %}
+                {% if purchase.purchase.payment %}
                 <li class="list-header list-item">
                     <div class="item-image"></div>
                     <div class="item-cells">
-                        <p>{{ purchase.payment.date }}</p>
-                        <p>{{ purchase.payment.price }}$</p>
                         <p></p>
+                        <p>{{ purchase.purchase.payment.date }}</p>
+                        <p>{{ purchase.purchase.payment.price }}$</p>
+                        <p>Paid</p>
                         <a target="_blank" href="{{ payment.receipt }}">Open</a>
-                        <p></p>
                     </div>
                 </li>
                 {% elif purchase.invoices %}
@@ -83,10 +83,10 @@
                 <li class="list-header list-item">
                     <div class="item-image"></div>
                     <div class="item-cells">
+                        <p>{{ invoice.number }}</p>
                         <p>{{ invoice.date }}</p>
                         <p>{{ invoice.price }}$</p>
                         <p>{% get_invoice_status_text invoice %}</p>
-                        <p>{{ invoice.number }}</p>
                         {% if invoice|show_invoice_button %}
                         <a target="_blank" href="{{ invoice.invoice }}">Open</a>
                         {% else %}

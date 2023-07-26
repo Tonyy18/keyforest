@@ -46,15 +46,22 @@ def update_subscription(data, status=None, current_invoice_status=None):
 
 def new_invoice(data):
     inv_ob = stripe_event_objects.Invoice(data)
+
+    subs = Subscription.objects.filter(stripe_id = inv_ob.subscription_id)
+    sub = None
+    if(len(subs) > 0):
+        sub = subs.last()
+        if(sub.status == parameters.Stripe.Subscription.Status.canceled):
+            return
+
     inv = get_invoice_skeleton(inv_ob)
     existing = Invoice.objects.filter(subscription_stripe_id=inv_ob.subscription_id)
     if(len(existing) > 0):
         prev_tk = existing.last().tk
         inv.tk = prev_tk + 1
     inv.save()
-    sub = Subscription.objects.filter(stripe_id = inv_ob.subscription_id)
-    if(len(sub) > 0):
-        sub = sub.last()
+
+    if(sub != None):
         sub.invoice = inv
         sub.save()
 
@@ -101,5 +108,18 @@ def get_subscription_skeleton(ob):
     )
 
 def subscription_deleted(data):
-    update_subscription(data, current_invoice_status=parameters.Stripe.Invoice.Status.void)
+    sub_ob = stripe_event_objects.Subscription(data)
+    try:
+        sub = Subscription.objects.get(stripe_id=sub_ob.subscription_id)
+    except:
+        raise Exception("Subscription not found for update with id: " + sub_ob.subscription_id)
+
+    sub.status = getattr(parameters.Stripe.Subscription.Status,sub_ob.status)
+
+    sub.invoice.status = parameters.Stripe.Invoice.Status.void
+    sub.invoice.save()
+
+    sub.cancel_date = sub_ob.cancel_date
+    sub.cancel_reason = sub_ob.cancel_reason
+    sub.save()
     

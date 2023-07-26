@@ -81,6 +81,11 @@ class Subscription:
         self.product = stripe_api.get_license_by_id(product)
         self.start_date = common.epoch_to_date(data["data"]["object"]["current_period_start"])
         self.end_date = common.epoch_to_date(data["data"]["object"]["current_period_end"])
+        cancel_date = data["data"]["object"]["canceled_at"]
+        self.cancel_date = None
+        if(cancel_date):
+            self.cancel_date = common.epoch_to_date(cancel_date)
+        self.cancel_reason = data["data"]["object"]["cancellation_details"]["reason"]
         if(self.buyer == None):
             raise Exception("Failed to retrieve user for invoice.paid event. customer id: " + str(customer))
         if(self.product == None):

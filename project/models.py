@@ -157,6 +157,8 @@ class Subscription(models.Model):
     status = models.IntegerField(null=False)
     start_date = models.DateField(null=True)
     end_date = models.DateField(null=True)
+    cancel_date = models.DateField(null=True)
+    cancel_reason = models.TextField(null=True)
     class Meta:
         db_table = "subscriptions"
 
