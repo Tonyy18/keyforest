@@ -5,7 +5,12 @@ from lib.utils import common
 
 @register.simple_tag
 def get_purchase_renews_text(purchase):
-    return "test"
+    text = ""
+    if(purchase.product.subscription_type == 0 or purchase.subscription.status != parameters.Stripe.Subscription.Status.active):
+        text = "Not invoicing"
+    else:
+        text = common.format_date(purchase.subscription.end_date)
+    return text
 
 @register.simple_tag
 def get_purchase_status_text(purchase):

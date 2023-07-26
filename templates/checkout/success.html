@@ -1,0 +1,19 @@
+{% extends "include/base.html" %}
+{% load static %}
+{% block b_head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/checkout.css'%}">
+{% endblock %}
+{% block b_body %}
+<div class="checkout-success">
+    <header>
+        <a href="/market">
+            <h1>Keyforest</h1>
+        </a>
+        <div class="success-message">
+            <img src="{% static '/images/success.png'%}">
+            <h2>New product purchased</h2>
+        </div>
+        <a href="/market/account/" class="btn btn-blue">View all products</a>
+    </header>
+</div>
+{% endblock %}

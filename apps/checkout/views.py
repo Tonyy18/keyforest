@@ -19,7 +19,6 @@ def checkoutPage(request, licenseId, extraData=None):
 
 def checkoutSuccess(request, sessionId, licenseId):
     try:
-        session = stripe_checkout.get_session(sessionId)
         return render(request, "checkout/success.html")
     except:
         pass

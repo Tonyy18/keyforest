@@ -35,7 +35,9 @@ $(function() {
     });
     $(".list .dropdown-btn").click(function() {
         const item = $(this).parents("li");
-        $(item).find(".list-dropdown").toggle();
+        const dropdownList = $(item).find(".list-dropdown")
+        $(dropdownList).toggle();
+        $(dropdownList).parent().toggleClass("dropdown-indicator")
     })
 })
 

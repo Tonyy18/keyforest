@@ -5,12 +5,12 @@
     width: 400px;
     margin: 0 auto;
 }
-.checkout header {
+header {
     text-align: center;
     padding-bottom: 50px;
     padding-top: 100px;
 }
-.checkout header h1 {
+header h1 {
     font-size: 40px;
 }
 .checkout header h2 {
@@ -164,4 +164,22 @@
 .checkout .checkout-card .session-status.error {
     background-color: red;
     color: white;
+}
+.checkout-success {
+    padding-top: 3vw;
+}
+.success-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+.success-message img {
+    height: 40px;
+    width: 40px;
+    margin-right: 10px;
+}
+.success-message h2 {
+    font-size: 22px;
 }
