@@ -51,7 +51,7 @@
                             {% if purchase.purchase|show_key_button %}
                             <button class="btn btn-green show_key_button" data-key="{{ purchase.purchase.activation_id }}" data-name="{{ purchase.purchase.product.name }}">Show key</Button>
                             {% endif %}
-                            <button class="btn btn-blue dropdown-btn">Payments</button>
+                            <button class="btn btn-blue dropdown-btn">Invoices</button>
                         </div>
                     </div>
                 </div>
@@ -60,23 +60,38 @@
                 <li class="list-header list-item">
                     <div class="item-image"></div>
                     <div class="item-cells">
-                        <p>Payment Date</p>
+                        <p>Creation Date</p>
                         <p>Amount</p>
+                        <p>Status</p>
                         <p>External link</p>
                         <p></p>
                     </div>
                 </li>
-                {% for payment in purchase.payments %}
+                {% if purchase.payment %}
                 <li class="list-header list-item">
                     <div class="item-image"></div>
                     <div class="item-cells">
-                        <p>{{ payment.date }}</p>
-                        <p>{{ payment.price }}$</p>
-                        <a target="_blank" href="{% if payment.receipt %}{{ payment.receipt }}{% elif payment.invoice %}{{ payment.invoice }}{% endif %}">Open</a>
+                        <p>{{ purchase.payment.date }}</p>
+                        <p>{{ purchase.payment.price }}$</p>
+                        <p></p>
+                        <a target="_blank" href="{{ payment.receipt }}">Open</a>
+                        <p></p>
+                    </div>
+                </li>
+                {% elif purchase.invoices %}
+                {% for invoice in purchase.invoices %}
+                <li class="list-header list-item">
+                    <div class="item-image"></div>
+                    <div class="item-cells">
+                        <p>{{ invoice.date }}</p>
+                        <p>{{ invoice.price }}$</p>
+                        <p>{% get_invoice_status_text invoice %}</p>
+                        <a target="_blank" href="{{ invoice.invoice }}">{% if invoice.invoice %}Open{%endif%}</a>
                         <p></p>
                     </div>
                 </li>
                 {% endfor %}
+                {% endif %}
             </ul>
         </li>
         {% empty %}

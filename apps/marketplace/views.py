@@ -47,21 +47,24 @@ def appPage(request, orgId, appId):
 @login_required
 def accountPage(request):
     purchases = api_utils.get_purchases(request.user)
-    payments = api_utils.get_payments(request.user)
-    subscriptions = api_utils.get_subscriptions(request.user)
+    invoices = api_utils.get_invoices(request.user)
 
     results = []
     for p in purchases:
-        res = {"purchase": p, "payments": []}
         if(p.payment):
-            res["payments"].append(p.payment)
-            continue
-        if(p.subscription):
-            sub_id = p.subscription.stripe_id
-            for sub in subscriptions:
-                if(sub.stripe_id == sub_id):
-                    res["payments"].append(sub.payment)
-        results.append(res)
+            #not a subscription
+            results.append({
+                "purchase": p
+            })
+        else:
+            #subscription
+            res = {"purchase": p, "invoices": []}
+            invs = invoices.filter(subscription_stripe_id=p.subscription.stripe_id).order_by("-tk")
+            print(len(invs))
+            res["invoices"] = invs
+            results.append(res)
+    
+    print(results)
 
     return render(request, "marketplace/account_page.html", {
         "purchases": results

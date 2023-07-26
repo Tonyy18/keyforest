@@ -42,14 +42,16 @@ def webhook(request):
             stripe_events.payment_succeeded(data)
             pass
 
-    if(data["type"] == "invoice.paid"):
-        #subscription invoice paid. for recurring
-        stripe_events.invoice_paid(data)
-
     if(data["type"] == "customer.subscription.created"):
         stripe_events.new_subscription(data)
 
-    if(data["type"].startswith("customer.subscription.deleted")):
-        stripe_events.subscription_deleted(data)
+    if(data["type"] == "customer.subscription.updated"):
+        stripe_events.update_subscription(data)
+
+    if(data["type"] == "invoice.created"):
+        stripe_events.new_invoice(data)
+    
+    if(data["type"] == "invoice.updated"):
+        stripe_events.update_invoice(data)
 
     return HttpResponse(status=200)
