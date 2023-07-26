@@ -13,6 +13,7 @@ class Invoice:
         self.created = common.epoch_to_date(data["data"]["object"]["created"])
         self.subscription_id = data["data"]["object"]["subscription"]
         self.invoice = data["data"]["object"]["hosted_invoice_url"]
+        self.number = data["data"]["object"]["number"]
         self.price = common.cents_to_dollars(data["data"]["object"]["lines"]["data"][0]["amount"])
 
         period = data["data"]["object"]["lines"]["data"][0]["period"]

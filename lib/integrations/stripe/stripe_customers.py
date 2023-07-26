@@ -1,16 +1,19 @@
 import stripe
 from django.conf import settings
 stripe.api_key = settings.STRIPE_APIKEY
+from lib.integrations.stripe import stripe_test_clocks
 
 def create(user):
     try:
         if(settings.DEBUG==True):
             #Use stripe test clock
             #We can adjust the time from dashboard to test subscriptions
+            stripe_test_clocks.delete_all()
+            test_clock = stripe_test_clocks.create_clock()
             response = stripe.Customer.create(
                 email=user.email,
                 name=user.first_name + " " + user.last_name,
-                test_clock="clock_1NY7RtI0rEDBXFZNASIGQuQi"
+                test_clock=test_clock["id"]
             )
         else:
             response = stripe.Customer.create(

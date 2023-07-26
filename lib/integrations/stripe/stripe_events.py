@@ -24,21 +24,28 @@ def new_subscription(data):
     sub.save()
     purchase.save()
 
-def update_subscription(data):
+def update_subscription(data, status=None, current_invoice_status=None):
     sub_ob = stripe_event_objects.Subscription(data)
     try:
         sub = Subscription.objects.get(stripe_id=sub_ob.subscription_id)
     except:
         raise Exception("Subscription not found for update with id: " + sub_ob.subscription_id)
 
-    sub.status = getattr(parameters.Stripe.Subscription.Status,sub_ob.status)
+    if(status != None):
+        sub.status = status
+    else:
+        sub.status = getattr(parameters.Stripe.Subscription.Status,sub_ob.status)
+
+    if(current_invoice_status != None):
+        sub.invoice.status = current_invoice_status
+        sub.invoice.save()
+
     sub.start_date = sub_ob.start_date
     sub.end_date = sub_ob.end_date
     sub.save()
 
 def new_invoice(data):
     inv_ob = stripe_event_objects.Invoice(data)
-    print(data)
     inv = get_invoice_skeleton(inv_ob)
     existing = Invoice.objects.filter(subscription_stripe_id=inv_ob.subscription_id)
     if(len(existing) > 0):
@@ -73,14 +80,15 @@ def get_invoice_skeleton(ob):
         date=ob.created,
         subscription_stripe_id=ob.subscription_id,
         status = getattr(parameters.Stripe.Invoice.Status, ob.status),
-        invoice=ob.invoice
+        invoice=ob.invoice,
+        number=ob.number
     )
 
 def get_purchase_skeleton(ob):
     return Purchase(
         user=ob.buyer,
         product=ob.product,
-        activation_id=common.get_random_string(length=30)
+        activation_id=common.random_id()
     )
 def get_subscription_skeleton(ob):
     return Subscription(
@@ -93,20 +101,5 @@ def get_subscription_skeleton(ob):
     )
 
 def subscription_deleted(data):
-    try:
-        sub_object = stripe_event_objects.Subscription(data)
-        subs = Subscription.objects.filter(stripe_id=sub_object.subscription_id)
-        current_period = subs.last()
-        current_period.status = parameters.Stripe.Subscription.Status.cancelled
-        current_period.save()
-    except:
-        raise Exception("Failed to change subscription status when subscription cancelled: subscription id: " + sub_object.subscription_id)
-
-    try:
-        purchase = Purchase.objects.get(subscription=current_period)
-        purchase.status = parameters.Stripe.Purchase.Status.expired
-        purchase.save()
-    except:
-        raise Exception("Failed to change purchase status when subscription cancelled: subscription id: " + sub_object.subscription_id)
-
+    update_subscription(data, current_invoice_status=parameters.Stripe.Invoice.Status.void)
     

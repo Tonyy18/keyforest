@@ -51,7 +51,7 @@
                             {% if purchase.purchase|show_key_button %}
                             <button class="btn btn-green show_key_button" data-key="{{ purchase.purchase.activation_id }}" data-name="{{ purchase.purchase.product.name }}">Show key</Button>
                             {% endif %}
-                            <button class="btn btn-blue dropdown-btn">Invoices</button>
+                            <button class="btn btn-blue dropdown-btn">Invoicing</button>
                         </div>
                     </div>
                 </div>
@@ -63,8 +63,8 @@
                         <p>Creation Date</p>
                         <p>Amount</p>
                         <p>Status</p>
+                        <p>number</p>
                         <p>External link</p>
-                        <p></p>
                     </div>
                 </li>
                 {% if purchase.payment %}
@@ -86,8 +86,12 @@
                         <p>{{ invoice.date }}</p>
                         <p>{{ invoice.price }}$</p>
                         <p>{% get_invoice_status_text invoice %}</p>
-                        <a target="_blank" href="{{ invoice.invoice }}">{% if invoice.invoice %}Open{%endif%}</a>
+                        <p>{{ invoice.number }}</p>
+                        {% if invoice|show_invoice_button %}
+                        <a target="_blank" href="{{ invoice.invoice }}">Open</a>
+                        {% else %}
                         <p></p>
+                        {% endif %}
                     </div>
                 </li>
                 {% endfor %}

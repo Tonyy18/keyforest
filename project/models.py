@@ -144,6 +144,7 @@ class Invoice(models.Model):
     subscription_stripe_id = models.TextField(null=True)
     status = models.IntegerField(null=False)
     invoice = models.TextField(null=True)
+    number = models.TextField(null=True)
     tk = models.IntegerField(null=False, default=1)
     class Meta:
         db_table = "invoices"

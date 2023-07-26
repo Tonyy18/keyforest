@@ -48,10 +48,17 @@ def webhook(request):
     if(data["type"] == "customer.subscription.updated"):
         stripe_events.update_subscription(data)
 
+    if(data["type"] == "customer.subscription.deleted"):
+        stripe_events.subscription_deleted(data)
+
     if(data["type"] == "invoice.created"):
         stripe_events.new_invoice(data)
     
     if(data["type"] == "invoice.updated"):
         stripe_events.update_invoice(data)
+
+    if(data["type"] == "invoice.payment_failed"):
+        pass
+        #stripe_events.update_invoice(data)
 
     return HttpResponse(status=200)

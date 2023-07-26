@@ -60,11 +60,8 @@ def accountPage(request):
             #subscription
             res = {"purchase": p, "invoices": []}
             invs = invoices.filter(subscription_stripe_id=p.subscription.stripe_id).order_by("-tk")
-            print(len(invs))
             res["invoices"] = invs
             results.append(res)
-    
-    print(results)
 
     return render(request, "marketplace/account_page.html", {
         "purchases": results
