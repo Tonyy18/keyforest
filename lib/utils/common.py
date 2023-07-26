@@ -116,7 +116,14 @@ def get_api_org(request):
     return org
 
 def price_to_scents(price):
-    intr = str(price).replace("[0]*$", "").replace(".", "");
+    intr = str(price).replace("[0]*$", "")
+    if("." in intr):
+        sp = intr.split(".")
+        if(len(sp) != 2):
+            raise Exception("Invalid price format")
+        if(len(sp[1]) < 2):
+            intr += "0"
+    intr = intr.replace(".", "")
     return int(intr)
 
 def epoch_to_date(stamp):

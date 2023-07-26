@@ -49,18 +49,28 @@ class Stripe:
             expired = 2
     class Subscription:
         class Status:
-            waiting_payment = 0
-            paid = 1
-            expired = 2
-            cancelled = 3
-            text = ["waiting payment", "paid", "expired", "cancelled"]
+            incomplete = 0
+            expired = 1
+            active = 2
+            past_due = 3
+            canceled = 4
+            unpaid = 5
+            text = ["incomplete", "expired", "active", "past due", "canceled", "unpaid"]
     class Purchase:
         class Status:
             not_activated = 0
             activated = 1
             not_usable = 2
             expired = 3
-            text = ["not activated", "activated", "not usable", "expired"]
+            text = ["not activated", "active", "not usable", "expired"]
+    class Invoice:
+        class Status:
+            draft = 0
+            open = 1
+            void = 2
+            paid = 3
+            uncollectible = 4
+            text = ["draft", "open", "void", "paid", "uncollectible"]
 
 class Server:
     url = "http://localhost:3000"

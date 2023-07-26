@@ -132,24 +132,35 @@ class Payment(models.Model):
     price = models.DecimalField(null=True, decimal_places=2, max_digits=len(str(params.License.max_price)) - 1)
     date = models.DateField(null=False)
     receipt = models.TextField(null=True)
-    invoice = models.TextField(null=True) #used with subscriptions
     class Meta:
         db_table = "payments"
+
+class Invoice(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(License, on_delete=models.CASCADE)
+    price = models.DecimalField(null=True, decimal_places=2, max_digits=len(str(params.License.max_price)) - 1)
+    date = models.DateField(null=False)
+    stripe_id = models.TextField(null=True)
+    subscription_stripe_id = models.TextField(null=True)
+    status = models.IntegerField(null=False)
+    invoice = models.TextField(null=True)
+    tk = models.IntegerField(null=False, default=1)
+    class Meta:
+        db_table = "invoices"
 
 class Subscription(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(License, on_delete=models.CASCADE)
-    payment = models.ForeignKey(Payment, on_delete=models.CASCADE, null=True)
+    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE, null=True)
     stripe_id = models.TextField(null=True)
-    status = models.IntegerField(null=False, default=False)
+    status = models.IntegerField(null=False)
     start_date = models.DateField(null=True)
     end_date = models.DateField(null=True)
-    period_tk = models.IntegerField(null=False, default=1) #identifies recurring purchases
     class Meta:
         db_table = "subscriptions"
 
 class Purchase(models.Model):
-    buyer = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(License, on_delete=models.CASCADE)
     activated = models.BooleanField(null=False, default=False)
     status = models.IntegerField(null=False, default=params.Stripe.Purchase.Status.not_activated)

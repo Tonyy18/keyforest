@@ -1,10 +1,15 @@
 from project.models import Checkout_session
 from lib.utils import common
 from lib.integrations.stripe import stripe_api
+
+#Each class contains the data parsed from Stripe webhook events
+
 class Invoice:
     def __parse(self, data):
         customer = data["data"]["object"]["customer"]
         product = data["data"]["object"]["lines"]["data"][0]["price"]["product"]
+        self.id = data["data"]["object"]["id"]
+        self.status = data["data"]["object"]["status"]
         self.created = common.epoch_to_date(data["data"]["object"]["created"])
         self.subscription_id = data["data"]["object"]["subscription"]
         self.invoice = data["data"]["object"]["hosted_invoice_url"]
@@ -66,15 +71,20 @@ class Subscription:
     def __parse(self, data):
         customer = data["data"]["object"]["customer"]
         product = data["data"]["object"]["plan"]["product"]
+        self.status = data["data"]["object"]["status"]
+        if(self.status == "incomplete_expired"):
+            self.status = "expired"
         self.subscription_id = data["data"]["object"]["id"]
         self.price = common.cents_to_dollars(data["data"]["object"]["items"]["data"][0]["price"]["unit_amount"])
         self.buyer = stripe_api.get_user_by_id(customer)
         self.product = stripe_api.get_license_by_id(product)
+        self.start_date = common.epoch_to_date(data["data"]["object"]["current_period_start"])
+        self.end_date = common.epoch_to_date(data["data"]["object"]["current_period_end"])
         if(self.buyer == None):
             raise Exception("Failed to retrieve user for invoice.paid event. customer id: " + str(customer))
         if(self.product == None):
             raise Exception("Failed to retrieve license for invoice.paid event. product id: " + str(product))
-
+    
     def __init__(self, data):
         self.type = "subscription"
         self.data = data
