@@ -1,7 +1,7 @@
 import abc
 from django.shortcuts import render
 from django.http import HttpResponse, QueryDict
-from project.models import Organization, User_connection, Application, Invitation, User
+from project.models import Organization, User_connection, Purchase
 from lib.utils.common import *
 from django.contrib.auth.decorators import login_required
 import json
@@ -9,7 +9,7 @@ from lib import parameters,validators
 from datetime import date
 from datetime import datetime
 from django.db.models import Q
-from lib.utils.api_utils import Codes, response, create_app_dict, create_user_dict, create_org_dict
+from lib.utils.api_utils import Codes, response, create_app_dict, create_user_dict, create_org_dict, cancel_purchase
 
 def organizations(request):
     if(not request.user.is_authenticated):
@@ -52,3 +52,12 @@ def organizations(request):
                 request.user.organization = org
                 request.user.save()
                 return response(Codes.ok, create_org_dict(org))
+
+def purchases(request, id):
+    if(not request.user.is_authenticated):
+        return response(Codes.unauthorized)
+
+    if(request.method == "DELETE"):
+        res = cancel_purchase(id)
+        return res
+    

@@ -474,12 +474,14 @@ header .btn-i {
 }
 .list .list-item .item-cells .item-cell-buttons > div {
     right: 0px;
+    font-size: 0px;
     position: absolute;
 }
 .list .list-item .item-cells .item-cell-buttons .btn {
     line-height: 36px;
     padding: 0 10px;
     top: calc(50% - 18px);
+    margin-right: 5px;
 }
 .list.list-equal .list-item .item-cells > p {
     flex-grow: 1;

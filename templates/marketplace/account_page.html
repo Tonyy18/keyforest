@@ -40,14 +40,17 @@
         </li>
         {% for purchase in purchases %}
         <li>
-            <div class="list-item">
+            <div class="list-item" data-purchase="{{purchase.purchase.id}}">
                 <img class="item-image" src="{% static '/images/license.png'%}">
                 <div class="item-cells">
-                    <p>{{ purchase.purchase.product.name }}</p>
-                    <p>{% get_purchase_renews_text purchase.purchase %}</p>
-                    <p>{% get_purchase_status_text purchase.purchase %}</p>
+                    <p class="product-name">{{ purchase.purchase.product.name }}</p>
+                    <p class="product-renews">{% get_purchase_renews_text purchase.purchase %}</p>
+                    <p class="product-status">{% get_purchase_status_text purchase.purchase %}</p>
                     <div class="item-cell-buttons">
                         <div>
+                            {% if purchase.purchase|show_cancel_button %}
+                            <button class="btn btn-red cancel-btn">Cancel</button>
+                            {% endif %}
                             {% if purchase.purchase|show_key_button %}
                             <button class="btn btn-green show_key_button" data-key="{{ purchase.purchase.activation_id }}" data-name="{{ purchase.purchase.product.name }}">Show key</Button>
                             {% endif %}
@@ -60,7 +63,7 @@
                 <li class="list-header list-item">
                     <div class="item-image"></div>
                     <div class="item-cells">
-                        <p>number</p>
+                        <p>Number</p>
                         <p>Creation Date</p>
                         <p>Amount</p>
                         <p>Status</p>
@@ -111,6 +114,22 @@ $(".show_key_button").click(function() {
     $("#activation_key_modal .product-name").html($(this).attr("data-name"))
     $("#activation_key_modal #activation_key").val($(this).attr("data-key"))
     modal.show()
+})
+$(".cancel-btn").click(function() {
+    const item = $(this).parents(".list-item")
+    const name = $(item).find(".product-name")
+    const renews = $(item).find(".product-renews");
+    const status = $(item).find(".product-status")
+    let id = $(item).attr("data-purchase")
+    if(confirm("Are you sure you want to cancel the purchase of '" + name.text() + "'. This cannot be undone")) {
+        User.cancel_purchase(id, () => {
+            $(this).remove()
+            $(renews).html("Not invoicing")
+            notice.show("The product is now cancelled")
+        }, function(data) {
+            notice.error(data.responseJSON["error"])
+        })
+    }
 })
 </script>
 {% endblock %}

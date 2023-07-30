@@ -114,6 +114,11 @@ def subscription_deleted(data):
     except:
         raise Exception("Subscription not found for update with id: " + sub_ob.subscription_id)
 
+    try:
+        purchase = Purchase.objects.get(subscription=sub)
+    except:
+        raise Exception("Purhcase not found for subscription update with id: " + sub_ob.subscription_id)
+
     sub.status = getattr(parameters.Stripe.Subscription.Status,sub_ob.status)
 
     sub.invoice.status = parameters.Stripe.Invoice.Status.void
@@ -122,4 +127,7 @@ def subscription_deleted(data):
     sub.cancel_date = sub_ob.cancel_date
     sub.cancel_reason = sub_ob.cancel_reason
     sub.save()
+
+    purchase.status = parameters.Stripe.Purchase.Status.canceled
+    purchase.save()
     

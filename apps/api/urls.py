@@ -11,6 +11,7 @@ urlpatterns = [
     path("organizations/", views.organizations),
     path("applications/", views.applications),
     path("user/organizations", User.organizations),
+    path("user/purchases/<int:id>", User.purchases),
     path("organization/apps", Organization.applications),
     path("organization/users/<int:userid>", Organization.users), #For delete
     path("organization/users", Organization.users), #For get and post

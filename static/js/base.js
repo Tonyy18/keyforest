@@ -138,7 +138,9 @@ class User {
     static get_organizations(success, error) {
         session_request("/api/user/organizations", "GET", {}, success, error)
     }
-
+    static cancel_purchase(id, success, error) {
+        session_request("/api/user/purchases/" + id, "DELETE", {}, success, error)
+    }
 }
 
 class Permissions {
@@ -187,6 +189,8 @@ class Application {
         session_request("/api/organization/apps/" + app_id + "/licenses", "GET", "", success, error)
     }
 }
+
+
 
 const date_format = (date, format) => {
     const split = date.split("-");

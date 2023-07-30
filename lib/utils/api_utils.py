@@ -1,6 +1,7 @@
 from project.models import Organization, User_connection, Application, User, License, Purchase, Payment, Subscription, Invoice
 from lib.utils.common import *
 from django.http import HttpResponse, QueryDict
+from lib.integrations.stripe import stripe_subscriptions
 
 import json
 class Codes:
@@ -188,3 +189,30 @@ def get_invoices(user):
         user = user.id
     subs = Invoice.objects.filter(user=user).order_by("product__name")
     return subs
+
+def cancel_purchase(p):
+    if(isinstance(p, int)):
+        try:
+            p = Purchase.objects.get(id=p)
+        except:
+            return response(Codes.bad_request, "Purchase with id (" + str(id) + ") was not found")
+
+    if(not isinstance(p, Purchase)):
+        raise Exception("Trying to cancel a purchase without a purchase object")
+    
+    if(p.subscription == None):
+        #one time purchase
+        p.status == parameters.Stripe.Purchase.Status.canceled
+        p.save()
+        return response(Codes.ok)
+    else:
+        try:
+            stripe_subscriptions.delete_subscription(p)
+            p.subscription.cancel_at_period_end = True
+            p.subscription.save()
+            p.status == parameters.Stripe.Purchase.Status.canceled
+            p.save()
+            return response(Codes.ok)
+        except:
+            return response(Codes.internal, "Integration error")
+    

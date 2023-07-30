@@ -3,10 +3,10 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.conf import settings
-import datetime
 from django.core.validators import MaxValueValidator, MinValueValidator
 import uuid
 from lib import parameters as params
+import lib.utils as utils
 
 class Organization(models.Model):
     name = models.TextField(null=False, max_length=params.Organization.max_name_length)
@@ -159,6 +159,7 @@ class Subscription(models.Model):
     end_date = models.DateField(null=True)
     cancel_date = models.DateField(null=True)
     cancel_reason = models.TextField(null=True)
+    cancel_at_period_end = models.BooleanField(null=False, default=False)
     class Meta:
         db_table = "subscriptions"
 
@@ -173,6 +174,44 @@ class Purchase(models.Model):
     subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE, null=True)
     class Meta:
         db_table = "purchases"
+
+    def is_activable(self):
+        statuses = params.Stripe.Purchase.Status
+        if(self.status == statuses.not_activated):
+            if(self.subscription != None):
+                statuses = params.Stripe.Subscription.Status
+                if(self.subscription.status == statuses.active):
+                    return True
+            else:
+                return True
+        return False
+
+    def is_cancellable(self):
+        if(self.subscription == None and self.status != params.Stripe.Purchase.Status.canceled):
+            return True
+        if(self.subscription and self.subscription.cancel_at_period_end == False and (
+            self.subscription.status == params.Stripe.Subscription.Status.active or 
+            self.subscription.status == params.Stripe.Subscription.Status.past_due)):
+            return True
+    
+        return False
+
+    def get_status(self):
+        status = ""
+        if(self.product.subscription_type == 0 or self.subscription.status == params.Stripe.Subscription.Status.active):
+            status = params.Stripe.Purchase.Status.text[self.status]
+        else:
+            #subscription
+            status = params.Stripe.Subscription.Status.text[self.subscription.status]
+        return status.capitalize()
+
+    def get_next_invoice_status(self):
+        text = ""
+        if(self.product.subscription_type == 0 or (self.subscription.status != params.Stripe.Subscription.Status.active or self.subscription.cancel_at_period_end)):
+            text = "Not invoicing"
+        else:
+            text = utils.common.format_date(self.subscription.end_date)
+        return text
 
 @receiver(post_save, sender=Organization)
 def create_user_connection(sender, instance, created, **kwargs):

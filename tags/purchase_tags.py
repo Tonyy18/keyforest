@@ -1,30 +1,18 @@
 from django import template
 register = template.Library()
 from lib import parameters
-from lib.utils import common
 
 @register.simple_tag
 def get_purchase_renews_text(purchase):
-    text = ""
-    if(purchase.product.subscription_type == 0 or purchase.subscription.status != parameters.Stripe.Subscription.Status.active):
-        text = "Not invoicing"
-    else:
-        text = common.format_date(purchase.subscription.end_date)
-    return text
+    return purchase.get_next_invoice_status()
 
 @register.simple_tag
 def get_purchase_status_text(purchase):
-    status = ""
-    if(purchase.product.subscription_type == 0 or purchase.subscription.status == parameters.Stripe.Subscription.Status.active):
-        status = parameters.Stripe.Purchase.Status.text[purchase.status]
-    else:
-        #subscription
-        status = parameters.Stripe.Subscription.Status.text[purchase.subscription.status]
-    return status.capitalize()
+    return purchase.get_status()
 
 @register.filter
 def show_key_button(purchase):
-    return True
+    return purchase.is_activable()
 
 @register.simple_tag
 def get_invoice_status_text(invoice):
@@ -33,3 +21,7 @@ def get_invoice_status_text(invoice):
 @register.filter
 def show_invoice_button(invoice):
     return invoice.invoice != None and invoice.status != parameters.Stripe.Invoice.Status.void
+
+@register.filter
+def show_cancel_button(purchase):
+    return purchase.is_cancellable()

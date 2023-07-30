@@ -61,8 +61,8 @@ class Stripe:
             not_activated = 0
             activated = 1
             not_usable = 2
-            expired = 3
-            text = ["not activated", "active", "not usable", "expired"]
+            canceled = 3
+            text = ["not activated", "active", "not usable", "canceled"]
     class Invoice:
         class Status:
             draft = 0

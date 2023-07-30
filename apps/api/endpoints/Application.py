@@ -117,7 +117,7 @@ def licenses(request, appid):
                 if(len(sp[1]) > 2):
                     return response(Codes.bad_request, "Invalid price argument")
 
-            if(price > 0.01 and price < parameters.License.min_price):
+            if(float(price) < parameters.License.min_price):
                 return response(Codes.bad_request, "Minimum price is " + str(parameters.License.min_price) + "$")
             elif(price >= parameters.License.min_price):
                 if(price > parameters.License.max_price):
@@ -126,6 +126,8 @@ def licenses(request, appid):
                     ob.price = price
             else:
                 ob.price = None
+        else:
+            return response(Codes.bad_request, "Minimum price is " + str(parameters.License.min_price) + "$")
 
         if(subscription_period):
             subscription_period = subscription_period.strip()
