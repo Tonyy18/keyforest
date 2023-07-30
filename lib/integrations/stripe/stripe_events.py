@@ -121,8 +121,9 @@ def subscription_deleted(data):
 
     sub.status = getattr(parameters.Stripe.Subscription.Status,sub_ob.status)
 
-    sub.invoice.status = parameters.Stripe.Invoice.Status.void
-    sub.invoice.save()
+    if(sub.invoice.status != parameters.Stripe.Invoice.Status.paid):
+        sub.invoice.status = parameters.Stripe.Invoice.Status.void
+        sub.invoice.save()
 
     sub.cancel_date = sub_ob.cancel_date
     sub.cancel_reason = sub_ob.cancel_reason
