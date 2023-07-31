@@ -40,7 +40,7 @@
         </li>
         {% for purchase in purchases %}
         <li>
-            <div class="list-item" data-purchase="{{purchase.purchase.id}}">
+            <div class="list-item" data-purchase="{{purchase.purchase.id}}" data-subscription="{{purchase.purchase.subscription}}">
                 <img class="item-image" src="{% static '/images/license.png'%}">
                 <div class="item-cells">
                     <p class="product-name">{{ purchase.purchase.product.name }}</p>
@@ -48,13 +48,13 @@
                     <p class="product-status">{% get_purchase_status_text purchase.purchase %}</p>
                     <div class="item-cell-buttons">
                         <div>
-                            {% if purchase.purchase|show_cancel_button %}
-                            <button class="btn btn-red cancel-btn">Cancel</button>
-                            {% endif %}
                             {% if purchase.purchase|show_key_button %}
                             <button class="btn btn-green show_key_button" data-key="{{ purchase.purchase.activation_id }}" data-name="{{ purchase.purchase.product.name }}">Show key</Button>
                             {% endif %}
                             <button class="btn btn-blue dropdown-btn">Invoicing</button>
+                            {% if purchase.purchase|show_cancel_button %}
+                            <button class="btn btn-red cancel-btn">Cancel</button>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                 <li class="list-header list-item">
                     <div class="item-image"></div>
                     <div class="item-cells">
-                        <p>Number</p>
+                        <p>Invoice Number</p>
                         <p>Creation Date</p>
                         <p>Amount</p>
                         <p>Status</p>
@@ -116,18 +116,25 @@ $(".show_key_button").click(function() {
     modal.show()
 })
 $(".cancel-btn").click(function() {
+    $(this).attr("disabled", "true")
     const item = $(this).parents(".list-item")
     const name = $(item).find(".product-name")
     const renews = $(item).find(".product-renews");
     const status = $(item).find(".product-status")
     let id = $(item).attr("data-purchase")
     if(confirm("Are you sure you want to cancel the purchase of '" + name.text() + "'. This cannot be undone")) {
-        User.cancel_purchase(id, () => {
+        User.cancel_purchase(id, (data) => {
+            notice.show("The product was cancelled")
+            $(renews).html(data["data"]["next_invoice"])
+            $(status).html(data["data"]["status"])
+            if(data["data"]["subscription"] == false) {
+                $(this).parent().find(".show_key_button").remove()
+            }
             $(this).remove()
-            $(renews).html("Not invoicing")
-            notice.show("The product is now cancelled")
+            $(this).removeAttr("disabled")
         }, function(data) {
             notice.error(data.responseJSON["error"])
+            $(this).removeAttr("disabled")
         })
     }
 })

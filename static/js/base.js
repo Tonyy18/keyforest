@@ -262,3 +262,10 @@ function toggle_page_loader() {
         display_page_loader(!el.hasClass("open"));
     }
 }
+
+function get_url_parameter(param) {
+    var url_string = window.location.href; 
+    var url = new URL(url_string);
+    var c = url.searchParams.get(param);
+    return c;
+}

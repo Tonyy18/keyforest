@@ -128,7 +128,7 @@ textarea.input {
     border: 1px solid transparent;
 }
 .btn[disabled] {
-    background-color: lightgray;
+    background-color: lightgray !important;
 }
 .btn > i {
     margin-left: 10px;

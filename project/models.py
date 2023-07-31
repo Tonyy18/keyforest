@@ -198,8 +198,11 @@ class Purchase(models.Model):
 
     def get_status(self):
         status = ""
-        if(self.product.subscription_type == 0 or self.subscription.status == params.Stripe.Subscription.Status.active):
-            status = params.Stripe.Purchase.Status.text[self.status]
+        if(self.product.subscription_type == params.License.Subscription_period_type.never or self.subscription.status == params.Stripe.Subscription.Status.active):
+            if(self.subscription and self.subscription.cancel_at_period_end):
+                status = "Cancels at " + str(utils.common.format_date(self.subscription.end_date))
+            else:
+                status = params.Stripe.Purchase.Status.text[self.status]
         else:
             #subscription
             status = params.Stripe.Subscription.Status.text[self.subscription.status]
@@ -207,7 +210,7 @@ class Purchase(models.Model):
 
     def get_next_invoice_status(self):
         text = ""
-        if(self.product.subscription_type == 0 or (self.subscription.status != params.Stripe.Subscription.Status.active or self.subscription.cancel_at_period_end)):
+        if(self.product.subscription_type == params.License.Subscription_period_type.never or (self.subscription.status != params.Stripe.Subscription.Status.active or self.subscription.cancel_at_period_end)):
             text = "Not invoicing"
         else:
             text = utils.common.format_date(self.subscription.end_date)

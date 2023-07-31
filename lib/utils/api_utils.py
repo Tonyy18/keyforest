@@ -88,6 +88,14 @@ def create_license_dict(lic):
         "author": create_user_dict(lic.author)
     }
 
+def create_purchase_dict(purchase):
+    return {
+        "status": purchase.get_status(),
+        "next_invoice": purchase.get_next_invoice_status(),
+        "product": create_license_dict(purchase.product),
+        "subscription": purchase.subscription != None
+    }
+
 def get_applications_by_name(query, limit=None):
     results = []
     if(limit != None):
@@ -202,9 +210,9 @@ def cancel_purchase(p):
     
     if(p.subscription == None):
         #one time purchase
-        p.status == parameters.Stripe.Purchase.Status.canceled
+        p.status = parameters.Stripe.Purchase.Status.canceled
         p.save()
-        return response(Codes.ok)
+        return response(Codes.ok, create_purchase_dict(p))
     else:
         try:
             stripe_subscriptions.delete_subscription(p)
@@ -212,7 +220,8 @@ def cancel_purchase(p):
             p.subscription.save()
             p.status == parameters.Stripe.Purchase.Status.canceled
             p.save()
-            return response(Codes.ok)
-        except:
+            return response(Codes.ok, create_purchase_dict(p))
+        except Exception as e:
+            print(str(e))
             return response(Codes.internal, "Integration error")
     
