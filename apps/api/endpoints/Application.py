@@ -153,7 +153,7 @@ def licenses(request, appid):
                     subscription_type = int(subscription_type)
                 except:
                     return response(Codes.bad_request, "Invalid subscription type argument")
-                if(len(parameters.License.subscription_types) - 1 < subscription_type):
+                if(len(parameters.License.Subscription_period_type.text) - 1 < subscription_type):
                     return response(Codes.bad_request, "Invalid subscription type argument")
                 ob.subscription_type = subscription_type
             else:

@@ -99,7 +99,7 @@ class License(models.Model):
         MinValueValidator(1)
     ])
     subscription_type = models.IntegerField(null=False, validators=[
-        MaxValueValidator(len(params.License.subscription_types)),
+        MaxValueValidator(len(params.License.Subscription_period_type.text)),
         MinValueValidator(0)
     ], default=0)
     expiration = models.DateField(null=True)

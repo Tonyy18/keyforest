@@ -38,8 +38,13 @@ class License:
     max_price = 1000000.00
     min_price = 1.00
     max_subscription_period = 50000
-    subscription_types = ["never ending", "days", "weeks", "months"]
-    subscription_types_simple = ["never ending", "daily", "weekly", "monthly"]
+    class Subscription_period_type:
+        never = 0
+        days = 1
+        weeks = 2
+        months = 3
+        text = ["never ending", "days", "weeks", "months"]
+        singular_text = ["never ending", "daily", "weekly", "monthly"]
 
 class Stripe:
     class Checkout:

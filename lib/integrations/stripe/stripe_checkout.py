@@ -4,13 +4,14 @@ from django.shortcuts import redirect
 from lib import parameters
 from lib.utils import common
 from project.models import Checkout_session
+from lib.integrations.stripe import stripe_customers
 
 stripe.api_key = settings.STRIPE_APIKEY
 
 def get_session_mode(license):
     #Single payment or recurring subscription
     if(license.subscription_period != None):
-        if(license.subscription_type != parameters.License.subscription_types.index("never ending")):
+        if(license.subscription_type != parameters.License.Subscription_period_type.never):
             return "subscription"
     return "payment"
 

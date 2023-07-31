@@ -4,7 +4,7 @@ from lib import parameters
 
 @register.simple_tag
 def subscription_to_string(license):
-    re = parameters.License.subscription_types[license.subscription_type]
+    re = parameters.License.Subscription_period_type.text[license.subscription_type]
     if(license.subscription_period == 1):
         re = re[:-1]
     if(license.subscription_type > 0):
@@ -14,5 +14,5 @@ def subscription_to_string(license):
 @register.simple_tag
 def subscription_to_readable(license):
     if(license.subscription_period == 1 or license.subscription_type == 0):
-        return parameters.License.subscription_types_simple[license.subscription_type].capitalize()
-    return "Every " + str(license.subscription_period) + " " + parameters.License.subscription_types[license.subscription_type]
+        return parameters.License.Subscription_period_type.singular_text[license.subscription_type].capitalize()
+    return "Every " + str(license.subscription_period) + " " + parameters.License.Subscription_period_type.text[license.subscription_type]
