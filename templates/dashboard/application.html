@@ -7,7 +7,7 @@
     <section class="page-section">
         <header>
             <div class="flex">
-                <img src="{{app.image.url}}" class="header-img" />
+                <img src="{% static '/images/application_default.png' %}" class="header-img" />
                 <h1>{{app.name}}</h1>
                 <a href="{{app.id}}/settings" class="btn btn-green">Settings<i class="fas fa-cog"></i></a>
             </div>
@@ -150,7 +150,6 @@ const lineChart = new Chart(lineChartCanvas, config);
 
 Application.get_statistics("{{app.id}}", function(data) {
     data = data.data
-    console.log(data)
     lineChart.data.datasets.forEach((dataset, index) => {
         for(let a = 1; a < 13; a++) {
             if(a in data["monthly_sold"]) {

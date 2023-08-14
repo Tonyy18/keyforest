@@ -110,7 +110,7 @@
     let apps = []
     function create_app_search_el(data) {
         const el = $("<div class='app-listing' data-appname='" + data.name + "' data-appid='" + data.id + "'></div>")
-        el.append('<img src="' + data.image + '">')
+        el.append('<img src="' + "{% static '/images/application_default.png'%}" + '">')
         el.append('<p>' + data.name + '</p>');
         return el
     }

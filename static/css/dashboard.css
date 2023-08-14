@@ -442,6 +442,7 @@ body {
     border-radius: 5px;
     flex-grow: 1;
     vertical-align: top;
+    max-width: 100%;
 }
 .box-section .box.large-box {
     width: 400px;

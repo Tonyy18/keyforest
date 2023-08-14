@@ -1,5 +1,6 @@
 {% extends "dashboard/sidebar.html" %}
 {% block title %}{{ request.user.organization.name }} | Applications{% endblock %}
+{% load static %}
 {% block body %}
     <div class="modal" id="create-app-modal">
         <div class="modal-padding">
@@ -74,7 +75,7 @@
         console.log(data)
         const el = $("<li class='app'></li>");
         const link = $('<a href="/dashboard/organization/' + data.organization.id + '/app/' + data.id + '" class="list-item"></a>')
-        link.append('<img class="item-image" src="' + data.image + '">')
+        link.append('<img class="item-image" src="' + "{% static '/images/application_default.png'%}" + '">')
         const cells = $('<div class="item-cells"></div>')
         cells.append('<p>' + data.name + '</p>')
         cells.append('<p>' + data.licenses + ' licenses</p>')
