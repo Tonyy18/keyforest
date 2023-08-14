@@ -10,7 +10,7 @@
     --darker-blue: #007CC3;
     --red: #FF4848;
     --green: #00DA88;
-    --darker-green: #00A064;
+    --darker-green: #030303;
     --font-color: #4B4B4B;
     --light-border: #E2E2E2;
 }
@@ -153,7 +153,7 @@ textarea.input {
 }
 
 .btn-green {
-    background-color: #00DA88;
+    background-color: var(--green);
     color: white;
 }
 .btn-green:hover:not([disabled]) {
@@ -318,7 +318,7 @@ header .btn-i {
     background-color: #CF0300;
 }
 .alert.alert-notice {
-    background-color: #00DA88;
+    background-color: var(--green);
 }
 .alert p,
 .alert i {

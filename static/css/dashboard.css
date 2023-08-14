@@ -442,7 +442,7 @@ body {
     border-radius: 5px;
     flex-grow: 1;
     vertical-align: top;
-    max-width: 100%;
+    position: relative;
 }
 .box-section .box.large-box {
     width: 400px;
@@ -450,8 +450,9 @@ body {
 .box-section .box.medium-box {
     width: 300px;
 }
-.box-section .box header {
-    padding: 20px;
+.box-section .box header h3 {
+    padding: 0 20px;
+    line-height: 50px;
 }
 .box.chart-box {
     height: 300px;
@@ -461,7 +462,24 @@ body {
     padding: 10px;
     position: relative;
 }
-
+.box.value-box {
+    height: 200px;
+}
+.box.value-box .value {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -40px;
+}
+.box.value-box .value .total {
+    color: var(--green);
+    font-size: 45px;
+    font-weight: bold;
+}
+.box.value-box .value > * {
+    text-align: center;
+}
 .input-section {
     display: flex;
     font-size: 0px;

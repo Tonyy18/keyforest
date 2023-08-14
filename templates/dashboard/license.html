@@ -3,13 +3,47 @@
 {% block title %}{{ request.user.organization.name }} | Applications{% endblock %}
 {% block body %}
     <div class="dashboard-page">
-        <section class="page-section flex-grow">
+        <section class="page-section">
             <header>
                 <div class="flex">
                     <img src="{% static '/images/license.png' %}" class="header-img"/>
                     <h1 class="flex-grow">{{license.name}}</h1>
                 </div>
             </header>
+            <div class="box-section">
+                <div class="box value-box">
+                    <header>
+                        <h3>Licenses sold</h3>
+                    </header>
+                    <div class="value">
+                        <p class="total">1000</p>
+                    </div>
+                </div>
+                <div class="box value-box">
+                    <header>
+                        <h3>Revenue</h3>
+                    </header>
+                    <div class="value">
+                        <p class="total">1000$</p>
+                    </div>
+                </div>
+                <div class="box value-box">
+                    <header>
+                        <h3>Active</h3>
+                    </header>
+                    <div class="value">
+                        <p class="total">1000</p>
+                    </div>
+                </div>
+                <div class="box value-box">
+                    <header>
+                        <h3>Canceled</h3>
+                    </header>
+                    <div class="value">
+                        <p class="total">1000</p>
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
     <script>
