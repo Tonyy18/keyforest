@@ -1,7 +1,7 @@
 import abc
 from django.shortcuts import render
 from django.http import HttpResponse, QueryDict
-from project.models import Organization, User_connection, Application, Invitation, User, License
+from project.models import Application, License, Purchase
 from lib.utils.common import *
 from django.contrib.auth.decorators import login_required
 import json
@@ -12,6 +12,8 @@ from django.db.models import Q
 from lib.utils.api_utils import Codes, response, create_app_dict, create_user_dict, create_org_dict, create_license_dict
 from lib.integrations.stripe import stripe_products, stripe_prices
 import traceback
+from django.db.models.functions import TruncMonth
+from django.db.models import Count
 
 def licenses(request, appid):
     if(not request.user.is_authenticated):
@@ -190,3 +192,33 @@ def licenses(request, appid):
             return response(Codes.internal, "Internal integration error")
         ob.save()
         return response(Codes.ok, create_license_dict(ob))
+
+def statistics(request, appid):
+    if(not request.user.is_authenticated):
+        return response(Codes.unauthorized)
+
+    org = get_api_org(request)
+
+    if(org == None):
+        return response(Codes.bad_request, "Couldn't solve the target organization")
+
+    con = is_connected(request, org)
+    if(not con):
+        return response(Codes.unauthorized, "User is not part of the organization")
+
+    app = Application.objects.filter(organization=org, id=appid)
+    if(not app.exists()):
+        return response(Codes.bad_request, "App not found in the organization")
+    
+    ob = {
+        "monthly_sold": {
+
+        }
+    }
+    purchases = Purchase.objects.filter(date__year=datetime.now().year).annotate(month=TruncMonth('date')).values('month').annotate(c=Count('id')).values('month', 'c')  #Select all within the current year
+    for p in purchases:
+        ob["monthly_sold"][str(p["month"].month)] = p["c"]
+
+    return response(Codes.ok, ob)
+
+    

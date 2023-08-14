@@ -166,6 +166,7 @@ class Subscription(models.Model):
 class Purchase(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(License, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
     activated = models.BooleanField(null=False, default=False)
     status = models.IntegerField(null=False, default=params.Stripe.Purchase.Status.not_activated)
     activation_id = models.TextField(null=False)

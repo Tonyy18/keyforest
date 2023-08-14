@@ -188,6 +188,9 @@ class Application {
     static get_licenses(app_id, success=function(){}, error=function(){}) {
         session_request("/api/organization/apps/" + app_id + "/licenses", "GET", "", success, error)
     }
+    static get_statistics(app_id, success=function(){}, error=function(){}) {
+        session_request("/api/organization/apps/" + app_id + "/statistics", "GET", "", success, error)
+    }
 }
 
 

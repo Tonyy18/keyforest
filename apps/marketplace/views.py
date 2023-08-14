@@ -46,7 +46,7 @@ def appPage(request, orgId, appId):
 
 @login_required
 def accountPage(request):
-    purchases = api_utils.get_purchases(request.user)
+    purchases = api_utils.get_purchases(request.user).order_by("date")
     invoices = api_utils.get_invoices(request.user)
 
     results = []

@@ -13,27 +13,13 @@
             </div>
         </header>
         <div class="box-section">
-            <div class="box large-box chart-box">
+            <div class="box chart-box">
                 <header>
-                    <h3>Licenses activated</h3>
+                    <h3>Licenses sold this year</h3>
                 </header>
                 <div class="chart">
-                    <canvas id="myChart"></canvas>
+                    <canvas id="lineChart"></canvas>
                 </div>
-            </div>
-            <div class="box large-box chart-box">
-                <header>
-                    <h3>Revenue</h3>
-                </header>
-                <div class="chart">
-                    <canvas id="myChart"></canvas>
-                </div>
-            </div>
-            <div class="box large-box chart-box">
-                <header>
-                    <h3>Licenses sold</h3>
-                </header>
-                
             </div>
         </div>
         <header>
@@ -129,16 +115,16 @@
         $("#license-list li:not(.list-hearder):not(.list-message)").remove();
         $("#list-message").html(message).show();
     })
-const ctx = document.getElementById('myChart').getContext('2d');
+
+
+const lineChartCanvas = document.getElementById('lineChart').getContext('2d');
 const data = {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     datasets: [
         {
-            label: "Dataset 1",
-            data: [5,10,12,6,9],
-            fill: false,
-            borderColor: "#e2e2e2",
-            backgroundColor: "black"
+            borderColor: '#00DA88',
+            label: "Total sold",
+            data: []
         }
     ]
 }
@@ -152,9 +138,29 @@ const config = {
       }
     },
     responsive: true,
-    maintainAspectRatio: false
+    maintainAspectRatio: false,
+    scale: {
+        ticks: {
+          precision: 0
+        }
+      }
   }
 };
-const myChart = new Chart(ctx, config);
+const lineChart = new Chart(lineChartCanvas, config);
+
+Application.get_statistics("{{app.id}}", function(data) {
+    data = data.data
+    console.log(data)
+    lineChart.data.datasets.forEach((dataset, index) => {
+        for(let a = 1; a < 13; a++) {
+            if(a in data["monthly_sold"]) {
+                dataset.data.push(data["monthly_sold"][a]);
+            } else {
+                dataset.data.push(0);
+            }
+        }
+    });
+    lineChart.update();
+})
 </script>
 {% endblock %}

@@ -10,6 +10,7 @@ from . import views
 urlpatterns = [
     path("organizations/", views.organizations),
     path("applications/", views.applications),
+    path("permissions/", views.permissions),
     path("user/organizations", User.organizations),
     path("user/purchases/<int:id>", User.purchases),
     path("organization/apps", Organization.applications),
@@ -18,7 +19,7 @@ urlpatterns = [
     path("organization/users/<int:userid>/permissions", Organization.permissions),
     path("organization/apps/<int:appid>/licenses", Application.licenses),
     path("organization/licenses", Organization.licenses),
-    path("permissions/", views.permissions),
+    path("organization/apps/<int:appid>/statistics", Application.statistics),
     path("stripe/checkout/newsession/<int:licenseId>", Stripe.new_session),
     path("stripe/webhook", Stripe.webhook)
 ]

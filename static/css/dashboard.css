@@ -429,16 +429,18 @@ body {
 }
 
 .box-section {
-    text-align: center;
+    display: flex;
 }
 
 .box-section .box {
     text-align: left;
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
     margin: 15px;
     background-color: white;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
     border-radius: 5px;
+    flex-grow: 1;
     vertical-align: top;
 }
 .box-section .box.large-box {
@@ -456,6 +458,7 @@ body {
 .box.chart-box .chart {
     height: calc(100% - 63px);
     padding: 10px;
+    position: relative;
 }
 
 .input-section {
