@@ -46,6 +46,13 @@ class License:
         text = ["never ending", "days", "weeks", "months"]
         singular_text = ["never ending", "daily", "weekly", "monthly"]
 
+class Transaction:
+    class Type:
+        purchase = 0
+        platform_fee = 1
+        text = ["Purchase transaction", "Platform fee"]
+    platform_fee = 10 #Percent fee from purchase transaction
+
 class Stripe:
     class Checkout:
         class Status:

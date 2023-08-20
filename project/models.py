@@ -132,6 +132,7 @@ class Payment(models.Model):
     price = models.DecimalField(null=True, decimal_places=2, max_digits=len(str(params.License.max_price)) - 1)
     date = models.DateField(null=False)
     receipt = models.TextField(null=True)
+    transaction = models.ForeignKey("Transaction", on_delete=models.CASCADE)
     class Meta:
         db_table = "payments"
 
@@ -146,6 +147,7 @@ class Invoice(models.Model):
     invoice = models.TextField(null=True)
     number = models.TextField(null=True)
     tk = models.IntegerField(null=False, default=1)
+    transaction = models.ForeignKey("Transaction", on_delete=models.CASCADE)
     class Meta:
         db_table = "invoices"
 
@@ -162,6 +164,16 @@ class Subscription(models.Model):
     cancel_at_period_end = models.BooleanField(null=False, default=False)
     class Meta:
         db_table = "subscriptions"
+
+class Transaction(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(License, on_delete=models.CASCADE)
+    amount = models.DecimalField(null=False, decimal_places=2, max_digits=len(str(params.License.max_price)) - 1)
+    type = models.IntegerField(null=False)
+    addition = models.ManyToManyField("self")
+    date = models.DateField(auto_now_add=True)
+    class Meta:
+        db_table = "transactions"
 
 class Purchase(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
