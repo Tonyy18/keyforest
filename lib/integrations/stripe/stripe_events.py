@@ -1,13 +1,22 @@
-from project.models import Checkout_session, Purchase, Payment, Subscription, Invoice
+from project.models import Purchase, Payment, Subscription, Invoice, Transaction
 from lib.integrations.stripe import stripe_api, stripe_event_objects, stripe_invoices
 from lib.utils import common
 from lib import parameters
+from lib.utils import transactions
 
 def payment_succeeded(data):
     payment = stripe_event_objects.Payment(data)
     purchase = get_purchase_skeleton(payment)
-    purchase.payment = get_payment_object(payment)
-    purchase.payment.save()
+    pm = get_payment_object(payment)
+    tr = get_transaction_skeleton(pm)
+    tr.save()
+    fee = transactions.get_platform_fee_transaction(pm)
+    fee.save()
+    tr.additions.add(fee)
+    tr.save()
+    pm.transaction = tr
+    pm.save()
+    purchase.payment = pm
     purchase.save()
 
 def new_subscription(data):
@@ -69,8 +78,18 @@ def update_invoice(data):
     inv_ob = stripe_event_objects.Invoice(data)
     invoice = Invoice.objects.get(stripe_id = inv_ob.id)
     invoice.status = getattr(parameters.Stripe.Invoice.Status, inv_ob.status)
+    if(invoice.status == parameters.Stripe.Invoice.Status.paid):
+        tr = get_transaction_skeleton(invoice)
+        tr.save()
+        fee = transactions.get_platform_fee_transaction(invoice)
+        fee.save()
+        tr.additions.add(fee)
+        invoice.transaction = tr
     if(invoice.invoice == None):
         invoice.invoice = inv_ob.invoice
+    
+    if(invoice.transaction != None):
+        invoice.transaction.save()
     invoice.save()
 
 def get_payment_object(ob):
@@ -89,6 +108,13 @@ def get_invoice_skeleton(ob):
         status = getattr(parameters.Stripe.Invoice.Status, ob.status),
         invoice=ob.invoice,
         number=ob.number
+    )
+
+def get_transaction_skeleton(model):
+    return Transaction(
+        product=model.product,
+        amount=model.price,
+        type=parameters.Transaction.Type.purchase
     )
 
 def get_purchase_skeleton(ob):
