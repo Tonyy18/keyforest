@@ -14,6 +14,7 @@ from lib.integrations.stripe import stripe_products, stripe_prices
 import traceback
 from django.db.models.functions import TruncMonth
 from django.db.models import Count
+from lib.statistics import selling_statistics
 
 def licenses(request, appid):
     if(not request.user.is_authenticated):
@@ -211,13 +212,24 @@ def statistics(request, appid):
         return response(Codes.bad_request, "App not found in the organization")
     
     ob = {
-        "monthly_sold": {
-
-        }
+        
     }
-    purchases = Purchase.objects.filter(date__year=datetime.now().year).annotate(month=TruncMonth('date')).values('month').annotate(c=Count('id')).values('month', 'c')  #Select all within the current year
-    for p in purchases:
-        ob["monthly_sold"][str(p["month"].month)] = p["c"]
+    stat_type = request.GET.get("type")
+    type_value = request.GET.get("value")
+    if(type_value):
+        try:
+            type_value = int(type_value)
+        except:
+            type_value == None
+    if(stat_type):
+        stat_type = stat_type.strip().lower()
+        if(stat_type == "lastdays"):
+            days = 300
+            if(type_value):
+                days = type_value
+            ob = selling_statistics.get_apps_sold_last_days(app[0], days)
+    else:
+        ob = selling_statistics.get_apps_sold_in_year(app[0])
 
     return response(Codes.ok, ob)
 

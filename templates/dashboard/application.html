@@ -152,8 +152,8 @@ Application.get_statistics("{{app.id}}", function(data) {
     data = data.data
     lineChart.data.datasets.forEach((dataset, index) => {
         for(let a = 1; a < 13; a++) {
-            if(a in data["monthly_sold"]) {
-                dataset.data.push(data["monthly_sold"][a]);
+            if(a in data) {
+                dataset.data.push(data[a]);
             } else {
                 dataset.data.push(0);
             }
