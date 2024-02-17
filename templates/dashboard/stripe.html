@@ -1,0 +1,204 @@
+{% extends "dashboard/sidebar.html" %}
+{% load static %}
+{% load common_tags %}
+{% block title %}{{ request.user.organization.name }} | Create license{% endblock %}
+{% load static %}
+{% block body %}
+<div class="modal" id="stripe-modal">
+    <div class="modal-padding">
+        <div class="modal-body">
+            <header>
+                <p>Actions <span>for: <span id="modal-stripe-name"></span></span></p><i class="fas fa-times modal-close"></i>
+            </header>
+            <section class="past_due">
+                <h2>Past Due</h2>
+            </section>
+            <section class="currently_due">
+                <h2>Currenly Due</h2>
+                <span class="modal-item-box">one</span>
+            </section>
+            <section class="eventually_due">
+                <h2>Eventually Due</h2>
+            </section>
+            <section class="verification_fields">
+                <h2>Verification Fields</h2>
+            </section>
+            <section class="errors">
+                <h2>Errors</h2>
+            </section>
+        </div>
+    </div>
+    <div class="modal-bg"></div>
+</div>
+{% if active_accounts|length > 0 and default_found == False %}
+<div class="alert alert-error open" id="default-alert">
+    <p>Choose default stripe account, products cannot be sold if affiliated account is deleted. Default account will act as backup</p><i class="fas fa-times hide-alert"></i>
+</div>
+{% endif %}
+<section class="dashboard-page" id="stripe">
+    <section class="page-section flex-grow">
+        <header>
+            <div class="flex">
+                <img src="{% static '/images/stripe_logo.png'%}" class="stripe_logo">
+                <h1>Payments</h1>
+                <button class="btn btn-blue" id="connect-btn" style="margin-left: 50px">Connect Stripe</button>
+            </div>
+        </header>
+        <header>
+            <div class="flex">
+                <h2>Active accounts</h2>
+            </div>
+        </header>
+        <ul class="list list-white no-item-imgs stripe-account-list">
+            <li class="list-header list-item">
+                <div class="item-image"></div>
+                <div class="item-cells">
+                    <p>Account Id</p>
+                    <p>Display name</p>
+                    <p>Support phone</p>
+                    <p>Support email</p>
+                    <p>Actions</p>
+                    <p>Created</p>
+                    <p></p>
+                </div>
+            </li>
+            {% if active_accounts|length > 0 %}
+                {% for account in active_accounts %}
+                <li class="list-item" data-currently_due="{{account.currently_due}}" data-eventually_due="{{account.eventually_due}}" data-past_due="{{account.past_due}}" data-errors="{{account.errors}}" data-verification_fields="{{account.verification_fields_needed}}">
+                    <img class="item-image" src="{% static '/images/stripe-logo-small.png'%}">
+                    <div class="item-cells">
+                        <p class="stripe-account-id" data-value="{{account.account_id}}">{{account.account_id}}</p>
+                        <p class="stripe-account-name" data-value="{{account.display_name}}">{% get_null_placeholder account.display_name %}</p>
+                        <p>{% get_null_placeholder account.support_phone %}</p>
+                        <p>{% get_null_placeholder account.support_email %}</p>
+                        {% if account.get_actions_required_count > 0 %}
+                        <a href="#" class="show-actions">{{ account.get_actions_required_count }} actions</a>
+                        {% else %}
+                        <p>No actions</p>
+                        {% endif %}
+                        <p>{{account.created}}</p>
+                        {% if account.default == False %}
+                        <div class="item-cell-buttons">
+                            <div>
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <input type="text" hidden value="{{account.account_id}}" name="default_account">
+                                    <input type="submit" class="btn btn-blue set-default-btn" value="set default">
+                                </form>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="item-cell-buttons">
+                            <div>
+                                <p style="color: green">default</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </li>
+                {% endfor %}
+            {% else %}
+            <li class="list-message" id="list-message">
+                No active accounts
+            </li>
+            {% endif %}
+        </ul>
+        <header>
+            <div class="flex">
+                <h2>Actions required</h2>
+            </div>
+        </header>
+        <ul class="list list-trans stripe-account-list">
+            <li class="list-header list-item">
+                <div class="item-image"></div>
+                <div class="item-cells">
+                    <p>Account Id</p>
+                    <p>Display name</p>
+                    <p>Account disabled reason</p>
+                    <p>Verification disabled reason</p>
+                    <p>Details submitted</p>
+                    <p>Actions required</p>
+                    <p>Created</p>
+                </div>
+            </li>
+            {% if disabled_accounts|length == 0%}
+            <li class="list-message" id="list-message">
+                No accounts that requires actions
+            </li>
+            {% else %}
+            {% for account in disabled_accounts %}
+            <li class="list-item" data-currently_due="{{account.currently_due}}" data-eventually_due="{{account.eventually_due}}" data-past_due="{{account.past_due}}" data-errors="{{account.errors}}" data-verification_fields="{{account.verification_fields_needed}}">
+                <img class="item-image" src="{% static '/images/stripe-logo-small.png'%}">
+                <div class="item-cells">
+                    <p class="stripe-account-id" data-value="{{account.account_id}}">{{account.account_id}}</p>
+                    <p class="stripe-account-name" data-value="{{account.display_name}}">{% get_null_placeholder account.display_name%}</p>
+                    <p>{% get_null_placeholder account.disabled_reason %}</p>
+                    <p>{% get_null_placeholder account.verification_disabled_reason %}</p>
+                    <p>{% booleans_to_text account.details_submitted %}</p>
+                    {% if account.get_actions_required_count > 0 %}
+                    <a href="#" class="show-actions">{{ account.get_actions_required_count }} actions</a>
+                    {% else %}
+                    <p>No actions</p>
+                    {% endif %}
+                    <p>{{account.created}}</p>
+                </div>
+            </li>
+            {% endfor %}
+            {% endif%}
+        </ul>
+    </section>
+</div>
+<script>
+    const dAlert = new Alert("default-alert")
+    const modal = new Modal("stripe-modal");
+    $(".stripe-account-list .list-item .set-default-btn").click(function() {
+        
+    })
+    $(".stripe-account-list .list-item .show-actions").click(function(e) {
+        e.preventDefault()
+        const item = $(this).parents(".list-item")
+        const account_name = item.find(".stripe-account-name").attr("data-value")
+        const account_id = item.find(".stripe-account-id").attr("data-value")
+        let name_to_modal = account_id
+        if(account_name != "None") {
+            name_to_modal = account_name
+        }
+        $("#stripe-modal #modal-stripe-name").html(name_to_modal);
+        const dues = {
+            "currently_due": convert_django_json(item.attr("data-currently_due")),
+            "eventually_due": convert_django_json(item.attr("data-eventually_due")),
+            "past_due": convert_django_json(item.attr("data-past_due")),
+            "errors": convert_django_json(item.attr("data-errors")),
+            "verification_fields": convert_django_json(item.attr("data-verification_fields"))
+        }
+        for(key in dues) {
+            const fields = dues[key]
+            if(fields == null) {
+                $("#stripe-modal ." + key).hide()
+            } else {
+                $("#stripe-modal ." + key).find(".modal-item-box").remove()
+                for(field in fields) {
+                    const field_value = fields[field]
+                    $("#stripe-modal ." + key).append('<span class="modal-item-box">' + field_value + '</span>')
+                }
+            }
+        }
+        modal.show()
+    })
+    const alertModal = new Alert()
+    $("#connect-btn").click(function() {
+        const btn = $(this)
+        btn.loader()
+        display_page_loader()
+        Stripe.get_connect_url(function(data) {
+            window.location.href = data["data"]
+            btn.clear()
+            display_page_loader(false)
+        }, function(error) {
+            btn.clear()
+            alertModal.show("error", error.responseJSON["error"])
+            display_page_loader(false)
+        })
+    })
+</script>
+{% endblock %}

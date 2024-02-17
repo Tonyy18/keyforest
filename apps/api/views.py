@@ -1,7 +1,7 @@
 import abc
 from django.shortcuts import render
 from django.http import HttpResponse, QueryDict
-from project.models import Organization, User_connection, Application, Invitation, User
+from project.models import Organization, User_connection, Application, User
 from lib.utils.common import *
 from lib.utils import api_utils
 from django.contrib.auth.decorators import login_required

@@ -7,13 +7,16 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 import uuid
 from lib import parameters as params
 import lib.utils as utils
+from decimal import Decimal
+import json
 
 class Organization(models.Model):
     name = models.TextField(null=False, max_length=params.Organization.max_name_length)
     creator = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="organization_creator"
+        on_delete=models.SET_NULL,
+        related_name="organization_creator",
+        null=True
     )
     image = models.ImageField(upload_to="organizations/", default="organizations/default.png")
     about = models.TextField(null=True, max_length=params.Organization.max_bio_length)
@@ -21,8 +24,71 @@ class Organization(models.Model):
     created = models.DateField(auto_now_add=True)
     applications = models.IntegerField(default=0)
     users = models.IntegerField(default=0)
+
     class Meta:
         db_table = "organizations"
+
+class Stripe_account(models.Model):
+
+    def __init(self):
+        self.json = False
+
+    account_id = models.TextField()
+    support_phone = models.TextField(null=True)
+    support_email = models.TextField(null=True)
+    disabled_reason = models.TextField(null=True)
+
+    currently_due = models.TextField(null=True)
+    eventually_due = models.TextField(null=True)
+    past_due = models.TextField(null=True)
+    errors = models.TextField(null=True)
+    verification_fields_needed = models.TextField(null=True)
+
+    verification_disabled_reason = models.TextField(null=True)
+    details_submitted = models.BooleanField(default=False)
+    transfers_active = models.BooleanField(default=False)
+    created = models.DateField(null=True)
+    default = models.BooleanField(default=False)
+    display_name = models.TextField(null=True)
+    organization = models.ForeignKey(
+        Organization,
+        null=True,
+        on_delete=models.CASCADE
+    )
+    class Meta:
+        db_table = "stripe_accounts"
+    
+    def get_actions_required_count(self):
+        if(self.json == False):
+            self.convert_json_fields()
+        count = 0
+        if(self.currently_due != None):
+            count = count + len(self.currently_due)
+        if(self.eventually_due != None):
+            count = count + len(self.eventually_due)
+        if(self.past_due != None):
+            count = count + len(self.past_due)
+        if(self.verification_fields_needed != None):
+            count = count + len(self.verification_fields_needed)
+        if(self.errors != None):
+            count = count + len(self.errors)
+        return count
+
+    def convert_json_fields(self):
+        self.json = True
+        if(self.currently_due != None):
+            self.currently_due = json.loads(self.currently_due)
+        if(self.eventually_due != None):
+            self.eventually_due = json.loads(self.eventually_due)
+        if(self.past_due != None):
+            self.past_due = json.loads(self.past_due)
+        if(self.errors != None):
+            self.errors = json.loads(self.errors)
+        if(self.verification_fields_needed != None):
+            self.verification_fields_needed = json.loads(self.verification_fields_needed)
+
+    def is_usable(self):
+        return self.transfers_active == True and self.disabled_reason == None and self.verification_disabled_reason == None and self.errors == None
 
 class User(AbstractBaseUser):
     username = None
@@ -39,6 +105,9 @@ class User(AbstractBaseUser):
     class Meta:
         db_table = "users"
 
+    def has_role(self, role):
+        #parameter: Role.Admin, ...
+        return self.role == role.role
 
 class User_connection(models.Model):
     user = models.ForeignKey(
@@ -50,21 +119,6 @@ class User_connection(models.Model):
     added = models.DateField(auto_now_add=True)
     class Meta:
         db_table = "user_connections"
-
-class Invitation(models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-    )
-    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, null=True)
-    date = models.DateField(auto_now_add=True)
-    sent_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="sender_user"
-    )
-    class Meta:
-        db_table = "invitations"
 
 class Application(models.Model):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
@@ -108,23 +162,34 @@ class License(models.Model):
     created = models.DateField(auto_now_add=True)
     stripe_product_id = models.TextField(null=True)
     stripe_price_id = models.TextField(null=True)
+    revenue = models.DecimalField(null=False, decimal_places=2, max_digits=len(str(params.License.max_price)) - 1, default=0.00)
+    net_revenue = models.DecimalField(null=False, decimal_places=2, max_digits=len(str(params.License.max_price)) - 1, default=0.00)
+    stripe_account = models.ForeignKey(
+        Stripe_account,
+        on_delete=models.SET_NULL,
+        null=True
+    )
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="license_creator"
+        on_delete=models.SET_NULL,
+        related_name="license_creator",
+        null=True
     )
+
+    def get_stripe_account(self):
+        #Should always be used to retrieve the stripe account
+        account = self.stripe_account
+        if(account == None):
+            #user organizations default stripe account if not specified
+            try:
+                account = Stripe_account.objects.get(organization=self.application.organization, default=True)
+            except Stripe_account.DoesNotExist:
+                return None
+        if(account.is_usable()):
+            return account
+            
     class Meta:
         db_table = "licenses"
-
-class Checkout_session(models.Model):
-    buyer = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(License, on_delete=models.CASCADE)
-    created = models.DateField(null=True)
-    session_id =  models.TextField(null=False)
-    payment_id = models.TextField(null=True)
-    status = models.IntegerField(null=False)
-    class Meta:
-        db_table = "checkout_sessions"
 
 class Payment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -147,7 +212,7 @@ class Invoice(models.Model):
     invoice = models.TextField(null=True)
     number = models.TextField(null=True)
     tk = models.IntegerField(null=False, default=1)
-    transaction = models.ForeignKey("Transaction", on_delete=models.CASCADE, null=True)
+    transaction = models.ForeignKey("Transaction", on_delete=models.SET_NULL, null=True)
     class Meta:
         db_table = "invoices"
 
@@ -169,14 +234,14 @@ class Transaction(models.Model):
     product = models.ForeignKey(License, on_delete=models.CASCADE)
     amount = models.DecimalField(null=False, decimal_places=2, max_digits=len(str(params.License.max_price)) - 1)
     type = models.IntegerField(null=False)
-    additions = models.ManyToManyField("self", null=True)
     date = models.DateField(auto_now_add=True)
+    related = models.ManyToManyField("Transaction", null=True)
     class Meta:
         db_table = "transactions"
 
 class Purchase(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(License, on_delete=models.CASCADE)
+    product = models.ForeignKey(License, on_delete=models.SET_NULL, null=True)
     date = models.DateField(auto_now_add=True)
     activated = models.BooleanField(null=False, default=False)
     status = models.IntegerField(null=False, default=params.Stripe.Purchase.Status.not_activated)
@@ -256,22 +321,22 @@ def delete_application_count(sender, instance, using, **kwargs):
     instance.organization.save()
 
 @receiver(post_save, sender=Application)
-def add_user_count(sender, instance, created, **kwargs):
+def add_application_count(sender, instance, created, **kwargs):
     #When application is created
     if created:
         instance.organization.applications += 1
-    instance.organization.save()
+        instance.organization.save()
 
 @receiver(post_save, sender=License)
 def add_license_count(sender, instance, created, **kwargs):
-    #When application is created
+    #When license is created
     if created:
         instance.application.licenses += 1
-    instance.application.save()
+        instance.application.save()
 
 @receiver(post_delete, sender=License)
 def delete_license_count(sender, instance, created, **kwargs):
-    #When application is created
+    #When license is deleted
     if created:
         instance.application.licenses -= 1
-    instance.application.save()
+        instance.application.save()

@@ -2,9 +2,12 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from lib.parameters import User
-from project.models import Organization, User_connection, Application, License
+from project.models import Organization, User_connection, Application, License, Stripe_account
 from lib.utils.common import *
+from lib.utils import api_utils
 from lib.parameters import Permissions
+from lib.integrations.stripe import stripe_connect, stripe_event_objects
+from stripe.error import PermissionError
 # Create your views here.
 
 def error(request, text):
@@ -28,7 +31,7 @@ def verify_con(request, id):
     return {
         "success": True,
         "data": con
-     }
+    }
 
 def verify_app_access(con, id, app_id):
     app = Application.objects.filter(organization_id = id, id=app_id)
@@ -77,6 +80,7 @@ def summary(request, id):
     if(not con):
         return error(request, "You are not part of this organization")
     edit = has_permission(con, Permissions.Edit_org)
+
     return render(request, "dashboard/summary.html", {
         "page": "summary",
         "edit": edit
@@ -146,9 +150,21 @@ def new_license(request, id, app_id = None):
     else:
         app = None
 
+    default_stripe_account = None
+    stripe_accounts = Stripe_account.objects.filter(organization=con.organization)
+    stripe_usable = []
+    for acc in stripe_accounts:
+        if(acc.is_usable() == False):
+            continue
+        if(acc.default == True):
+            default_stripe_account = acc
+        stripe_usable.append(acc)
+
     return render(request, "dashboard/new_license.html", {
         "page": "apps",
-        "app": app
+        "app": app,
+        "default_stripe_account": default_stripe_account,
+        "stripe_accounts": stripe_usable
     })
 
 @login_required
@@ -166,12 +182,18 @@ def license(request, id, app_id, lic_id):
     lic = None
     try:
         lic = License.objects.get(application=app, id=lic_id)
-    except:
+    except License.DoesNotExist:
         return error(request, "License not found within the application")
+    amount_sold = api_utils.get_licenses_sold(lic)
+    active = api_utils.get_licenses_activated(lic)
     return render(request, "dashboard/license.html", {
         "page": "licenses",
         "app": app,
-        "license": lic
+        "license": lic,
+        "data": {
+            "amount_sold": amount_sold,
+            "active": active
+        }
     })
 
 @login_required
@@ -184,3 +206,49 @@ def all_licenses(request, id):
     return render(request, "dashboard/all_licenses.html", {
         "page": "licenses"
     })
+
+@login_required
+def stripe(request, id):
+    con = verify_con(request, id)
+    if(con["success"] == False):
+        return con["data"]
+    con = con["data"]
+    if(has_permission(con, Permissions.Stripe_connect) == False):
+        return error(request, "You dont have required permissions")
+    
+    if(request.method == "POST"):
+        #set stripe account as default for organization
+        default_acc_param = request.POST.get("default_account")
+        if(default_acc_param != None):
+            default_account = Stripe_account.objects.filter(organization=request.user.organization, default=True)
+            #Invalidate previous defaults
+            default_account.update(default=False)
+            #Set new as default
+            new_default_account = Stripe_account.objects.filter(organization=request.user.organization, account_id=default_acc_param)
+            new_default_account.update(default=True)
+
+    accounts = Stripe_account.objects.filter(organization=request.user.organization)
+    active = []
+    disabled = []
+
+    default_found = False
+    for account in accounts:
+        if(account.default == True):
+            default_found = True
+        account.convert_json_fields()
+        if(account.is_usable()):
+            if(account.default == True):
+                active.insert(0, account)
+                continue
+            active.append(account)
+        else:
+            disabled.append(account)
+
+    data = {
+        "page": "stripe",
+        "active_accounts": active,
+        "disabled_accounts": disabled,
+        "default_found": default_found
+    }
+
+    return render(request, "dashboard/stripe.html", data)

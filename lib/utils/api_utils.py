@@ -1,7 +1,9 @@
-from project.models import Organization, User_connection, Application, User, License, Purchase, Payment, Subscription, Invoice
+from project.models import Organization, User_connection, Application, User, License, Purchase, Payment, Subscription, Invoice, Purchase, Stripe_account
 from lib.utils.common import *
 from django.http import HttpResponse, QueryDict
 from lib.integrations.stripe import stripe_subscriptions
+from django.db.models import Count
+from lib import parameters
 
 import json
 class Codes:
@@ -132,14 +134,14 @@ def get_organization_by_id(id):
     try:
         org = Organization.objects.get(id=id)
         return org
-    except:
+    except Organization.DoesNotExist:
         return None
 
 def get_application_by_id(id):
     try:
         app = Application.objects.get(id=id)
         return app
-    except:
+    except Application.DoesNotExist:
         return None
 
 def license_is_valid(license):
@@ -164,7 +166,7 @@ def get_license_by_id(id, only_valid=False):
 
     try:
         lic = License.objects.get(id=id)
-    except:
+    except License.DoesNotExist:
         return None
     if(only_valid):
         if(license_is_valid(lic)):
@@ -202,7 +204,7 @@ def cancel_purchase(p):
     if(isinstance(p, int)):
         try:
             p = Purchase.objects.get(id=p)
-        except:
+        except Purchase.DoesNotExist:
             return response(Codes.bad_request, "Purchase with id (" + str(id) + ") was not found")
 
     if(not isinstance(p, Purchase)):
@@ -224,4 +226,26 @@ def cancel_purchase(p):
         except Exception as e:
             print(str(e))
             return response(Codes.internal, "Integration error")
+
+
+def get_licenses_sold(license):
+    try:
+        p = Purchase.objects.filter(product=license).count()
+        return p
+    except:
+        return 0
+
+def get_licenses_activated(license):
+    try:
+        p = Purchase.objects.filter(product=license, status=parameters.Stripe.Purchase.Status.activated).count()
+        return p
+    except:
+        return 0
+
+def get_default_stripe_account(org: Organization):
+    try:
+        return Stripe_account.objects.get(organization=org, default=True)
+    except Stripe_account.DoesNotExist:
+        return None
+
     

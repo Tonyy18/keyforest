@@ -1,0 +1,343 @@
+{
+   "business_profile":{
+      "mcc":"5734",
+      "name":null,
+      "support_address":null,
+      "support_email":null,
+      "support_phone":"+358400762293",
+      "support_url":null,
+      "url":"https://www.linkedin.com/in/toni-isotalo-a68127172/"
+   },
+   "capabilities":{
+      "bancontact_payments":"active",
+      "blik_payments":"active",
+      "card_payments":"active",
+      "cartes_bancaires_payments":"pending",
+      "eps_payments":"active",
+      "giropay_payments":"pending",
+      "ideal_payments":"active",
+      "klarna_payments":"active",
+      "link_payments":"active",
+      "p24_payments":"active",
+      "sepa_debit_payments":"active",
+      "transfers":"active"
+   },
+   "charges_enabled":true,
+   "controller":{
+      "is_controller":true,
+      "type":"application"
+   },
+   "country":"FI",
+   "created":1701982745,
+   "default_currency":"eur",
+   "details_submitted":true,
+   "email":"toni.isotalo@hotmail.com",
+   "external_accounts":{
+      "data":[
+         {
+            "account":"acct_1OKoeyIzZNu1eJRr",
+            "account_holder_name":null,
+            "account_holder_type":null,
+            "account_type":null,
+            "available_payout_methods":[
+               "standard"
+            ],
+            "bank_name":"STRIPE TEST BANK",
+            "country":"FI",
+            "currency":"eur",
+            "default_for_currency":true,
+            "fingerprint":"RibggEgVyMpb2Oxe",
+            "future_requirements":{
+               "currently_due":[
+                  
+               ],
+               "errors":[
+                  
+               ],
+               "past_due":[
+                  
+               ],
+               "pending_verification":[
+                  
+               ]
+            },
+            "id":"ba_1OKofXIzZNu1eJRrLkH2Kq5T",
+            "last4":"0785",
+            "metadata":{
+               
+            },
+            "object":"bank_account",
+            "requirements":{
+               "currently_due":[
+                  
+               ],
+               "errors":[
+                  
+               ],
+               "past_due":[
+                  
+               ],
+               "pending_verification":[
+                  
+               ]
+            },
+            "routing_number":"110000000",
+            "status":"new"
+         }
+      ],
+      "has_more":false,
+      "object":"list",
+      "total_count":1,
+      "url":"/v1/accounts/acct_1OKoeyIzZNu1eJRr/external_accounts"
+   },
+   "future_requirements":{
+      "alternatives":[
+         
+      ],
+      "current_deadline":null,
+      "currently_due":[
+         
+      ],
+      "disabled_reason":null,
+      "errors":[
+         
+      ],
+      "eventually_due":[
+         
+      ],
+      "past_due":[
+         
+      ],
+      "pending_verification":[
+         
+      ]
+   },
+   "id":"acct_1OKoeyIzZNu1eJRr",
+   "metadata":{
+      
+   },
+   "object":"account",
+   "payouts_enabled":true,
+   "requirements":{
+      "alternatives":[
+         
+      ],
+      "current_deadline":null,
+      "currently_due":[
+         
+      ],
+      "disabled_reason":null,
+      "errors":[
+         
+      ],
+      "eventually_due":[
+         
+      ],
+      "past_due":[
+         
+      ],
+      "pending_verification":[
+         
+      ]
+   },
+   "settings":{
+      "bacs_debit_payments":{
+         "display_name":null,
+         "service_user_number":null
+      },
+      "branding":{
+         "icon":null,
+         "logo":null,
+         "primary_color":null,
+         "secondary_color":null
+      },
+      "card_issuing":{
+         "tos_acceptance":{
+            "date":null,
+            "ip":null
+         }
+      },
+      "card_payments":{
+         "decline_on":{
+            "avs_failure":false,
+            "cvc_failure":false
+         },
+         "statement_descriptor_prefix":"LICENSE",
+         "statement_descriptor_prefix_kana":null,
+         "statement_descriptor_prefix_kanji":null
+      },
+      "dashboard":{
+         "display_name":"Linkedin",
+         "timezone":"Etc/UTC"
+      },
+      "payments":{
+         "statement_descriptor":"WWW.LINKEDIN.COM",
+         "statement_descriptor_kana":null,
+         "statement_descriptor_kanji":null
+      },
+      "payouts":{
+         "debit_negative_balances":true,
+         "schedule":{
+            "delay_days":7,
+            "interval":"daily"
+         },
+         "statement_descriptor":null
+      },
+      "sepa_debit_payments":{
+         
+      }
+   },
+   "tos_acceptance":{
+      "date":1701982787
+   },
+   "type":"standard"
+}
+
+
+//Successfull
+{
+   "id":"acct_1ONBs7IAOIYsdo22",
+   "object":"account",
+   "capabilities":{
+      "bancontact_payments":"active",
+      "blik_payments":"active",
+      "card_payments":"active",
+      "cartes_bancaires_payments":"pending",
+      "eps_payments":"active",
+      "giropay_payments":"active",
+      "ideal_payments":"active",
+      "klarna_payments":"active",
+      "link_payments":"active",
+      "p24_payments":"active",
+      "sepa_debit_payments":"active",
+      "platform_payments":"active"
+   },
+   "charges_enabled":true,
+   "controller":{
+      "type":"application",
+      "is_controller":true
+   },
+   "country":"FI",
+   "default_currency":"eur",
+   "details_submitted":true,
+   "email":"toni.isotalo@hotmail.com",
+   "payouts_enabled":true,
+   "type":"standard",
+   "business_logo":"None",
+   "business_logo_large":"None",
+   "business_name":"None",
+   "business_primary_color":"None",
+   "business_url":"http://isotalodev.com",
+   "created":1702548627,
+   "debit_negative_balances":true,
+   "decline_charge_on":{
+      "avs_failure":false,
+      "cvc_failure":false
+   },
+   "display_name":"Isotalodev",
+   "external_accounts":{
+      "object":"list",
+      "data":[
+         {
+            "id":"ba_1ONBspIAOIYsdo22mmz72nE9",
+            "object":"bank_account",
+            "account":"acct_1ONBs7IAOIYsdo22",
+            "account_holder_name":"None",
+            "account_holder_type":"None",
+            "account_type":"None",
+            "available_payout_methods":[
+               "standard"
+            ],
+            "bank_name":"STRIPE TEST BANK",
+            "country":"FI",
+            "currency":"eur",
+            "default_for_currency":true,
+            "fingerprint":"RibggEgVyMpb2Oxe",
+            "future_requirements":{
+               "currently_due":[
+                  
+               ],
+               "errors":[
+                  
+               ],
+               "past_due":[
+                  
+               ],
+               "pending_verification":[
+                  
+               ]
+            },
+            "last4":"0785",
+            "metadata":{
+               
+            },
+            "requirements":{
+               "currently_due":[
+                  
+               ],
+               "errors":[
+                  
+               ],
+               "past_due":[
+                  
+               ],
+               "pending_verification":[
+                  
+               ]
+            },
+            "routing_number":"110000000",
+            "status":"new"
+         }
+      ],
+      "has_more":false,
+      "total_count":1,
+      "url":"/v1/accounts/acct_1ONBs7IAOIYsdo22/external_accounts"
+   },
+   "future_verification":{
+      "disabled_reason":"None",
+      "due_by":"None",
+      "errors":[
+         
+      ],
+      "fields_needed":[
+         
+      ],
+      "pending_verification":[
+         
+      ]
+   },
+   "mcc":"5734",
+   "metadata":{
+      "organization_id":"1"
+   },
+   "payout_schedule":{
+      "delay_days":7,
+      "interval":"daily"
+   },
+   "payout_statement_descriptor":"None",
+   "statement_descriptor":"TEST.COM",
+   "statement_descriptor_kana":"None",
+   "statement_descriptor_kanji":"None",
+   "statement_descriptor_prefix":"KEYFOREST",
+   "support_address":"None",
+   "support_email":"None",
+   "support_phone":"+358400762293",
+   "support_url":"None",
+   "timezone":"Etc/UTC",
+   "tos_acceptance":{
+      "date":1702548698
+   },
+   "verification":{
+      "disabled_reason":"None",
+      "due_by":"None",
+      "errors":[
+         
+      ],
+      "fields_needed":[
+         
+      ],
+      "pending_verification":[
+         
+      ]
+   }
+}

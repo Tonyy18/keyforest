@@ -97,7 +97,7 @@ def register(request):
             if(validEmail):
                 User.objects.get(email=email)
                 data["errors"]["email"] = "Email is already in use"
-        except:
+        except User.DoesNotExist:
             success = success + 1
 
         if(len(password) < parameters.User.min_password_length):
@@ -114,6 +114,17 @@ def register(request):
             stripe_success = stripe_customers.create(user)
             if(stripe_success):
                 user.save()
-                return redirect("/")
+                if(user.id == 1):
+                    user.role = 1
+                    user.save()
+                _user = authenticate(request, email=email, password=password)
+                if(_user is not None):
+                    login(request, _user)
+                    if(request.GET.get("next")):
+                        return redirect(request.GET.get("next"))
+                    return redirect("/")
+                data["errors"]["firstname"] = "Error authenticating user"
+            else:
+                data["errors"]["firstname"] = "Integration error. Contact admin"
 
     return render(request, "index/register.html", data)

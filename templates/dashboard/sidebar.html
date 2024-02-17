@@ -29,6 +29,10 @@
             <span class="sidebar-icon"><i class="fas fa-users"></i></span>
             <span class="text">Users</span>
         </a></li>
+        <li><a href="/dashboard/organization/{%if user.organization == None%}0{%endif%}{%if user.organization != None%}{{user.organization.id}}{%endif%}/stripe" {% if page == "stripe" %}class="active"{% endif %}>
+            <span class="sidebar-icon"><i class="fa-brands fa-cc-stripe"></i></span>
+            <span class="text">Stripe Payments</span>
+        </a></li>
         <li><a href="/dashboard/organization/{%if user.organization == None%}0{%endif%}{%if user.organization != None%}{{user.organization.id}}{%endif%}/apps" {% if page == "apps" %}class="active"{% endif %}>
             <span class="sidebar-icon"><i class="fas fa-sitemap"></i></span>
             <span class="text">Applications</span>
@@ -69,7 +73,7 @@
         </div>
     </div>
     <div class="alert" id="alert">
-        <p>New organization created</p><i class="fas fa-times hide-alert"></i>
+        <p></p><i class="fas fa-times hide-alert"></i>
     </div>
     <div class="content">
         <div class="page-loader" id="page-loader">

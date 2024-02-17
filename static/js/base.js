@@ -13,7 +13,19 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-
+$.fn.extend({
+    loader: function() {
+        return this.each(function() {
+            $(this).attr("org-text", $(this).text())
+            this.innerHTML = "<img class='loader' src='/static/images/loader-white.gif'>";
+        })
+    },
+    clear: function() {
+        return this.each(function() {
+            this.innerHTML = $(this).attr("org-text")
+        })
+    }
+})
 $(function() {
     $(".border-slider").each(function() {
         const slider = $(this);
@@ -193,6 +205,21 @@ class Application {
     }
 }
 
+class Product {
+    static get_statistics(appid, license_id, success=function(){}, error=function(){}) {
+        session_request("/api/organization/apps/" + appid + "/licenses/" + license_id + "/statistics", "GET", "", success, error)
+    }
+}
+
+class Stripe {
+    static get_connect_url(success=function(){}, error=function(){}) {
+        session_request("/api/organization/stripe/connect/url", "GET", "", success, error)
+    }
+    static get_connected_accounts(success=function(){}, error=function(){}) {
+        session_request("/api/organization/stripe/connect/accounts", "GET", "", success, error)
+    }
+}
+
 
 
 const date_format = (date, format) => {
@@ -212,7 +239,7 @@ const date_format = (date, format) => {
 }
 
 let notice = null;
-$(document).ready(() => {
+$(document).ready(function () {
     notice = new Notice("base-notice");
 })
 
@@ -271,4 +298,16 @@ function get_url_parameter(param) {
     var url = new URL(url_string);
     var c = url.searchParams.get(param);
     return c;
+}
+
+function convert_django_json(value) {
+    value = value.replaceAll("'", '"')
+    if(value != "None") {
+        try {
+            return JSON.parse(value)
+        } catch(e) {
+            return null
+        }
+    }
+    return null
 }

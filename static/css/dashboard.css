@@ -157,7 +157,9 @@ body {
     width: 59px;
     text-align: center;
 }
-
+.sidebar .sidebar-icon i {
+    font-size: 18px !important;
+}
 .error-page {
     text-align: center;
     font-size: 25px;
@@ -286,6 +288,10 @@ body {
     font-weight: normal;
     margin-top: 15px;
 }
+
+/*
+.app-listing MIGHT BE DELETED IN THE FUTURE (Move into list tables)
+*/
 .app-perms .sel-button,
 .app-listing {
     background-color: white;
@@ -519,7 +525,7 @@ body {
     padding-right: 10px;
     cursor: default;
 }
-.input-section .app-selection {
+.input-section .unit-selection {
     display: flex;
     width: 350px;
     background-color: white;
@@ -529,27 +535,28 @@ body {
     padding: 4px;
     cursor: default;
 }
-.input-section .app-selection.error {
+.input-section .unit-selection.error {
     border: 1px solid red;
 }
-.input-section .app-selection.error p {
+.input-section .unit-selection.error p {
     color: red;
 }
-.input-section .app-selection:hover {
+.input-section .unit-selection:hover {
     border: 1px solid var(--blue);
 }
-.input-section .app-selection img {
+.input-section .unit-selection img {
     height: 32px;
     width: 32px;
     margin-right: 10px;
+    border-radius: 3px;
 }
-.input-section .app-selection p {
+.input-section .unit-selection p {
     flex-grow: 1;
 }
-.input-section .app-selection .fas {
+.input-section .unit-selection .fas {
     padding-right: 5px;
 }
-.input-section .app-selection.app-not-sel p {
+.input-section .unit-selection.unit-not-selected p {
     line-height: 32px;
     padding-left: 10px;
 }
@@ -604,4 +611,15 @@ body {
 }
 #save-license-btn {
     float: right;
+}
+
+.dashboard-page#stripe .stripe_logo {
+    height: 80px;
+}
+.dashboard-page#stripe .not-connected p {
+    font-size: 21px;
+    line-height: 30px;
+}
+.dashboard-page#stripe .not-connected .btn {
+    margin-top: 50px;
 }

@@ -82,7 +82,7 @@ h1 {
     position: absolute;
     bottom: 0px;
     left: 0px;
-    width: 2500px;
+    width: calc(125% + 600px);
     height: 225px;
     left: -25%;
 }

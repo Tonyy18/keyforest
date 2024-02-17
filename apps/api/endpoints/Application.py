@@ -1,7 +1,7 @@
 import abc
 from django.shortcuts import render
 from django.http import HttpResponse, QueryDict
-from project.models import Application, License, Purchase
+from project.models import Application, License, Purchase, Stripe_account
 from lib.utils.common import *
 from django.contrib.auth.decorators import login_required
 import json
@@ -51,7 +51,8 @@ def licenses(request, appid):
         name = request.POST.get("name")
         if(name):
             name = name.strip()
-        amount = request.POST.get("amount")
+        #amount = request.POST.get("amount")
+        amount = None
         expiration = request.POST.get("expiration")
         price = request.POST.get("price")
         subscription_period = request.POST.get("subscription_period")
@@ -60,7 +61,17 @@ def licenses(request, appid):
         if(desc):
             desc = desc.strip()
         params = request.POST.get("params")
+        stripe_account = request.POST.get("stripe_account")
         #Validation
+        
+        stripe_account_exists = False
+        try:
+            stripe_account_exists = Stripe_account.objects.get(organization=org, account_id=stripe_account)
+        except Stripe_account.DoesNotExist:
+            return response(Codes.bad_request, "Stripe account was not found")
+        if(stripe_account_exists.is_usable() == False):
+            return response(Codes.bad_request, "Stripe account is not usable")
+
         if(len(name) < parameters.License.min_name_length):
             return response(Codes.bad_request, "License name is too short")
         if(len(name) > parameters.License.max_name_length):
@@ -73,7 +84,7 @@ def licenses(request, appid):
         if(lic.exists()):
             return response(Codes.bad_request, "License with the same name already exists")
         
-        ob = License(application=app, name=name, author=request.user)
+        ob = License(application=app, name=name, author=request.user, stripe_account=stripe_account_exists)
 
         if(amount):
             amount = amount.strip()
@@ -224,10 +235,9 @@ def statistics(request, appid):
     if(stat_type):
         stat_type = stat_type.strip().lower()
         if(stat_type == "lastdays"):
-            days = 300
-            if(type_value):
-                days = type_value
-            ob = selling_statistics.get_apps_sold_last_days(app[0], days)
+            ob = selling_statistics.get_apps_sold_last_days(app[0], type_value)
+        if(stat_type == "lastmonths"):
+            ob = selling_statistics.get_apps_sold_last_months(app[0], type_value)
     else:
         ob = selling_statistics.get_apps_sold_in_year(app[0])
 

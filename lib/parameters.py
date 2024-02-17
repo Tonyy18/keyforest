@@ -51,9 +51,11 @@ class Transaction:
         purchase = 0
         platform_fee = 1
         text = ["Purchase transaction", "Platform fee"]
-    platform_fee = 10 #Percent fee from purchase transaction
 
 class Stripe:
+    
+    application_fee = 20 #percent
+
     class Checkout:
         class Status:
             open = 0
@@ -120,6 +122,9 @@ class Permissions:
 
     class Remove_users:
         name = "remove_users"
+
+    class Stripe_connect:
+        name = "stripe_connect"
         
 
 class Permission_groups:
@@ -133,7 +138,8 @@ class Permission_groups:
             Permissions.Access_all_apps,
             Permissions.Add_users,
             Permissions.Remove_users,
-            Permissions.All
+            Permissions.All,
+            Permissions.Stripe_connect,
         ]
         for perm in permissions:
             by_name[perm.name] = perm
@@ -143,5 +149,3 @@ class Permission_groups:
 
 #all_apps => view all apps in organization
 #app_app name => view specific app
-
-#invite => send user invitations to the organization

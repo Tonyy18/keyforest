@@ -2,28 +2,56 @@
 {% load static %}
 {% block title %}{{ request.user.organization.name }} | Applications{% endblock %}
 {% block body %}
-    <div class="dashboard-page">
-        <section class="page-section">
-            <header>
-                <div class="flex">
-                    <img src="{% static '/images/license.png' %}" class="header-img"/>
-                    <h1 class="flex-grow">{{license.name}}</h1>
-                </div>
-            </header>
-            <div class="box-section">
-                <!--
-                <div class="box value-box">
-                    <header>
-                        <h3>Licenses sold</h3>
-                    </header>
-                    <div class="value">
-                        <p class="total">1000</p>
-                    </div>
-                </div>
-                -->
+{% if license.get_stripe_account == None %}
+<div class="alert alert-error open" id="stripe-account-alert">
+    <p>No stripe accounts are affiliated with this product. In order to sell this product, you must select a new stripe account</p><i class="fas fa-times hide-alert"></i>
+</div>
+{% endif %}
+<div class="dashboard-page">
+    <section class="page-section">
+        <header>
+            <div class="flex">
+                <img src="{% static '/images/license.png' %}" class="header-img"/>
+                <h1 class="flex-grow">{{license.name}}</h1>
             </div>
-        </section>
-    </div>
-    <script>
-    </script>
+        </header>
+        <div class="box-section">
+            <div class="box value-box">
+                <header>
+                    <h3>Amount sold</h3>
+                </header>
+                <div class="value">
+                    <p class="total">{{data.amount_sold}}</p>
+                </div>
+            </div>
+            <div class="box value-box">
+                <header>
+                    <h3>Currently active</h3>
+                </header>
+                <div class="value">
+                    <p class="total">{{data.active}}</p>
+                </div>
+            </div>
+            <div class="box value-box">
+                <header>
+                    <h3>Gross revenue</h3>
+                </header>
+                <div class="value">
+                    <p class="total">{{license.revenue}}$</p>
+                </div>
+            </div>
+            <div class="box value-box">
+                <header>
+                    <h3>Net revenue</h3>
+                </header>
+                <div class="value">
+                    <p class="total">{{license.net_revenue}}$</p>
+                </div>
+            </div> 
+        </div>
+    </section>
+</div>
+<script>
+    const stripeAlert = new Alert("#stripe-account-alert")
+</script>
 {% endblock %}

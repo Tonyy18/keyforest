@@ -2,7 +2,17 @@ import stripe
 from django.conf import settings
 from lib import parameters
 from lib.utils import common
+from project.models import License
 stripe.api_key = settings.STRIPE_APIKEY
+
+def get_application_fee(license: License):
+    if(license == None):
+        raise Exception("License parameter cannot be null")
+    if(license.subscription_type != parameters.License.Subscription_period_type.never):
+        return parameters.Stripe.application_fee
+    price = common.price_to_scents(license.price)
+    fee = (price / 100) * parameters.Stripe.application_fee
+    return int(fee)
 
 def get_recurring_data(license):
     #Determines if the stripe product should be recurring or not
@@ -23,7 +33,6 @@ def create(license, product):
         return
 
     price = common.price_to_scents(license.price)
-    print("PRICE: " + str(price))
     res = None
     if(license.subscription_type != parameters.License.Subscription_period_type.never):
         recurring_ob = get_recurring_data(license)

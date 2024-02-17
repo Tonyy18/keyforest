@@ -76,7 +76,8 @@ TEMPLATES = [
                 'license_tags': "tags.license_tags",
                 'parameter_tags': "tags.parameter_tags",
                 'application_tags': "tags.application_tags",
-                'purchase_tags': "tags.purchase_tags"
+                'purchase_tags': "tags.purchase_tags",
+                "common_tags": "tags.common_tags"
             }
         },
     },
@@ -154,4 +155,4 @@ STATICFILES_DIRS = [
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-STRIPE_APIKEY = "sk_test_nLL4dQrz7Ktg0sBAJle5bMKL"
+STRIPE_APIKEY = "sk_test_51OYJvBHdQsgrG8CBIKcufjyedVDvtGdgNKcoTXVXY7SnpSOqu647VpIMbcZNmFBxyLQXGmG7aoA1qyD6x6densMj007wj9LIIs"

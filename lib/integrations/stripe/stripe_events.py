@@ -1,19 +1,18 @@
-from project.models import Purchase, Payment, Subscription, Invoice, Transaction
-from lib.integrations.stripe import stripe_api, stripe_event_objects, stripe_invoices
+from project.models import Purchase, Payment, Subscription, Invoice, Transaction, Stripe_account
+from lib.integrations.stripe import stripe_api, stripe_event_objects, stripe_invoices, stripe_connect
 from lib.utils import common
 from lib import parameters
-from lib.utils import transactions
+from lib.utils import transactions, api_utils
+from project.models import Stripe_account
 
 def payment_succeeded(data):
     payment = stripe_event_objects.Payment(data)
     purchase = get_purchase_skeleton(payment)
     pm = get_payment_object(payment)
-    tr = get_transaction_skeleton(pm)
+    tr = get_transaction_skeleton(payment)
     tr.save()
-    fee = transactions.get_platform_fee_transaction(pm)
-    fee.save()
-    tr.additions.add(fee)
-    tr.save()
+    transactions.add_related(tr, payment)
+    transactions.update_product_revenues(tr)
     pm.transaction = tr
     pm.save()
     purchase.payment = pm
@@ -37,7 +36,7 @@ def update_subscription(data, status=None, current_invoice_status=None):
     sub_ob = stripe_event_objects.Subscription(data)
     try:
         sub = Subscription.objects.get(stripe_id=sub_ob.subscription_id)
-    except:
+    except Subscription.DoesNotExist:
         raise Exception("Subscription not found for update with id: " + sub_ob.subscription_id)
 
     if(status != None):
@@ -79,11 +78,10 @@ def update_invoice(data):
     invoice = Invoice.objects.get(stripe_id = inv_ob.id)
     invoice.status = getattr(parameters.Stripe.Invoice.Status, inv_ob.status)
     if(invoice.status == parameters.Stripe.Invoice.Status.paid):
-        tr = get_transaction_skeleton(invoice)
+        tr = get_transaction_skeleton(inv_ob)
         tr.save()
-        fee = transactions.get_platform_fee_transaction(invoice)
-        fee.save()
-        tr.additions.add(fee)
+        transactions.add_related(tr, inv_ob)
+        transactions.update_product_revenues(tr)
         invoice.transaction = tr
     if(invoice.invoice == None):
         invoice.invoice = inv_ob.invoice
@@ -137,13 +135,13 @@ def subscription_deleted(data):
     sub_ob = stripe_event_objects.Subscription(data)
     try:
         sub = Subscription.objects.get(stripe_id=sub_ob.subscription_id)
-    except:
+    except Subscription.DoesNotExist:
         raise Exception("Subscription not found for update with id: " + sub_ob.subscription_id)
 
     try:
         purchase = Purchase.objects.get(subscription=sub)
-    except:
-        raise Exception("Purhcase not found for subscription update with id: " + sub_ob.subscription_id)
+    except Purchase.DoesNotExist:
+        raise Exception("Purchase not found for subscription update with id: " + sub_ob.subscription_id)
 
     sub.status = getattr(parameters.Stripe.Subscription.Status,sub_ob.status)
 
@@ -157,4 +155,27 @@ def subscription_deleted(data):
 
     purchase.status = parameters.Stripe.Purchase.Status.canceled
     purchase.save()
+
+def application_deauthorized(data):
+    account = data["account"]
+    Stripe_account.objects.filter(account_id=account).delete()
+
+def update_account(data):
+    parsed_data = stripe_event_objects.Account(data)
+    org = api_utils.get_organization_by_id(parsed_data.organization_id)
+    if(org == None):
+        raise Exception("Organization from account webhook not found in db")
+    account = None
+    try:
+        account = Stripe_account.objects.get(account_id=parsed_data.id, organization=org)
+    except Stripe_account.DoesNotExist:
+        account = None
+    if(account != None):
+        #Update existing stripe account in organization
+        account = parsed_data.update(account)
+    else:
+        #Insert new stripe account for organization
+        account = parsed_data.insert(org)
+    
+    
     

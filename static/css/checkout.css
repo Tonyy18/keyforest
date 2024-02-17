@@ -22,6 +22,17 @@ header h1 {
     width: var(--card-width);
     position: relative;
 }
+.checkout .checkout-card .corner-flag {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    border-top-right-radius: 10px;
+    padding: 7px 12px;
+}
+.checkout .checkout-card .corner-flag.red {
+    background-color: var(--red);
+    color: white;
+}
 .checkout .checkout-card .ch-app-image {
     width: 100%;
     padding-top: 50%;

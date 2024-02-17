@@ -1,8 +1,9 @@
 {% extends "dashboard/sidebar.html" %}
 {% load static %}
+{% load common_tags %}
 {% block title %}{{ request.user.organization.name }} | Create license{% endblock %}
 {% block body %}
-<div class="modal" id="select-app-modal">
+<div class="modal modal-medium" id="select-app-modal">
     <div class="modal-padding">
         <div class="modal-body">
             <header><p>Search applications</p><i class="fas fa-times modal-close"></i></header>
@@ -12,11 +13,67 @@
                     </label>
                     <div class="modal-search-results">
                     </div>
+                    <ul class="list list-trans" id="app-list">
+                        <li class="list-header list-item">
+                            <div class="item-image"></div>
+                            <div class="item-cells">
+                                <p>Name</p>
+                                <p>Licenses</p>
+                                <p>Created</p>
+                            </div>
+                        </li>
+                        <li class="list-message" id="app-list-message">
+                            No applications found
+                        </li>
+                    </ul>
             </section>
         </div>
     </div>
     <div class="modal-bg"></div>
 </div>
+<div class="modal modal-medium" id="stripe-account-modal">
+    <div class="modal-padding">
+        <div class="modal-body">
+            <header><p>Stripe accounts</p><i class="fas fa-times modal-close"></i></header>
+            <section>
+                <ul class="list list-trans stripe-account-list">
+                    {% if stripe_accounts|length > 0 %}
+                    <li class="list-header list-item">
+                        <div class="item-image"></div>
+                        <div class="item-cells">
+                            <p>Account Id</p>
+                            <p>Display name</p>
+                            <p>Created</p>
+                        </div>
+                    </li>
+                    {% endif %}
+                    {% if stripe_accounts|length == 0 %}
+                    <li class="list-message" id="stripe-list-message">
+                        No stripe accounts connected
+                    </li>
+                    {% else %}
+                    {% for account in stripe_accounts %}
+                    <li class="list-item stripe-account" data-id="{{account.account_id}}" data-name="{{account.display_name}}">
+                        <img class="item-image" src="{% static '/images/stripe-logo-small.png'%}">
+                        <div class="item-cells">
+                            <p>{{account.account_id}}</p>
+                            <p>{% get_null_placeholder account.display_name %}</p>
+                            <p>{{account.created}}</p>
+                        </div>
+                    </li>
+                    {% endfor %}
+                    {% endif %}
+                </ul>
+            </section>
+        </div>
+    </div>
+    <div class="modal-bg"></div>
+</div>
+{% if stripe_accounts|length == 0 %}
+<div class="alert alert-error open" id="stripe-alert">
+    <p>Organization needs to have at least one stripe account connected to sell products</p><i class="fas fa-times hide-alert"></i>
+</div>
+{% endif %}
 <section class="dashboard-page" id="c_lc_page">
     <section class="page-section">
         <header>
@@ -28,15 +85,33 @@
                     <p>Application</p>
                 </span>
                 {% if app %}
-                <div class="app-selection" id="app-selection" data-appid="{{app.id}}">
+                <div class="unit-selection" id="app-selection" data-appid="{{app.id}}">
                     <img src="{{app.image.url}}">
                     <p>{{app.name}}</p>
                     <i class="fas fa-check"></i>
                 </div>
                 {% endif %}
                 {% if app == None %}
-                <div class="app-selection app-not-sel" id="app-selection" data-appid="">
+                <div class="unit-selection unit-not-selected" id="app-selection" data-appid="">
                     <p>App not selected</p>
+                    <i class="fas fa-check" style="display: none"></i>
+                </div>
+                {% endif %}
+            </div>
+            <div class="i-s-input">
+                <span class="i-s-text">
+                    <p>Stripe account</p>
+                </span>
+                {% if default_stripe_account %}
+                <div class="unit-selection" id="stripe-selection" data-accountid="{{default_stripe_account.account_id}}">
+                    <img src="{% static '/images/stripe-logo-small.png'%}">
+                    <p>{{default_stripe_account.display_name}}</p>
+                    <i class="fas fa-check"></i>
+                </div>
+                {% endif %}
+                {% if default_stripe_account == None %}
+                <div class="unit-selection unit-not-selected" id="stripe-selection" data-accountid="">
+                    <p>Account not selected</p>
                     <i class="fas fa-check" style="display: none"></i>
                 </div>
                 {% endif %}
@@ -47,12 +122,14 @@
                 </span>
                 <input type="text" class="input input-default" placeholder="License name" id="name">
             </div>
+            <!--
             <div class="i-s-input flex-grow">
                 <span class="i-s-text">
                     <p>Amount</p>
                 </span>
                 <input type="number" class="input input-default" placeholder="Infinite" min="1" id="amount">
             </div>
+            -->
             <div class="i-s-input flex">
                 <span class="i-s-text">
                     <p>Expiration</p>
@@ -67,17 +144,18 @@
                     <span class="i-s-text">
                         <p>Price</p>
                     </span>
-                    <input type="text" class="input input-default" placeholder="Free" id="price">
+                    <input type="text" class="input input-default" placeholder="Required" id="price">
                 </div>
                 <div class="i-s-input">
                     <span class="i-s-text">
                         <p>Subscription period</p>
                     </span>
                     <div class="flex i-s-with-buttons" id="subscription-selection">
-                        <input type="number" class="input input-default" placeholder="Never ending" min="1" id="subscription_period">
+                        <input type="number" class="input input-default" placeholder="Never ending" min="1" id="subscription_period" hidden>
                         <button class="btn btn-white" data-value="1">Days</button>
                         <button class="btn btn-white" data-value="2">Weeks</button>
-                        <button class="btn btn-white selected" data-value="3">Months</button>
+                        <button class="btn btn-white" data-value="3">Months</button>
+                        <button class="btn btn-white selected" data-value="0">None</button>
                     </div>
                 </div>
                 <div class="i-s-input">
@@ -99,22 +177,28 @@
                         <i class="fas fa-minus btn-blue btn-i remove-param-i"></i>
                     </li>
                 </ul>
-                <button class="btn btn-green" id="save-license-btn">Create license</button>
+                <button class="btn btn-green" id="save-license-btn" {% if stripe_accounts|length == 0 %}disabled{%endif%}>Create license</button>
             </div>
         </div>
     </section>
 </section>
 <script>
     const cAlert = new Alert()
+    const stripeAlert = new Alert("stripe-alert")
     const modal = new Modal("select-app-modal");
+    const stripeModal = new Modal("stripe-account-modal")
     let apps = []
     function create_app_search_el(data) {
-        const el = $("<div class='app-listing' data-appname='" + data.name + "' data-appid='" + data.id + "'></div>")
-        el.append('<img src="' + "{% static '/images/application_default.png'%}" + '">')
-        el.append('<p>' + data.name + '</p>');
+        const el = $("<li class='list-item app-item' data-appname='" + data.name + "' data-appid='" + data.id + "'></li>")
+        el.append('<img class="item-image" src="' + "{% static '/images/application_default.png'%}" + '">')
+        const cells = $("<div class='item-cells'></div>")
+        cells.append('<p>' + data.name + '</p>');
+        cells.append('<p>' + data.licenses + '</p>');
+        cells.append('<p>' + data.created + '</p>');
+        el.append(cells)
         return el
     }
-    $("#select-app-modal").on("click", ".app-listing", function() {
+    $("#select-app-modal").on("click", "#app-list .app-item", function() {
         const name = $(this).attr("data-appname");
         const id = $(this).attr("data-appid")
         const image = $(this).find("img").attr("src")
@@ -123,27 +207,50 @@
         $("#app-selection img").remove();
         $("#app-selection").prepend("<img src='" + image + "'>")
         $("#app-selection p").html(name);
-        $("#select-app-modal .modal-search-results").empty();
+        $("#select-app-modal #app-list .app-item").remove();
+        $("#select-app-modal #app-list #app-list-message").show()
         $("#select-app-modal input[type=text]").val("");
     })
     $("#select-app-modal input[type=text]").on("keyup", function(e) {
         const app_name = $.trim($(this).val());
-        $("#select-app-modal .modal-search-results").empty();
+        $("#select-app-modal #app-list .app-item").remove();
+        $("#select-app-modal #app-list #app-list-message").show()
         if(app_name == "") return;
+        let match = 0;
         for(let a = 0; a < apps.length; a++) {
             const app = apps[a];
             if(app.name.toLowerCase().includes(app_name.toLowerCase())) {
+                match++;
+                $("#select-app-modal #app-list #app-list-message").hide()
                 const el = create_app_search_el(app);
-                $("#select-app-modal .modal-search-results").prepend(el);
+                $("#select-app-modal #app-list").append(el);
             }
         }
+    })
+    $("#stripe-account-modal .stripe-account").click(function() {
+        const accountId = $(this).attr("data-id")
+        $("#stripe-selection").attr("data-accountid", accountId)
+        $("#stripe-selection p").html($(this).attr("data-name"))
+        $("#stripe-selection img").remove()
+        $("#stripe-selection").prepend("<img src=\"{% static '/images/stripe-logo-small.png'%}\">")
+        $("#stripe-selection").removeClass("unit-not-selected")
+        stripeModal.close()
     })
     $("#subscription-selection button").on("click", function(e) {
         $("#subscription-selection button").removeClass("selected");
         $(this).addClass("selected")
+        if($(this).attr("data-value") == "0") {
+            $(this).parent().find("input").hide()
+        } else {
+            $("#subscription_period").attr("placeholder", "Amount of " + $(this).text().toLocaleLowerCase())
+            $(this).parent().find("input").show()
+        }
     })
     $("#app-selection").on("click", function() {
         modal.show();
+    })
+    $("#stripe-selection").on("click", function() {
+        stripeModal.show();
     })
     Organization.get_apps((data) => {
         apps = data.data
@@ -158,7 +265,7 @@
         dateFormat: "Y-m-d",
         minDate: "today"
     });
-    $(".dashboard-page").on("click", "input, .app-selection", function(e) {
+    $(".dashboard-page").on("click", "input, .unit-selection", function(e) {
         $(this).removeClass("error");
     })
     $("#save-license-btn").click(function(e) {
@@ -168,8 +275,18 @@
             error("Select the targeted app");
             return;
         }
+        let stripeAccount = null
+        let selectedStripeAccount = $("#stripe-selection").attr("data-accountid")
+        if(selectedStripeAccount == "") {
+            $("#stripe-selection").addClass("error");
+            error("Stripe account is required to accept payments")
+            return
+        } else {
+            stripeAccount = selectedStripeAccount
+        }
         let name = $.trim($("#name").val());
-        let amount = $.trim($("#amount").val());
+        //let amount = $.trim($("#amount").val());
+        let amount = ""
         let expiration = $("#datepicker").val();
         let price = $.trim($("#price").val());
         let subscription_period = $.trim($("#subscription_period").val());
@@ -194,37 +311,46 @@
                 price = valid_price;
             }
         }
-        if(!amount) {
+        if(amount == "") {
             amount = null
-        } else if(amount < 1) {
-            error("Amount cannot be less than 1")
-            $("#amount").addClass("error");
-            return false;
+        } else {
+            if(Validators.int(amount) == false) {
+                error("Amount is invalid")
+                $("#amount").addClass("error");
+                return false;
+            }
+            if(amount < 1) {
+                error("Amount cannot be less than 1")
+                $("#amount").addClass("error");
+                return false;
+            }
         }
+
         if(expiration.length == 0) {
             expiration = null
         }
-        subscription_type = 3 //Default
-        if(!subscription_period || subscription_period == 0) {
-            subscription_period = null
-            subscription_type = 0 //Never ending
-        } else if(subscription_period < 1) {
-            error("subscription period cannot be less than 1")
-            $("#subscription_period").addClass("error");
-            return false;
-        } else {
-            $("#subscription-selection button.selected").each(function() {
-                subscription_type = $(this).attr("data-value")
-            })
-        }
-        if(subscription_period != null) {
-            try {
-                subscription_period = Math.round(subscription_period)
-            } catch(e) {
-                error("subscription period is invalid")
+        subscription_type = 0 //Default
+        $("#subscription-selection button.selected").each(function() {
+            subscription_type = parseInt($(this).attr("data-value"))
+            return
+        })
+        if(subscription_type != 0) {
+            if(Validators.int(subscription_period) == false) {
+                error("Invalid subscription period")
+                $("#subscription_period").addClass("error");
+                return
+            }
+            if(subscription_period == 0) {
+                error("Subscription period cannot be 0")
+                $("#subscription_period").addClass("error");
+                return
+            } else if(subscription_period < 1) {
+                error("subscription period cannot be less than 1")
                 $("#subscription_period").addClass("error");
                 return false;
             }
+        } else {
+            subscription_period = null
         }
         display_page_loader();
         Application.create_license({
@@ -236,7 +362,8 @@
             "subscription_period": subscription_period,
             "desc": desc,
             "params": JSON.stringify(params),
-            "subscription_type": parseInt(subscription_type)
+            "subscription_type": parseInt(subscription_type),
+            "stripe_account": stripeAccount
         }, (data) => {
             //Success
             data = data.data

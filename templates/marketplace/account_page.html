@@ -78,7 +78,7 @@
                         <p>{{ purchase.purchase.payment.date }}</p>
                         <p>{{ purchase.purchase.payment.price }}$</p>
                         <p>Paid</p>
-                        <a target="_blank" href="{{ payment.receipt }}">Open</a>
+                        <a target="_blank" href="{{ purchase.purchase.payment.receipt }}">Open</a>
                     </div>
                 </li>
                 {% elif purchase.invoices %}

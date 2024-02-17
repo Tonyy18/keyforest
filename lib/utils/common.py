@@ -5,6 +5,7 @@ from lib import parameters
 from time import strftime, localtime
 import random
 import string
+import time
 from datetime import datetime
 
 def is_connected(request, id):
@@ -128,6 +129,11 @@ def price_to_scents(price):
 
 def epoch_to_date(stamp):
     return strftime('%Y-%m-%d', localtime(stamp))
+
+def epoch_is_expired(epoch):
+    epoch = int(epoch)
+    current_epoch = int(time.time())
+    return (current_epoch - epoch) >= 0 
 
 def cents_to_dollars(num):
     return int(num) / 100

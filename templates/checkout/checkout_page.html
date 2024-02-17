@@ -19,10 +19,20 @@
                 {{status.message}}
             </div>
         {% endif %}
+        {% if error %}
+            <div class="session-status error" style="display:block">
+                {{error}}
+            </div>
+        {% endif %}
         {% csrf_token %}
         <form method="GET" action="/api/stripe/checkout/newsession/{{license.id}}">
             <div class="ch-app-image" style="background-image: url({{license.application.image.url}});">
                 <div class="ch-app-img-layout"></div>
+                {% if license.amount != None and license.amount != 0 %}
+                <div class="corner-flag red">
+                    Only {{license.amount}} left
+                </div>
+                {% endif %}
                 <div class="ch-owner-data">
                     <img src="{{license.application.organization.image.url}}">
                     <div class="ch-owner-names">
@@ -61,7 +71,7 @@
                         </div>  
                     </div>
                 </div>
-                <input type="submit" class="btn btn-green purchase-btn" value="Purchase">
+                <input type="submit" class="btn btn-green purchase-btn" value="Purchase" {% if license.get_stripe_account == None %}disabled{% endif %}>
             </div>
         </form>
     </div>

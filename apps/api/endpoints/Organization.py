@@ -1,7 +1,7 @@
 import abc
 from django.shortcuts import render
 from django.http import HttpResponse, QueryDict
-from project.models import Organization, User_connection, Application, Invitation, User, License
+from project.models import Organization, User_connection, Application, User, License
 from lib.utils.common import *
 from django.contrib.auth.decorators import login_required
 import json
@@ -84,7 +84,7 @@ def users(request, userid=None):
         user = None
         try:
             user = User.objects.get(email=mail)
-        except:
+        except User.DoesNotExist:
             user = None
         if(not user):
             return response(Codes.not_found, "User was not found")
@@ -113,7 +113,7 @@ def users(request, userid=None):
         user = None
         try:
             user = User.objects.get(id=userid)
-        except:
+        except User.DoesNotExist:
             user = None
 
         if(user == None):
@@ -239,9 +239,7 @@ def permissions(request, userid):
                     app_name = perm[4:len(perm)]
                     app = all_apps.filter(name=app_name)
                     if(len(app) > 0):
-                        print(app_name)
                         if(not has_app_permissions(user_con, app_name)):
-                            print("ADDED")
                             add_app_permission(user_con, app_name)
                     continue
                 #Organization permission

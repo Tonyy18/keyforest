@@ -41,6 +41,9 @@
                 <div class="item-cell-buttons">
                     <div>
                         {% if user.is_authenticated %}
+                        {% if license.amount != None and license.amount <= 10 %}
+                        <span class="amount">{{license.amount}} left</span>
+                        {% endif %}
                         <a href="/checkout/{{license.id}}" class="btn btn-green buy-button">Purchase</a>
                         {% endif %}
                     </div>
