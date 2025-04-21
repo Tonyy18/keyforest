@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
@@ -11,7 +12,8 @@ import { StyleClassModule } from 'primeng/styleclass';
         AvatarModule,
         StyleClassModule,
         ButtonModule,
-        TranslateModule
+        TranslateModule,
+        RouterLink
     ],
     templateUrl: './navbar.component.html'
 })

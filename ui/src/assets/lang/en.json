@@ -5,5 +5,12 @@
     "create_account": "Create account",
     "marketplace": "Marketplace",
     "login": "Login",
-    "register": "Register"
+    "register": "Register",
+    "dont_have_an_account": "Don't have an account",
+    "create_today": "Create today",
+    "forgot_password": "Forgot password?",
+    "email": "Email",
+    "password": "Password",
+    "email_address": "Email address",
+    "sign_in": "Sign In"
 }
