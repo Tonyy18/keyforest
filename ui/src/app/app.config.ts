@@ -7,7 +7,7 @@ import {TranslateModule, TranslateLoader} from "@ngx-translate/core";
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 import { providePrimeNG } from 'primeng/config';
-import Nora from '@primeng/themes/nora';
+import Nora from '@primeng/themes/material';
 import { routes } from './app.routes';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
