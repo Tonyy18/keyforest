@@ -4,9 +4,13 @@
     },
     "validation_errors": {
         "required": "This field is required.",
+        "This field may not be blank.": "This field is required.",
+        "This field may not be null.": "This field is required.",
         "minlength": "Minimum {requiredLength} characters.",
         "maxlength": "Maximum {requiredLength} characters",
-        "email": "Invalid email address."
+        "email": "Invalid email address.",
+        "passwordMatches": "Password doesn't match",
+        "user with this email already exists.": "User with this email already exists."
     },
     "create_account": "Create account",
     "marketplace": "Marketplace",

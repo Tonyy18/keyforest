@@ -4,9 +4,13 @@
     },
     "validation_errors": {
         "required": "Tämä kenttä on pakollinen.",
+        "This field may not be blank.": "Tämä kenttä on pakollinen.",
+        "This field may not be null.": "Tämä kenttä on pakollinen.",
         "minlength": "Vähintään {requiredLength} merkkiä.",
         "maxlength": "Enintään {requiredLength} merkkiä.",
-        "email": "Virheellinen sähköpostiosoite."
+        "email": "Virheellinen sähköpostiosoite.",
+        "passwordMatches": "Salasana ei täsmää",
+        "user with this email already exists.": "Sähköposti on jo käytössä"
     },
     "create_account": "Luo käyttäjä",
     "marketplace": "Kauppapaikka",

@@ -6,10 +6,10 @@
         </div>
         <form [formGroup]="frm" (ngSubmit)="save()">
             <div class="mb-3">
-                <input id="first-name" type="text" placeholder="{{'first_name' | translate}}" pInputText class="w-full" formControlName="firstName">
+                <input id="first-name" type="text" placeholder="{{'first_name' | translate}}" pInputText class="w-full" formControlName="first_name">
             </div>
             <div class="mb-3">
-                <input id="last-name" type="text" placeholder="{{'last_name' | translate}}" pInputText class="w-full" formControlName="lastName">
+                <input id="last-name" type="text" placeholder="{{'last_name' | translate}}" pInputText class="w-full" formControlName="last_name">
             </div>
             <div class="mb-3">
                 <input id="email" type="text" placeholder="{{'email_address' | translate}}" pInputText class="w-full" formControlName="email">
@@ -18,13 +18,13 @@
                 <input id="password" type="password" placeholder="{{'password' | translate}}" pInputText class="w-full" formControlName="password">
             </div>
             <div class="mb-3">
-                <input id="password2" type="password2" placeholder="{{'password_again' | translate}}" pInputText class="w-full" formControlName="password2">
+                <input id="password2" type="password" placeholder="{{'password_again' | translate}}" pInputText class="w-full" formControlName="password2">
             </div>
             <div class="flex align-items-center mb-4">
                 <span class="text-600">{{'already_have_an_account' | translate}}</span>
                 <a routerLink="/login" class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">{{'login' | translate}}</a>
             </div>
-            <button pButton pRipple label="{{'create_account' | translate}}" icon="pi pi-user" class="w-full"></button>
+            <button pButton pRipple label="{{'create_account' | translate}}" icon="pi pi-user" class="w-full" [loading]="loading"></button>
         </form>
     </div>
 </div>

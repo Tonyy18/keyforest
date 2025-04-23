@@ -4,3 +4,4 @@ node_modules
 venv
 environment.local.ts
 migrations/
+__pycache__

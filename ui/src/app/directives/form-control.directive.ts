@@ -55,6 +55,7 @@ export class FormControlDirective implements OnDestroy {
     const errorDiv = this.renderer.createElement('div');
     this.renderer.addClass(errorDiv, 'p-error');
     this.renderer.addClass(errorDiv, 'text-red-500');
+    this.renderer.addClass(errorDiv, 'input-error-message');
     this.renderer.setStyle(errorDiv, 'font-size', '0.8rem');
     this.renderer.setStyle(errorDiv, 'margin-top', '0.25rem');
 
