@@ -4,10 +4,9 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BaseComponent } from '../../shared/base.component';
-import {MessagesModule} from 'primeng/messages';
-import {MessageModule} from 'primeng/message';
+import { FormControlDirective } from '../../shared/form-control.directive';
 
 @Component({
     selector: 'app-registration',
@@ -19,8 +18,7 @@ import {MessageModule} from 'primeng/message';
       PasswordModule,
       FormsModule,
       ReactiveFormsModule,
-      MessagesModule,
-      MessageModule
+      FormControlDirective
     ],
     templateUrl: './registration.component.html',
     styleUrl: './registration.component.scss'
@@ -31,18 +29,17 @@ export class RegistrationComponent extends BaseComponent {
   
   ngOnInit(): void {
     this.frm = this.fb.group({
-      firstName: [undefined, [Validators.required, Validators.min(2), Validators.max(30)]],
-      lastName: [undefined, [Validators.required, Validators.min(2), Validators.max(30)]],
+      firstName: [undefined, [Validators.required, Validators.minLength(2), Validators.maxLength(30)]],
+      lastName: [undefined, [Validators.required, Validators.minLength(2), Validators.maxLength(30)]],
       email: [undefined, [Validators.required, Validators.email]],
-      password: [undefined, [Validators.required, Validators.min(6), Validators.max(30)]],
+      password: [undefined, [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
+      password2: [undefined, [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
     })
   }
 
   protected save(): void {
-    console.log("save");
     if(this.frm.invalid) {
-      console.log("invalid");
-      this.frm.markAllAsTouched();
+      this.markFormGroup(this.frm);
       return;
     };
   }

@@ -16,6 +16,6 @@ export class AppComponent {
   title = 'ui';
   constructor(private translate: TranslateService) {
     this.translate.addLangs(['fi', 'en']);
-    this.translate.setDefaultLang('en');
+    this.translate.setDefaultLang('fi');
   }
 }

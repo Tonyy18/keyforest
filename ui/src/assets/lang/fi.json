@@ -2,8 +2,25 @@
     "branding": {
         "platform_name": "Keyforest"
     },
+    "validation_errors": {
+        "required": "Tämä kenttä on pakollinen.",
+        "minlength": "Vähintään {requiredLength} merkkiä.",
+        "maxlength": "Enintään {requiredLength} merkkiä.",
+        "email": "Virheellinen sähköpostiosoite."
+    },
     "create_account": "Luo käyttäjä",
     "marketplace": "Kauppapaikka",
     "login": "Kirjaudu",
-    "register": "Rekisteröidy"
+    "register": "Rekisteröidy",
+    "dont_have_an_account": "Eikö sinulla ole tiliä?",
+    "create_today": "Luo tili tänään",
+    "forgot_password": "Unohtuiko salasana?",
+    "email": "Sähköposti",
+    "password": "Salasana",
+    "password_again": "Salasana uudelleen",
+    "email_address": "Sähköpostiosoite",
+    "sign_in": "Kirjaudu sisään",
+    "first_name": "Etunimi",
+    "last_name": "Sukunimi",
+    "already_have_an_account": "Onko sinulla jo tili?"
 }
