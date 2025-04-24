@@ -1,6 +1,6 @@
 import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import {HttpClient, provideHttpClient} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import {TranslateModule, TranslateLoader} from "@ngx-translate/core";
@@ -9,6 +9,8 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { providePrimeNG } from 'primeng/config';
 import Nora from '@primeng/themes/material';
 import { routes } from './app.routes';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { MessageService } from 'primeng/api';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
   new TranslateHttpLoader(http, './assets/lang/', '.json');
@@ -16,7 +18,14 @@ const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: Http
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideHttpClient(),
+    provideHttpClient(
+      withInterceptorsFromDi()
+    ),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
     provideRouter(routes),
     providePrimeNG({
       ripple: true,
@@ -34,6 +43,7 @@ export const appConfig: ApplicationConfig = {
         useFactory: httpLoaderFactory,
         deps: [HttpClient],
       },
-    })])
+    })]),
+    MessageService
   ]
 };

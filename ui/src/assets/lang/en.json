@@ -26,5 +26,11 @@
     "sign_in": "Sign In",
     "first_name": "First name",
     "last_name": "Last name",
-    "already_have_an_account": "Already have an account?"
+    "already_have_an_account": "Already have an account?",
+    "account_created": "Account created",
+    "you_can_now_login": "You can now login",
+    "wrong_email_or_password": "Wrong email or password",
+    "check_your_credentails": "Check that your credentials are right",
+    "logout": "Logout",
+    "you_have_been_logged_out": "You have been logged out"
 }

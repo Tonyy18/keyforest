@@ -6,17 +6,11 @@
             <span class="text-600 font-medium line-height-3">{{'dont_have_an_account' | translate}}?</span>
             <a routerLink="/register" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">{{'create_today' | translate}}!</a>
         </div>
-    
-        <div>
-            <label for="email1" class="block text-900 font-medium mb-2">{{'email' | translate}}</label>
-            <input id="email1" type="text" placeholder="{{'email_address' | translate}}" pInputText class="w-full mb-3">
-    
-            <label for="password1" class="block text-900 font-medium mb-2">{{'password' | translate}}</label>
-            <input id="password1" type="password" placeholder="{{'password' | translate}}" pInputText class="w-full mb-3">
-    
+        <form (ngSubmit)="login()">
+            <input id="email1" type="text" placeholder="{{'email_address' | translate}}" pInputText class="w-full mb-3" [(ngModel)]="email" name="email">
+            <input id="password" type="password" placeholder="{{'password' | translate}}" pInputText class="w-full mb-3" [(ngModel)]="password" name="password">
             <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer mb-4 block">{{'forgot_password' | translate}}</a>
-    
-            <button pButton pRipple label="{{'sign_in' | translate}}" icon="pi pi-user" class="w-full"></button>
-        </div>
+            <button pButton pRipple label="{{'sign_in' | translate}}" icon="pi pi-user" class="w-full" [loading]="loading"></button>
+        </form>
     </div>
 </div>

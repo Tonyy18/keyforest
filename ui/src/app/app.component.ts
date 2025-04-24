@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {TranslateService} from "@ngx-translate/core";
 import { TranslateModule } from '@ngx-translate/core';
-import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { AuthService } from './services/auth.service';
 
 @Component({
     selector: 'app-root',
@@ -13,13 +13,13 @@ import { ToastModule } from 'primeng/toast';
       ToastModule
     ],
     templateUrl: './app.component.html',
-    styleUrl: './app.component.scss',
-    providers: [MessageService]
+    styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'ui';
-  constructor(private translate: TranslateService) {
+  constructor(private translate: TranslateService, private authService: AuthService) {
     this.translate.addLangs(['fi', 'en']);
-    this.translate.setDefaultLang('fi');
+    this.translate.setDefaultLang('en');
+    authService.initSesssion();
   }
 }

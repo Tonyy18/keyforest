@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -8,6 +8,7 @@ import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angula
 import { BaseComponent } from '../../shared/base.component';
 import { FormControlDirective } from '../../directives/form-control.directive';
 import { UserService } from '../../services/user.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-registration',
@@ -32,8 +33,8 @@ export class RegistrationComponent extends BaseComponent {
   
   ngOnInit(): void {
     this.frm = this.fb.group({
-      first_name: [undefined, [Validators.required, Validators.minLength(2), Validators.maxLength(30)]],
-      last_name: [undefined, [Validators.required, Validators.minLength(2), Validators.maxLength(30)]],
+      firstName: [undefined, [Validators.required, Validators.minLength(2), Validators.maxLength(30)]],
+      lastName: [undefined, [Validators.required, Validators.minLength(2), Validators.maxLength(30)]],
       email: [undefined, [Validators.required, Validators.email]],
       password: [undefined, [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
       password2: [undefined, [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
@@ -53,8 +54,9 @@ export class RegistrationComponent extends BaseComponent {
     this.loading = true;
     this.userService.createUser(this.frm.value).subscribe({
       next: () => {
-        this.messageService.add({ severity: 'success', summary: 'Käyttäjä luotu', detail: 'Message Content' });
+        this.messagingService.add({ severity: 'success', summary: 'account_created', detail: 'you_can_now_login' });
         this.loading = false;
+        this.router.navigate(["/login"], {queryParams: {email: this.frm.get("email")!.value}})
       },
       error: (errors) => {
         this.loading = false;

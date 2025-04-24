@@ -2,9 +2,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import User
 from .serializers import UserSerializer
-
+from rest_framework.permissions import IsAuthenticated
 
 class UsersView(APIView):
+
     def get(self, request):
         items = User.objects.all()
         serializer = UserSerializer(items, many=True)
@@ -16,3 +17,10 @@ class UsersView(APIView):
             serializer.save()
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
+
+class MeView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        user = request.user
+        serializer = UserSerializer(user)
+        return Response(serializer.data)

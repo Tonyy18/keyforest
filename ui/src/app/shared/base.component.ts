@@ -1,11 +1,13 @@
 import { inject } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { TranslateService } from "@ngx-translate/core";
-import { MessageService } from 'primeng/api';
+import { Router } from "@angular/router";
+import { MessagingService } from "../services/messagingService.service";
 
 export abstract class BaseComponent {
   protected translateService: TranslateService = inject(TranslateService);
-  protected messageService: MessageService = inject(MessageService);
+  protected messagingService: MessagingService = inject(MessagingService);
+  protected router: Router = inject(Router);
   protected fb: FormBuilder = inject(FormBuilder);
 
   markFormGroup(frm: FormGroup): void {
@@ -16,6 +18,7 @@ export abstract class BaseComponent {
       }
     }
   }
+  
   highlightErrors(frm: FormGroup, httpRes: any): void {
     if("error" in httpRes && typeof httpRes.error == "object") {
       const httpErrors: {[field: string] : string[]} = httpRes.error;

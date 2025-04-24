@@ -2,14 +2,14 @@
     <div class="surface-card p-4 shadow-2 border-round w-full">
         <div class="text-center mb-5">
             <img src="assets/images/logo-letter.png" alt="Image" height="50" class="mb-3">
-            <div class="text-900 text-3xl font-medium mb-3">{{'Register' | translate}}</div>
+            <div class="text-900 text-3xl font-medium mb-3">{{'create_account' | translate}}</div>
         </div>
         <form [formGroup]="frm" (ngSubmit)="save()">
             <div class="mb-3">
-                <input id="first-name" type="text" placeholder="{{'first_name' | translate}}" pInputText class="w-full" formControlName="first_name">
+                <input id="first-name" type="text" placeholder="{{'first_name' | translate}}" pInputText class="w-full" formControlName="firstName">
             </div>
             <div class="mb-3">
-                <input id="last-name" type="text" placeholder="{{'last_name' | translate}}" pInputText class="w-full" formControlName="last_name">
+                <input id="last-name" type="text" placeholder="{{'last_name' | translate}}" pInputText class="w-full" formControlName="lastName">
             </div>
             <div class="mb-3">
                 <input id="email" type="text" placeholder="{{'email_address' | translate}}" pInputText class="w-full" formControlName="email">

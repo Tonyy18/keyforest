@@ -26,5 +26,11 @@
     "sign_in": "Kirjaudu sisään",
     "first_name": "Etunimi",
     "last_name": "Sukunimi",
-    "already_have_an_account": "Onko sinulla jo tili?"
+    "already_have_an_account": "Onko sinulla jo tili?",
+    "account_created": "Käyttäjä luotu",
+    "you_can_now_login": "Voit nyt kirjautua sisään",
+    "wrong_email_or_password": "Väärä sähköposti tai salasana",
+    "check_your_credentails": "Tarkista että käyttäjätietosi ovat oikein",
+    "logout": "Kirjaudu ulos",
+    "you_have_been_logged_out": "Sinut on kirjattu ulos"
 }

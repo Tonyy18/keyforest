@@ -1,15 +1,32 @@
 from rest_framework import serializers
 from .models import User
 from django.contrib.auth.hashers import make_password
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class UserSerializer(serializers.ModelSerializer):
 
     password = serializers.CharField(write_only=True)
-
+    firstName = serializers.CharField(source='first_name')
+    lastName = serializers.CharField(source='last_name')
     class Meta:
         model = User
-        fields = ['id', 'first_name', 'last_name', 'email', 'password']
+        fields = ['id', 'firstName', 'lastName', 'email', 'password']
     
     def create(self, validated_data):
         validated_data['password'] = make_password(validated_data['password'])
         return super(UserSerializer, self).create(validated_data)
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+
+        # Add custom user data
+        data['user'] = {
+            'id': self.user.id,
+            'email': self.user.email,
+            'firstName': self.user.firstName,
+            'lastName': self.user.lastName,
+            # add more if needed
+        }
+
+        return data
