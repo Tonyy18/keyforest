@@ -32,5 +32,10 @@
     "wrong_email_or_password": "Väärä sähköposti tai salasana",
     "check_your_credentails": "Tarkista että käyttäjätietosi ovat oikein",
     "logout": "Kirjaudu ulos",
-    "you_have_been_logged_out": "Sinut on kirjattu ulos"
+    "you_have_been_logged_out": "Sinut on kirjattu ulos",
+    "my_licenses": "Minun lisenssini",
+    "dashboard": "Hallinta",
+    "not_part_of_organization": "Et ole osa mitään organisaatiota",
+    "You_need_to_be_part_of_some_organization_for_dashboard": "Sinun on kuuluttava johonkin organisaatioon, jotta voit käyttää hallintapaneelia",
+    "create_organization": "Luo organisaatio"
 }

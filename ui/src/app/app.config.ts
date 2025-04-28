@@ -11,6 +11,7 @@ import Nora from '@primeng/themes/material';
 import { routes } from './app.routes';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { MessageService } from 'primeng/api';
+import { DialogService } from 'primeng/dynamicdialog';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
   new TranslateHttpLoader(http, './assets/lang/', '.json');
@@ -44,6 +45,7 @@ export const appConfig: ApplicationConfig = {
         deps: [HttpClient],
       },
     })]),
-    MessageService
+    MessageService,
+    DialogService
   ]
 };

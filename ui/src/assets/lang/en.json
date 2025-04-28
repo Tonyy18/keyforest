@@ -32,5 +32,10 @@
     "wrong_email_or_password": "Wrong email or password",
     "check_your_credentails": "Check that your credentials are right",
     "logout": "Logout",
-    "you_have_been_logged_out": "You have been logged out"
+    "you_have_been_logged_out": "You have been logged out",
+    "my_licenses": "My licenses",
+    "dashboard": "Dashboard",
+    "not_part_of_organization": "You are not part of any organization",
+    "You_need_to_be_part_of_some_organization_for_dashboard": "You need to be part of some organization in order to access the dashboard",
+    "create_organization": "Create organization"
 }
