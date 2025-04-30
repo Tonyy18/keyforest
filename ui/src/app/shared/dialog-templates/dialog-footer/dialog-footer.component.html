@@ -1,0 +1,4 @@
+<div class="flex align-items-center">
+    <p-button label="{{'cancel' | translate}}" severity="secondary" class="mr-2" (click)="ref.close();" />
+    <p-button label="{{'save' | translate}}" [loading]="config.data?.loading === true"/>
+</div>
