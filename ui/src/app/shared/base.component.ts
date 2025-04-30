@@ -21,14 +21,16 @@ export abstract class BaseComponent {
   
   highlightErrors(frm: FormGroup, httpRes: any): void {
     if("error" in httpRes && typeof httpRes.error == "object") {
-      const httpErrors: {[field: string] : string[]} = httpRes.error;
+      const httpErrors: {[field: string] : string[] | string} = httpRes.error;
       for(let field in httpErrors) {
-        const errors: string[] = httpErrors[field];
-        if(field in frm.controls && errors?.length > 0) {
-          const setErrors: {[error: string] : boolean} = {}
-          setErrors[errors[0]] = true;
-          frm.controls[field].setErrors(setErrors)
-          frm.controls[field].markAsDirty();
+        if(Array.isArray(httpErrors[field])) {
+          const errors: string[] = httpErrors[field];
+          if(field in frm.controls && errors?.length > 0) {
+            const setErrors: {[error: string] : boolean} = {}
+            setErrors[errors[0]] = true;
+            frm.controls[field].setErrors(setErrors)
+            frm.controls[field].markAsDirty();
+          }
         }
       }
     }

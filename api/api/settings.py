@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'users',
+    'organizations',
     'rest_framework_simplejwt',
     'rest_framework',
     'django.contrib.admin',

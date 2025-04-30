@@ -1,10 +1,10 @@
-<form>
+<form [formGroup]="frm" (ngSubmit)="save()">
     <div class="formgrid grid">
         <div class="field col-12">
-            <input type="text" pInputText class="w-full" placeholder="{{'name' | translate}}">
+            <input type="text" pInputText class="w-full" placeholder="{{'name' | translate}}" formControlName="name">
         </div>
         <div class="field col-12">
-            <textarea rows="5" cols="30" pTextarea class="w-full" placeholder="{{'description' | translate}}"></textarea>
+            <textarea rows="5" cols="30" pTextarea class="w-full" placeholder="{{'description' | translate}}" formControlName="description"></textarea>
         </div>
     </div>
 </form>
