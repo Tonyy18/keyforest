@@ -10,7 +10,8 @@
         "maxlength": "Enintään {requiredLength} merkkiä.",
         "email": "Virheellinen sähköpostiosoite.",
         "passwordMatches": "Salasana ei täsmää",
-        "user with this email already exists.": "Sähköposti on jo käytössä"
+        "user with this email already exists.": "Sähköposti on jo käytössä",
+        "organization with this name already exists.": "Organisaation nimi on varattu"
     },
     "create_account": "Luo käyttäjä",
     "marketplace": "Kauppapaikka",
@@ -41,5 +42,7 @@
     "save": "Tallenna",
     "cancel": "Peruuta",
     "name": "Nimi",
-    "description": "Kuvaus"
+    "description": "Kuvaus",
+    "organization_created": "Organisaatio luotu",
+    "you_have_now_access_to_dashboard": "Sinulla on nyt pääsy hallintapaneeliin"
 }

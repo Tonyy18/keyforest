@@ -5,7 +5,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class OrganizationSerializer(serializers.ModelSerializer):
 
-    description = serializers.CharField(required=False)
+    description = serializers.CharField(required=False, allow_null=True)
 
     class Meta:
         model = Organization

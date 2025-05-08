@@ -7,7 +7,7 @@ export const loggedOutGuard: CanActivateFn = (
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ) => {
-    if(inject(AuthService).isTokenExpired()) {
+    if(inject(AuthService).isTokenExpired() !== false) {
         return true;
     }
     return inject(Router).navigate(["/"])

@@ -6,6 +6,9 @@ import { RegistrationComponent } from './client/registration/registration.compon
 import { loggedOutGuard } from "./guards/logged-out.guard";
 import { authGuard } from './guards/auth-guard';
 import { StartOrganizationComponent } from './client/start-organization/start-organization.component';
+import { DashboardLayoutComponent } from './dashboard/layout/dashboard-layout.component';
+import { OrganizationsComponent } from './dashboard/organizations/organizations.component';
+import { hasConnectionGuard } from './guards/dashboard.guard';
 
 
 export const routes: Routes = [
@@ -13,6 +16,9 @@ export const routes: Routes = [
         {path: '', component: LandingComponent},
         {path: 'login', component: LoginComponent, canActivate: [loggedOutGuard]},
         {path: 'register', component: RegistrationComponent, canActivate: [loggedOutGuard]},
-        {path: 'start-organization', component: StartOrganizationComponent},
+        {path: 'start-organization', component: StartOrganizationComponent, canActivate: [authGuard]},
+    ] },
+    { path: 'dashboard', component: DashboardLayoutComponent, children: [
+        {path: '', component: OrganizationsComponent, canActivate: [hasConnectionGuard]}
     ] },
 ];

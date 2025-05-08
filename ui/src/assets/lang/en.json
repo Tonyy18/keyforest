@@ -10,7 +10,8 @@
         "maxlength": "Maximum {requiredLength} characters",
         "email": "Invalid email address.",
         "passwordMatches": "Password doesn't match",
-        "user with this email already exists.": "User with this email already exists."
+        "user with this email already exists.": "User with this email already exists.",
+        "organization with this name already exists.": "Organization with this name already exists."
     },
     "create_account": "Create account",
     "marketplace": "Marketplace",
@@ -41,5 +42,7 @@
     "save": "Save",
     "cancel": "Cancel",
     "name": "Name",
-    "description": "Description"
+    "description": "Description",
+    "organization_created": "Organisation created",
+    "you_have_now_access_to_dashboard": "You now have access to the dashboard"
 }

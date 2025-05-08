@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
+from organizations.models import Organization
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -30,3 +31,10 @@ class User(AbstractBaseUser):
     objects = UserManager()
     class Meta:
         db_table  = "users"
+
+class UserConnection(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='connections')
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table  = "user_connections"

@@ -57,17 +57,19 @@ export class AuthService extends BaseService{
   }
 
   initSesssion(): void {
-    if(this.isTokenExpired()) {
+    const exp = this.isTokenExpired();
+    if(exp === true) {
       this.logout();
       return;
+    } else if(exp === false) {
+      this.getUser().subscribe();
     }
-    this.getUser().subscribe();
   }
   
-  isTokenExpired(): boolean {
+  isTokenExpired(): boolean | null {
     const token: string | null = localStorage.getItem("token");
     if(!token) {
-      return true;
+      return null;
     }
     try {
       const decoded: any = jwtDecode(token);
