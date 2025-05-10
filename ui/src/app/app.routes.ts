@@ -9,6 +9,7 @@ import { StartOrganizationComponent } from './client/start-organization/start-or
 import { DashboardLayoutComponent } from './dashboard/layout/dashboard-layout.component';
 import { OrganizationsComponent } from './dashboard/organizations/organizations.component';
 import { hasConnectionGuard } from './guards/dashboard.guard';
+import { RolesComponent } from './dashboard/roles/roles.component';
 
 
 export const routes: Routes = [
@@ -19,6 +20,7 @@ export const routes: Routes = [
         {path: 'start-organization', component: StartOrganizationComponent, canActivate: [authGuard]},
     ] },
     { path: 'dashboard', component: DashboardLayoutComponent, children: [
-        {path: '', component: OrganizationsComponent, canActivate: [hasConnectionGuard]}
+        {path: '', component: OrganizationsComponent, canActivate: [hasConnectionGuard]},
+        {path: 'roles', component: RolesComponent, canActivate: [hasConnectionGuard]}
     ] },
 ];

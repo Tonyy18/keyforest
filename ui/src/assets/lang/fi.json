@@ -44,5 +44,10 @@
     "name": "Nimi",
     "description": "Kuvaus",
     "organization_created": "Organisaatio luotu",
-    "you_have_now_access_to_dashboard": "Sinulla on nyt pääsy hallintapaneeliin"
+    "you_have_now_access_to_dashboard": "Sinulla on nyt pääsy hallintapaneeliin",
+    "organizations": "Organisaatiot",
+    "set_active": "Aktivoi",
+    "organization_changed": "Organisaatio vaihdettu",
+    "active_organization_changed": "Aktiivinen organisaatio vaihdettu",
+    "roles": "Roolit"
 }

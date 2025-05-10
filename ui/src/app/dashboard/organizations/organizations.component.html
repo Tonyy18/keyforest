@@ -1,2 +1,24 @@
-
-<h1>organizations</h1>
+<div class="surface-section px-4 py-5 md:px-6 lg:px-8">
+    <div class="flex flex-column md:align-items-center md:justify-content-between md:flex-row">
+        <div class="font-medium text-3xl text-900">{{'organizations'|translate}}</div>
+        <div class="mt-3 md:mt-0">
+            <button pButton pRipple [label]="'create_organization'|translate" icon="pi pi-plus" (click)="create()"></button>
+        </div>
+    </div>
+</div>
+<div class="p-4 xl:p-8">
+    <div class="surface-card border-2 p-3 border-round-top flex align-items-center cursor-pointer"
+        [ngClass]="{'surface-border': selected !== connection.organization.id, 'border-primary': selected === connection.organization.id}" 
+        (click)="selected = connection.organization.id" 
+        *ngFor="let connection of authService.user?.connections">
+        <p-radioButton [(ngModel)]="selected" [value]="connection.organization.id" styleClass="mr-3"></p-radioButton>
+        <div class="mr-4 md:mr-8">
+            <div class="font-medium">{{connection.organization.name}}</div>
+        </div>
+        <div class="border-round border-1 p-1 ml-auto flex flex-nowrap"
+            [ngClass]="{'surface-50 text-600 surface-border': selected !== 0, 'bg-primary-reverse': selected === 0}">
+            <i class="pi pi-star-fill"></i>
+        </div>
+    </div>
+    <button pButton pRipple [label]="'set_active'|translate" class="mt-4" (click)="setActive()" [disabled]="!selected"></button>
+</div>

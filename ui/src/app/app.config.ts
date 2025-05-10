@@ -1,4 +1,4 @@
-import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
+import { APP_INITIALIZER, ApplicationConfig, importProvidersFrom, inject, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import {HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -12,9 +12,16 @@ import { routes } from './app.routes';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
+import { AuthService } from './services/auth.service';
+import { catchError, Observable } from 'rxjs';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
   new TranslateHttpLoader(http, './assets/lang/', '.json');
+
+export function StartupServiceFactory(): void | Observable<unknown> | Promise<unknown> {
+  const authService = inject(AuthService);
+  return authService.getUser();
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -46,6 +53,7 @@ export const appConfig: ApplicationConfig = {
       },
     })]),
     MessageService,
-    DialogService
+    DialogService,
+    provideAppInitializer(StartupServiceFactory)
   ]
 };

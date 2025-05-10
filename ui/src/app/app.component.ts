@@ -20,6 +20,5 @@ export class AppComponent {
   constructor(private translate: TranslateService, private authService: AuthService) {
     this.translate.addLangs(['fi', 'en']);
     this.translate.setDefaultLang('en');
-    authService.initSesssion();
   }
 }

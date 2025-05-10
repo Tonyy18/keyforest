@@ -53,17 +53,7 @@ export class AuthService extends BaseService{
       catchError(error => {
         return throwError(() => error);
       })
-    );;
-  }
-
-  initSesssion(): void {
-    const exp = this.isTokenExpired();
-    if(exp === true) {
-      this.logout();
-      return;
-    } else if(exp === false) {
-      this.getUser().subscribe();
-    }
+    );
   }
   
   isTokenExpired(): boolean | null {
@@ -81,6 +71,10 @@ export class AuthService extends BaseService{
       console.error('Error decoding token', error);
       return true; // Assume the token is expired if decoding fails
     }
+  }
+
+  isLoggedIn(): boolean {
+    return this.isTokenExpired() !== true && this.user != null;
   }
 
 }

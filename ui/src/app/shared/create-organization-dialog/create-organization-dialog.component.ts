@@ -9,6 +9,7 @@ import { BaseComponent } from '../base.component';
 import { FormControlDirective } from '../../directives/form-control.directive';
 import { Organization } from '../../types/organization.type';
 import { OrganizationService } from '../../services/organization.service';
+import { UserService } from '../../services/user.service';
 @Component({
     selector: 'app-create-organization-dialog',
     imports: [
@@ -22,11 +23,12 @@ import { OrganizationService } from '../../services/organization.service';
     templateUrl: './create-organization-dialog.component.html',
     styleUrl: './create-organization-dialog.component.scss'
 })
-export class CreateOrganizationDialogComponent extends BaseComponent{
+export class CreateOrganizationDialogComponent extends BaseComponent {
 
   public config: DynamicDialogConfig = inject(DynamicDialogConfig);
   private ref: DynamicDialogRef = inject(DynamicDialogRef);
   protected service: OrganizationService = inject(OrganizationService);
+  private userService: UserService = inject(UserService);
   
   frm: FormGroup = this.fb.group({
     name: [undefined, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
@@ -48,6 +50,7 @@ export class CreateOrganizationDialogComponent extends BaseComponent{
     this.config.data.loading = true;
     this.service.createOrganization(this.frm.value).subscribe({
       next: (res) => {
+        this.userService.addConnection(res);
         this.config.data.loading = false;
         this.messagingService.add({ severity: 'success', summary: 'organization_created', detail: 'you_have_now_access_to_dashboard' });
         this.ref.close();

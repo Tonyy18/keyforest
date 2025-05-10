@@ -8,9 +8,8 @@ export const hasConnectionGuard: CanActivateFn = (
     state: RouterStateSnapshot,
   ) => {
     if(authGuard(route, state) === true) {
-      const connections = inject(AuthService).user?.connections;
-      console.log(connections)
-      if(connections != undefined && connections.length > 0) {
+      const connections = inject(AuthService).user!.connections;
+      if(connections.length > 0) {
         return true;
       }
     }

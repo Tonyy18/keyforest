@@ -35,7 +35,7 @@
                 </a>
             </li>
             <li>
-                <a routerLink="start-organization" pRipple class="no-underline flex px-6 p-3 h-full lg:px-3 lg:py-2 align-items-center text-600 border-left-2 lg:border-bottom-2 lg:border-left-none border-transparent hover:border-blue-500 font-medium cursor-pointer transition-colors transition-duration-150">
+                <a [routerLink]="authService.user.connections.length > 0 ? 'dashboard' : 'start-organization'" pRipple class="no-underline flex px-6 p-3 h-full lg:px-3 lg:py-2 align-items-center text-600 border-left-2 lg:border-bottom-2 lg:border-left-none border-transparent hover:border-blue-500 font-medium cursor-pointer transition-colors transition-duration-150">
                     <span>{{'dashboard' | translate}}</span>
                 </a>
             </li>

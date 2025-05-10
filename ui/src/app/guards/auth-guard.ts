@@ -7,8 +7,8 @@ export const authGuard: CanActivateFn = (
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ) => {
-    if(inject(AuthService).isTokenExpired() === false) {
-        return true;
+    if(inject(AuthService).isLoggedIn()) {
+      return true;
     }
     inject(Router).navigate(["/"])
     return false;

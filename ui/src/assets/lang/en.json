@@ -44,5 +44,10 @@
     "name": "Name",
     "description": "Description",
     "organization_created": "Organisation created",
-    "you_have_now_access_to_dashboard": "You now have access to the dashboard"
+    "you_have_now_access_to_dashboard": "You now have access to the dashboard",
+    "organizations": "Organizations",
+    "set_active": "Set active",
+    "organization_changed": "Organization changed",
+    "active_organization_changed": "Active organization changed",
+    "roles": "Roles"
 }

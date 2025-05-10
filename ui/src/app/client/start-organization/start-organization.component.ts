@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { LoginComponent } from '../login/login.component';
 import { CreateOrganizationDialogComponent } from '../../shared/create-organization-dialog/create-organization-dialog.component';
 import { DialogFooterComponent } from '../../shared/dialog-templates/dialog-footer/dialog-footer.component';
+import { AuthService } from '../../services/auth.service';
+import { Organization } from '../../types/organization.type';
+
 @Component({
     selector: 'app-start-organization',
     imports: [
@@ -20,7 +22,16 @@ export class StartOrganizationComponent {
 
   ref: DynamicDialogRef | undefined;
 
-  constructor(public dialogService: DialogService, private translate: TranslateService) {}
+  constructor(
+    public dialogService: DialogService,
+    private translate: TranslateService,
+    private router: Router,
+    private authService: AuthService
+  ) {
+    if(authService.user!.connections.length > 0) {
+      this.router.navigate(["/dashboard"]);
+    }
+  }
 
   create(): void {
     this.ref = this.dialogService.open(CreateOrganizationDialogComponent, {
@@ -33,6 +44,12 @@ export class StartOrganizationComponent {
       },
       templates: {
         footer: DialogFooterComponent
+      }
+    });
+
+    this.ref.onClose.subscribe((organization: Organization) => {
+      if (organization) {
+        this.router.navigate(["/dashboard"])
       }
     });
   }
