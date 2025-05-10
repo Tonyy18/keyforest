@@ -16,15 +16,28 @@ export class DashboardService {
     localStorage.setItem("activeOrganization", org.id.toString());
   }
 
+  removeActive() {
+    localStorage.removeItem("activeOrganization");
+    this.activeOrganization = undefined;
+  }
+
   initActive(): void {
     const storage = localStorage.getItem("activeOrganization");
     if(storage != undefined && storage != null) {
       try {
         const id = parseInt(storage);
-        this.activeOrganization = this.userService.user?.connections.filter(c => c.organization.id == id)?.[0].organization;
+        const conn = this.userService.user?.connections.filter(c => c.organization.id == id);
+        if(conn && conn.length > 0) {
+          this.activeOrganization = conn[0].organization;
+        } else {
+          this.removeActive();
+        }
       } catch(e) {
-        console.error("Failed to set active organization from local storage")
+        console.error("Failed to set active organization from local storage");
+        this.removeActive();
       }
+    } else {
+      this.removeActive();
     }
   }
 

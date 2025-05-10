@@ -3,7 +3,7 @@ import { BaseService } from './base.service';
 import { catchError, Observable, of, tap, throwError } from 'rxjs';
 import { User } from '../types/user.type';
 import {jwtDecode} from 'jwt-decode';
-import { MessagingService } from './messagingService.service';
+import { MessagingService } from './messaging.service';
 import { Router } from '@angular/router';
 
 export type Credentials = {
@@ -41,17 +41,16 @@ export class AuthService extends BaseService{
   logout(): void {
     localStorage.removeItem("token");
     this.user = undefined;
-    this.messagingService.add({severity: "success", summary: "you_have_been_logged_out"})
     this.router.navigate(["/login"]);
   }
 
-  getUser(): Observable<User> {
+  getUser(): Observable<User | null> {
     return this.http.get<User>(this.apiUrl + "/auth/me/").pipe(
       tap(response => {
         this.user = response;
       }),
       catchError(error => {
-        return throwError(() => error);
+        return of(null)
       })
     );
   }

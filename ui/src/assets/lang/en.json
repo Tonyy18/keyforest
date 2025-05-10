@@ -49,5 +49,7 @@
     "set_active": "Set active",
     "organization_changed": "Organization changed",
     "active_organization_changed": "Active organization changed",
-    "roles": "Roles"
+    "roles": "Roles",
+    "login_session_expired": "Login session expired",
+    "please_login_again": "Please login again"
 }

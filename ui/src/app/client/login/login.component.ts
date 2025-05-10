@@ -41,8 +41,10 @@ export class LoginComponent extends BaseComponent {
       next: () => {
         this.loading = false;
         this.authService.getUser().subscribe({
-          next: () => {
-            this.router.navigate([this.redirect ? this.redirect : "/"])
+          next: (user) => {
+            if(user) {
+              this.router.navigate([this.redirect ? this.redirect : "/"])
+            }
           }
         });
       },

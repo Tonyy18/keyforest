@@ -10,6 +10,7 @@ import { providePrimeNG } from 'primeng/config';
 import Nora from '@primeng/themes/material';
 import { routes } from './app.routes';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AuthService } from './services/auth.service';
@@ -32,6 +33,11 @@ export const appConfig: ApplicationConfig = {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
       multi: true,
     },
     provideRouter(routes),

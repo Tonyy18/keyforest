@@ -2,7 +2,7 @@ import { inject } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { TranslateService } from "@ngx-translate/core";
 import { Router } from "@angular/router";
-import { MessagingService } from "../services/messagingService.service";
+import { MessagingService } from "../services/messaging.service";
 
 export abstract class BaseComponent {
   protected translateService: TranslateService = inject(TranslateService);
