@@ -66,7 +66,7 @@ export class OrganizationsComponent extends BaseComponent {
           organization: org.name
         }
       })
-      this.router.navigate(['roles'], {relativeTo: this.activatedRoute})
+      this.router.navigate([this.selected, 'roles'], {relativeTo: this.activatedRoute})
     }
   }
 

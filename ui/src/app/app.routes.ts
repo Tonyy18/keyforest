@@ -8,8 +8,10 @@ import { authGuard } from './guards/auth-guard';
 import { StartOrganizationComponent } from './client/start-organization/start-organization.component';
 import { DashboardLayoutComponent } from './dashboard/layout/dashboard-layout.component';
 import { OrganizationsComponent } from './dashboard/organizations/organizations.component';
-import { hasConnectionGuard } from './guards/dashboard.guard';
+import { hasConnectionGuard } from './guards/has-connection.guard';
 import { RolesComponent } from './dashboard/roles/roles.component';
+import { ApplicationsComponent } from './dashboard/applications/applications.component';
+import { inOrganizationGuard } from './guards/in-organization.guard';
 
 
 export const routes: Routes = [
@@ -20,7 +22,8 @@ export const routes: Routes = [
         {path: 'start-organization', component: StartOrganizationComponent, canActivate: [authGuard]},
     ] },
     { path: 'dashboard', component: DashboardLayoutComponent, children: [
-        {path: '', component: OrganizationsComponent, canActivate: [hasConnectionGuard]},
-        {path: 'roles', component: RolesComponent, canActivate: [hasConnectionGuard]}
+        {path: '', component: OrganizationsComponent, canActivate: [hasConnectionGuard]}, 
+        {path: ':id/roles', component: RolesComponent, canActivate: [inOrganizationGuard]},
+        {path: ':id/applications', component: ApplicationsComponent, canActivate: [inOrganizationGuard]}
     ] },
 ];

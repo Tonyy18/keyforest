@@ -1,5 +1,5 @@
-import { inject, Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, CanActivate, CanActivateFn, GuardResult, MaybeAsync, Router, RouterStateSnapshot } from "@angular/router";
+import { inject } from "@angular/core";
+import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from "@angular/router";
 import { AuthService } from "../services/auth.service";
 import { authGuard } from "./auth-guard";
 

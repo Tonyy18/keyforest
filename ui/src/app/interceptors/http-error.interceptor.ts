@@ -2,7 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MessagingService } from '../services/messaging.service';
 
 @Injectable()

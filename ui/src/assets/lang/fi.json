@@ -51,5 +51,9 @@
     "active_organization_changed": "Aktiivinen organisaatio vaihdettu",
     "roles": "Roolit",
     "login_session_expired": "Kirjautuminen on vanhentunut",
-    "please_login_again": "Kirjaudu uudestaan käyttäjälle"
+    "please_login_again": "Kirjaudu uudestaan käyttäjälle",
+    "applications": "Sovellukset",
+    "access_denied": "Pääsy evätty",
+    "your_are_not_part_of_the_organization": "Et ole osana organisaatiota",
+    "create_application": "Luo sovellus"
 }

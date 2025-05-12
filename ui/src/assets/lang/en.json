@@ -51,5 +51,9 @@
     "active_organization_changed": "Active organization changed",
     "roles": "Roles",
     "login_session_expired": "Login session expired",
-    "please_login_again": "Please login again"
+    "please_login_again": "Please login again",
+    "applications": "Applications",
+    "access_denied": "Access denied",
+    "your_are_not_part_of_the_organization": "You are not part of the organization",
+    "create_application": "Create application"
 }

@@ -43,12 +43,18 @@ export class DashboardLayoutComponent {
     {
       routerLink: "/dashboard",
       label: "organizations",
-      icon: "pi-home",
+      icon: "pi-building",
     },
     {
-      routerLink: "roles",
+      routerLink: "/roles",
       label: "roles",
-      icon: "pi-home",
+      icon: "pi-building-columns",
+      secured: true
+    },
+    {
+      routerLink: "/applications",
+      label: "applications",
+      icon: "pi-desktop",
       secured: true
     }
   ]
