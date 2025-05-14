@@ -55,5 +55,6 @@
     "applications": "Sovellukset",
     "access_denied": "Pääsy evätty",
     "your_are_not_part_of_the_organization": "Et ole osana organisaatiota",
-    "create_application": "Luo sovellus"
+    "create_application": "Luo sovellus",
+    "role_groups": "Roolit"
 }

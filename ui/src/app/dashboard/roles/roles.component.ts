@@ -3,13 +3,15 @@ import { Component, inject } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BaseComponent } from '../../shared/base.component';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-roles',
   imports: [
     CommonModule,
     ButtonModule,
-    TranslateModule
+    TranslateModule,
+    TagModule
   ],
   templateUrl: './roles.component.html',
   styleUrl: './roles.component.scss'

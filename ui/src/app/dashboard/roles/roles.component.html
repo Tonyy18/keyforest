@@ -1,5 +1,187 @@
-<div class="surface-section px-4 py-5 md:px-6 lg:px-8">
+<div class="px-4 py-5 md:px-6 lg:px-8">
     <div class="flex flex-column md:align-items-center md:justify-content-between md:flex-row">
-        <div class="font-medium text-3xl text-900">{{'roles'|translate}}</div>
+        <div class="text-3xl text-900 font-medium">{{'role_groups'|translate}}</div>
+    </div>
+</div>
+
+<div class="px-4 py-3 lg:px-8">
+    <div class="flex flex-wrap justify-content-center gap-3">
+        <div class="border-round border-1 border-300 p-0 flex-1">
+            <div class="surface-ground p-4 border-round-top">
+                <div class="flex justify-content-between">
+                    <div class="flex align-items-center">
+                        <i class="pi pi-folder text-1xl"></i>
+                        <p class="m-0 ml-3 text-xl">Super</p>
+                    </div>
+                    <div class="flex align-items-center">
+                        <div class="p-2 border-round cursor-pointer hover:surface-200">
+                            <i class="pi pi-pen-to-square text-1xl"></i>
+                        </div>
+                        <div class="p-2 border-round cursor-pointer text-red-600 hover:surface-200">
+                            <i class="pi pi-trash text-1xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <p class="mb-0 text-sm text-500">Permissions related to content creation and management</p>
+            </div>
+            <div class="surface-section p-3">
+                <h4 class="text-sm m-0 pb-3">Permissions (1)</h4>
+                <p-tag [rounded]="true" styleClass="text-xs	text-600 border-1 border-300 surface-section">
+                    create_content
+                </p-tag>
+                <p-tag [rounded]="true" styleClass="text-xs	text-600 border-1 border-300 surface-section ml-2">
+                    edit_content
+                </p-tag>
+                <p-tag [rounded]="true" styleClass="text-xs	text-600 border-1 border-300 surface-section ml-2">
+                    delete_content
+                </p-tag>
+            </div>
+            <div class="surface-section flex justify-content-between px-3 py-2 text-xs text-500 border-round-bottom">
+                <span>Inherits: Admin</span>
+                <span>Last updated: 15.4.2023</span>
+            </div>
+        </div>
+        <div class="border-round border-1 border-300 p-0 flex-1">
+            <div class="surface-ground p-4 border-round-top">
+                <div class="flex justify-content-between">
+                    <div class="flex align-items-center">
+                        <i class="pi pi-folder text-1xl"></i>
+                        <p class="m-0 ml-3 text-xl">Admin</p>
+                    </div>
+                    <div class="flex align-items-center">
+                        <div class="p-2 border-round cursor-pointer hover:surface-200">
+                            <i class="pi pi-pen-to-square text-1xl"></i>
+                        </div>
+                        <div class="p-2 border-round cursor-pointer text-red-600 hover:surface-200">
+                            <i class="pi pi-trash text-1xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <p class="mb-0 text-sm text-500">Permissions related to content creation and management</p>
+            </div>
+            <div class="surface-section p-3">
+                <h4 class="text-sm m-0 pb-3">Permissions (1)</h4>
+                <p-tag [rounded]="true" styleClass="text-xs	text-600 border-1 border-300 surface-section">
+                    create_content
+                </p-tag>
+                <p-tag [rounded]="true" styleClass="text-xs	text-600 border-1 border-300 surface-section ml-2">
+                    edit_content
+                </p-tag>
+                <p-tag [rounded]="true" styleClass="text-xs	text-600 border-1 border-300 surface-section ml-2">
+                    delete_content
+                </p-tag>
+            </div>
+            <div class="surface-section flex justify-content-between px-3 py-2 text-xs text-500 border-round-bottom">
+                <span>Inherits: Developer</span>
+                <span>Last updated: 15.4.2023</span>
+            </div>
+        </div>
+        <div class="border-round border-1 border-300 p-0 flex-1">
+            <div class="surface-ground p-4 border-round-top">
+                <div class="flex justify-content-between">
+                    <div class="flex align-items-center">
+                        <i class="pi pi-folder text-1xl"></i>
+                        <p class="m-0 ml-3 text-xl">Developer</p>
+                    </div>
+                    <div class="flex align-items-center">
+                        <div class="p-2 border-round cursor-pointer hover:surface-200">
+                            <i class="pi pi-pen-to-square text-1xl"></i>
+                        </div>
+                        <div class="p-2 border-round cursor-pointer text-red-600 hover:surface-200">
+                            <i class="pi pi-trash text-1xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <p class="mb-0 text-sm text-500">Permissions related to content creation and management</p>
+            </div>
+            <div class="surface-section p-3">
+                <h4 class="text-sm m-0 pb-3">Permissions (1)</h4>
+                <p-tag [rounded]="true" styleClass="text-xs	text-600 border-1 border-300 surface-section">
+                    create_content
+                </p-tag>
+                <p-tag [rounded]="true" styleClass="text-xs	text-600 border-1 border-300 surface-section ml-2">
+                    edit_content
+                </p-tag>
+                <p-tag [rounded]="true" styleClass="text-xs	text-600 border-1 border-300 surface-section ml-2">
+                    delete_content
+                </p-tag>
+            </div>
+            <div class="surface-section flex justify-content-between px-3 py-2 text-xs text-500 border-round-bottom">
+                <span>Inherits: Support</span>
+                <span>Last updated: 15.4.2023</span>
+            </div>
+        </div>
+    </div>
+    <div class="flex flex-wrap justify-content-center gap-3 pt-3">
+        <div class="border-round border-1 border-300 p-0 flex-1">
+            <div class="surface-ground p-4 border-round-top">
+                <div class="flex justify-content-between">
+                    <div class="flex align-items-center">
+                        <i class="pi pi-folder text-1xl"></i>
+                        <p class="m-0 ml-3 text-xl">Support</p>
+                    </div>
+                    <div class="flex align-items-center">
+                        <div class="p-2 border-round cursor-pointer hover:surface-200">
+                            <i class="pi pi-pen-to-square text-1xl"></i>
+                        </div>
+                        <div class="p-2 border-round cursor-pointer text-red-600 hover:surface-200">
+                            <i class="pi pi-trash text-1xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <p class="mb-0 text-sm text-500">Permissions related to content creation and management</p>
+            </div>
+            <div class="surface-section p-3">
+                <h4 class="text-sm m-0 pb-3">Permissions (1)</h4>
+                <p-tag [rounded]="true" styleClass="text-xs	text-600 border-1 border-300 surface-section">
+                    create_content
+                </p-tag>
+                <p-tag [rounded]="true" styleClass="text-xs	text-600 border-1 border-300 surface-section ml-2">
+                    edit_content
+                </p-tag>
+                <p-tag [rounded]="true" styleClass="text-xs	text-600 border-1 border-300 surface-section ml-2">
+                    delete_content
+                </p-tag>
+            </div>
+            <div class="surface-section flex justify-content-between px-3 py-2 text-xs text-500 border-round-bottom">
+                <span>Inherits: User</span>
+                <span>Last updated: 15.4.2023</span>
+            </div>
+        </div>
+        <div class="border-round border-1 border-300 p-0 flex-1">
+            <div class="surface-ground p-4 border-round-top">
+                <div class="flex justify-content-between">
+                    <div class="flex align-items-center">
+                        <i class="pi pi-folder text-1xl"></i>
+                        <p class="m-0 ml-3 text-xl">User</p>
+                    </div>
+                    <div class="flex align-items-center">
+                        <div class="p-2 border-round cursor-pointer hover:surface-200">
+                            <i class="pi pi-pen-to-square text-1xl"></i>
+                        </div>
+                        <div class="p-2 border-round cursor-pointer text-red-600 hover:surface-200">
+                            <i class="pi pi-trash text-1xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <p class="mb-0 text-sm text-500">Permissions related to content creation and management</p>
+            </div>
+            <div class="surface-section p-3">
+                <h4 class="text-sm m-0 pb-3">Permissions (1)</h4>
+                <p-tag [rounded]="true" styleClass="text-xs	text-600 border-1 border-300 surface-section">
+                    create_content
+                </p-tag>
+                <p-tag [rounded]="true" styleClass="text-xs	text-600 border-1 border-300 surface-section ml-2">
+                    edit_content
+                </p-tag>
+                <p-tag [rounded]="true" styleClass="text-xs	text-600 border-1 border-300 surface-section ml-2">
+                    delete_content
+                </p-tag>
+            </div>
+            <div class="surface-section flex justify-content-between px-3 py-2 text-xs text-500 border-round-bottom">
+                <span></span>
+                <span>Last updated: 15.4.2023</span>
+            </div>
+        </div>
     </div>
 </div>
