@@ -21,6 +21,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from users.views import MeView
+from roles import views as rolesViews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,4 +31,5 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('organizations/', include('organizations.urls')),
     path('organizations/<str:orgId>/applications/', include('applications.urls')),
+    path('permissions/', rolesViews.PermissionsView.as_view()),
 ]

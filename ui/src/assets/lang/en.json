@@ -56,5 +56,6 @@
     "access_denied": "Access denied",
     "your_are_not_part_of_the_organization": "You are not part of the organization",
     "create_application": "Create application",
-    "role_groups": "Role groups"
+    "create_role": "Create role",
+    "select_permissions": "Select permissions"
 }

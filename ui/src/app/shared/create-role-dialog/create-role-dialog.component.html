@@ -1,0 +1,13 @@
+<form [formGroup]="frm" (ngSubmit)="save()">
+    <div class="formgrid grid">
+        <div class="field col-12">
+            <input type="text" pInputText class="w-full" placeholder="{{'name' | translate}}" formControlName="name">
+        </div>
+        <div class="field col-12">
+            <textarea rows="5" cols="30" pTextarea class="w-full" placeholder="{{'description' | translate}}" formControlName="description"></textarea>
+        </div>
+        <div class="field col-12">
+            <p-multiselect [options]="permissions" formControlName="permissions" placeholder="{{'select_permissions'|translate}}" optionLabel="name" optionValue="id" display="chip" styleClass="w-full" appendTo="body" />
+        </div>
+    </div>
+</form>
